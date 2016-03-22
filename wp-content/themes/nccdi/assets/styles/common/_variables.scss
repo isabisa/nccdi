@@ -53,6 +53,7 @@ $black: #000000;
 $white80:               rgba(255, 255, 255, .8);
 $gray-transparent:      rgba(118, 117, 117, 0);
 $gray-60:               rgba(118, 117, 117, .6);
+$gray-dark-60:          rgba(55, 54, 54, .6);
 
 // Set standards
 $brand-primary:         $teal;
@@ -119,7 +120,7 @@ $navbar-default-bg:     transparent;
 $navbar-default-color:  $gray-dark;
 $navbar-default-border: transparent;
 
-$navbar-default-link-color:         $gray-dark;
+$navbar-default-link-color:         $gray;
 $navbar-default-link-hover-color:   $teal-light;
 $navbar-default-link-active-color:  $teal-light;
 $navbar-default-link-active-bg:     transparent;
@@ -134,8 +135,8 @@ $dropdown-fallback-border:       transparent;
 $dropdown-divider-bg:            transparent;
 
 $dropdown-link-color:            $gray-dark;
-$dropdown-link-hover-color:      $teal;
-$dropdown-link-hover-bg:         $white;
+$dropdown-link-hover-color:      $white;
+$dropdown-link-hover-bg:         $teal;
 
 $dropdown-link-active-color:     $teal;
 $dropdown-link-active-bg:        $white;

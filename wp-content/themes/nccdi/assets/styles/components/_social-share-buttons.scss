@@ -6,7 +6,7 @@
     right: 0;
     bottom: 57px;
     z-index: 100;
-    background: $pear;
+    // background: $pear;
     text-decoration: none;
     color: $white;
 
@@ -41,7 +41,7 @@
 
     .social-share-embed {
       text-align: left;
-      background: $stone;
+      // background: $stone;
       padding: 1px 10px 10px;
 
       h6 {
@@ -69,7 +69,7 @@
       font-size: 14px;
       line-height: 1;
       font-style: italic;
-      color: $pearl;
+      // color: $pearl;
     }
   }
 
@@ -114,7 +114,7 @@
     left: 0;
     top: 30%;
     z-index: 100;
-    background: $white70;
+    // background: $white70;
 
     .count {
       font-family: $font-family-sans-serif;
@@ -203,10 +203,10 @@
   }
 
   &.icon-email {
-    background: $scarlet;
+    // background: $scarlet;
 
     &:hover {
-      background: darken($scarlet, 10%);
+      // background: darken($scarlet, 10%);
     }
   }
 }
@@ -214,18 +214,18 @@
   @extend .social-share-link;
 
   &.icon-download {
-    background: $indigo;
+    // background: $indigo;
 
     &:hover {
-      background: darken($indigo, 10%);
+      // background: darken($indigo, 10%);
     }
   }
 
   &.icon-fax {
-    background: $pear;
+    // background: $pear;
 
     &:hover {
-      background: darken($pear, 10%);
+      // background: darken($pear, 10%);
     }
   }
 

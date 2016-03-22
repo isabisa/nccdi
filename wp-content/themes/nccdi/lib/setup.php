@@ -12,7 +12,7 @@ function setup() {
   // https://roots.io/plugins/soil/
   add_theme_support('soil-clean-up');
   add_theme_support('soil-disable-trackbacks');
-  add_theme_support('soil-nav-walker');
+  // add_theme_support('soil-nav-walker');
   add_theme_support('soil-nice-search');
 
   // Make theme available for translation
