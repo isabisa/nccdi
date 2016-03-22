@@ -14,10 +14,10 @@ $crunchifyTitle = urlencode(get_the_title($id));
 
 // Construct sharing URL without using any script
 if (empty($twitterURL)) {
-  $twitterURL = 'https://twitter.com/intent/tweet?text='.$crunchifyTitle.'&amp;url='.$crunchifyURL.'&amp;via=EducationNC';
+  $twitterURL = 'https://twitter.com/intent/tweet?text='.$crunchifyTitle.'&amp;url='.$crunchifyURL.'&amp;via=ncinitiative';
 }
 $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
-$linkedinURL = 'http://www.linkedin.com/shareArticle?mini=true&amp;url='.$crunchifyURL.'&title='.$crunchifyTitle.'&source=EducationNC';
+$linkedinURL = 'http://www.linkedin.com/shareArticle?mini=true&amp;url='.$crunchifyURL.'&title='.$crunchifyTitle.'&source=NCInitiative';
 $emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyEmailMsg.$crunchifyURL;
 ?>
 

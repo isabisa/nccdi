@@ -92,6 +92,24 @@
     }
   }
 
+  .entry-content {
+    p {
+      font-size: 18px;
+      margin-bottom: 1.563em;
+      line-height: 1.563em;
+
+      @include respondto(sm,md,lg) {
+        margin-bottom: 1.5em;
+      }
+    }
+    
+    @include respondto(xs) {
+      p, li {
+        font-size: 16px;
+      }
+    }
+  }
+
   .longform-intro {
     background: $navy-darker;
     color: $white;
