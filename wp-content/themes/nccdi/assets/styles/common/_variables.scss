@@ -50,10 +50,14 @@ $gray: #767575;
 $gray-dark: #373636;
 $black: #000000;
 
-$white80:               rgba(255, 255, 255, .8);
+$black-transparent:     rgba(0, 0, 0, 0);
+$white-80:              rgba(255, 255, 255, .8);
 $gray-transparent:      rgba(118, 117, 117, 0);
 $gray-60:               rgba(118, 117, 117, .6);
 $gray-dark-60:          rgba(55, 54, 54, .6);
+$teal-lighter-50:       rgba(117, 185, 178, .5);
+$teal-lightest-50:      rgba(183, 216, 209, .5);
+$teal-lightest-75:      rgba(183, 216, 209, .75);
 
 // Set standards
 $brand-primary:         $teal;
@@ -75,11 +79,68 @@ $link-hover-color:      $teal-light;
 
 @mixin trans-gray-gradient-bottom() {
   @include filter-gradient($gray-transparent, $gray-60, vertical);
-  background-image: -o-linear-gradient(180deg, $gray-transparent 50%, $gray-60 100%);
-  background-image: -moz-linear-gradient(180deg, $gray-transparent 50%, $gray-60 100%);
-  background-image: -ms-linear-gradient(180deg, $gray-transparent 50%, $gray-60 100%);
-  background-image: linear-gradient(180deg, $gray-transparent 50%, $gray-60 100%);
+  background-image: -o-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
+  background-image: -moz-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
+  background-image: -ms-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
+  background-image: linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
 }
+
+@mixin trans-black-gradient-right() {
+  @include filter-gradient($black-transparent, $black, horizontal);
+  background-image: -o-linear-gradient(90deg, $black-transparent 50%, $black 100%);
+  background-image: -moz-linear-gradient(90deg, $black-transparent 50%, $black 100%);
+  background-image: -ms-linear-gradient(90deg, $black-transparent 50%, $black 100%);
+  background-image: linear-gradient(90deg, $black-transparent 50%, $black 100%);
+}
+
+@mixin teal-yellow-gradient-bottom() {
+  @include filter-gradient($teal-lightest, $yellow-lighter, vertical);
+  background-image: -o-linear-gradient(180deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: -moz-linear-gradient(180deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: -ms-linear-gradient(180deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: linear-gradient(180deg, $teal-lightest 0%, $yellow-lighter 100%);
+}
+
+@mixin teal-yellow-gradient-right() {
+  @include filter-gradient($teal-lightest, $yellow-lighter, horizontal);
+  background-image: -o-linear-gradient(90deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: -moz-linear-gradient(90deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: -ms-linear-gradient(90deg, $teal-lightest 0%, $yellow-lighter 100%);
+  background-image: linear-gradient(90deg, $teal-lightest 0%, $yellow-lighter 100%);
+}
+
+@mixin teal-lightest-slant() {
+  @include filter-gradient($teal-lightest, darken($teal-lightest, 5%), horizontal);
+  background-image: -o-linear-gradient(60deg, $teal-lightest 50%, darken($teal-lightest, 5%) 50%);
+  background-image: -moz-linear-gradient(60deg, $teal-lightest 50%, darken($teal-lightest, 5%) 50%);
+  background-image: -ms-linear-gradient(60deg, $teal-lightest 50%, darken($teal-lightest, 5%) 50%);
+  background-image: linear-gradient(60deg, $teal-lightest 50%, darken($teal-lightest, 5%) 50%);
+}
+
+@mixin trans-teal-light-to-dark-slant() {
+  @include filter-gradient($teal-lightest-75, $teal, horizontal);
+  background-image: -o-linear-gradient(60deg, $teal-lightest-75 50%, $teal 50%);
+  background-image: -moz-linear-gradient(60deg, $teal-lightest-75 50%, $teal 50%);
+  background-image: -ms-linear-gradient(60deg, $teal-lightest-75 50%, $teal 50%);
+  background-image: linear-gradient(60deg, $teal-lightest-75 50%, $teal 50%);
+}
+
+@mixin teal-dark-right() {
+  @include filter-gradient($teal, darken($teal, 5%), horizontal);
+  background-image: -o-linear-gradient(90deg, $teal 50%, darken($teal, 5%) 50%);
+  background-image: -moz-linear-gradient(90deg, $teal 50%, darken($teal, 5%) 50%);
+  background-image: -ms-linear-gradient(90deg, $teal 50%, darken($teal, 5%) 50%);
+  background-image: linear-gradient(90deg, $teal 50%, darken($teal, 5%) 50%);
+}
+
+@mixin tomato-right() {
+  @include filter-gradient($tomato-light, $tomato, horizontal);
+  background-image: -o-linear-gradient(90deg, $tomato-light 50%, $tomato 50%);
+  background-image: -moz-linear-gradient(90deg, $tomato-light 50%, $tomato 50%);
+  background-image: -ms-linear-gradient(90deg, $tomato-light 50%, $tomato 50%);
+  background-image: linear-gradient(90deg, $tomato-light 50%, $tomato 50%);
+}
+
 
 // Typography
 // -------------------------

@@ -1,5 +1,5 @@
 .banner {
-  padding: 10px;
+  padding: 10px 10px 35px;
 }
 
 .navbar-brand {
@@ -24,7 +24,7 @@
 
   @media (max-width: 1125px) {
     padding-top: 21px;
-    
+
     .navbar-nav > li > a {
       font-size: 16x;
       padding-left: 8px;
@@ -58,26 +58,5 @@
       display: block;
       margin-top: -1px;
     }
-  }
-}
-
-.nav-btn {
-  position: relative;
-  margin-left: 15px;
-
-  a {
-    color: $white !important;
-    text-transform: uppercase;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: $tomato-light;
-    transform: skewX(30deg);
   }
 }

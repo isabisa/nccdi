@@ -1,0 +1,49 @@
+.btn.btn {
+  @extend .skew;
+  background: none;
+  border-radius: 0;
+  color: $white;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 18px;
+  z-index: 1;
+
+  &:before {
+    @include tomato-right;
+    background-size: 200% 100%;
+    background-position: 0 0;
+    transition: background-position .4s ease;
+  }
+
+  &:hover {
+    &:before {
+      background-position: 100% 0;
+    }
+  }
+}
+
+.btn.btn-teal:before {
+  @include teal-dark-right;
+}
+
+.nav-btn {
+  margin-left: 15px;
+
+  a {
+    color: $white !important;
+    text-transform: uppercase;
+  }
+
+  &:before {
+    @include tomato-right;
+    background-size: 200% 100%;
+    background-position: 0 0;
+    transition: background-position .4s ease;
+  }
+
+  &:hover {
+    &:before {
+      background-position: 100% 0;
+    }
+  }
+}

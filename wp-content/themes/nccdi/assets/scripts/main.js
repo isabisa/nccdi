@@ -63,6 +63,7 @@
     'home': {
       init: function() {
         // JavaScript to be fired on the home page
+        $('.circle-stat .stat').fitText(0.3);
       },
       finalize: function() {
         // JavaScript to be fired on the home page, after the init JS
@@ -379,7 +380,7 @@
       }
     }
   };
-  
+
   // The routing fires all common scripts, followed by the page specific scripts.
   // Add additional events for more control over timing e.g. a finalize event
   var UTIL = {
