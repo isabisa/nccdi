@@ -3,5 +3,71 @@
     & > .menu-item:not(.active) {
       display: none;
     }
+
+    & > .active {
+      & > a {
+        background: $teal;
+        color: $white;
+        font-family: $font-family-sans-serif;
+        font-size: $font-size-h4;
+        text-decoration: none;
+        cursor: default;
+        position: relative;
+
+        &:before {
+          content: '';
+          position: absolute;
+          right: -11px;
+          top: 0;
+          height: 100%;
+          border-style: solid;
+          border-color: transparent transparent transparent $teal;
+          border-width: 19px 0 0 11px;
+        }
+
+        &:hover {
+          background: $teal;
+        }
+      }
+
+      ul {
+        list-style-type: square;
+        padding-left: 27px;
+
+        li {
+          a {
+            color: $gray-dark;
+            text-decoration: none;
+            display: block;
+            white-space: normal;
+            font-size: 16px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+          }
+
+          &.active > a {
+            color: $teal;
+          }
+        }
+      }
+    }
+  }
+}
+
+.well {
+  background: $teal-lightest;
+  border: none;
+  border-radius: 0;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: 0;
+    height: 100%;
+    border-style: solid;
+    border-color: transparent transparent transparent $teal-lightest;
+    border-width: 37.5px 0 0 21.8px;
   }
 }

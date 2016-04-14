@@ -2,6 +2,8 @@
   <div class="row">
     <div class="col-md-7 col-md-push-1 col-lg-push-0">
       <?php the_content(); ?>
+
+      <?php if (is_page('donate')) { get_template_part('templates/components/donately'); } ?>
     </div>
 
     <div class="col-md-3 col-md-push-1">
