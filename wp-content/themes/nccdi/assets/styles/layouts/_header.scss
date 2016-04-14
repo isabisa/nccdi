@@ -1,11 +1,17 @@
 .banner {
-  padding: 10px 10px 35px;
+  padding: 10px;
+}
+
+.navbar-header {
+  position: relative;
+  z-index: 5;
 }
 
 .navbar-brand {
   width: 289px;
   padding: 0;
-  height: 0;
+  height: auto;
+  overflow: hidden;
 
   @media (max-width: 1125px) {
     width: 240px;

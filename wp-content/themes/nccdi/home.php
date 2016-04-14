@@ -39,7 +39,7 @@ use Roots\Sage\Assets;
           </ul>
         </div>
         <div class="solid-notch">
-          We work with our partners across the state to <strong>transform communities</strong> and <strong>increase access to opportunity</strong> for all North Carolinians.
+          We work with our partners across the state to <strong>transform their communities</strong> and <strong>increase access to opportunity</strong> for all North Carolinians.
         </div>
       </div>
     </div>
@@ -87,8 +87,8 @@ use Roots\Sage\Assets;
                 <div class="spacer"></div>
                 <div class="circle">
                   <div class="wrap-content">
-                    <span class="stat">$2M</span>
-                    some impressive number about investments
+                    <span class="stat">$68M</span>
+                    invested through grants since inception
                   </div>
                 </div>
               </div>
@@ -119,8 +119,8 @@ use Roots\Sage\Assets;
                 <div class="spacer"></div>
                 <div class="circle">
                   <div class="wrap-content">
-                    <span class="stat">73%</span>
-                    stat about public policy impact
+                    <span class="stat">50K</span>
+                    citizens became home owners &amp; learned financial skills
                   </div>
                 </div>
               </div>

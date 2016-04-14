@@ -1,0 +1,7 @@
+.sidebar {
+  .nav {
+    & > .menu-item:not(.active) {
+      display: none;
+    }
+  }
+}

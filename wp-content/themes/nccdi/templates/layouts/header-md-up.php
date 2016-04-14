@@ -14,7 +14,7 @@ use Roots\Sage\Nav;
       <div class="navbar-right">
         <?php
         if (has_nav_menu('primary_navigation')) :
-          wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav navbar-nav', 'walker' => new Nav\NavWalker()]);
+          wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav navbar-nav', 'depth' => 2, 'walker' => new Nav\NavWalker()]);
         endif;
         ?>
       </div>

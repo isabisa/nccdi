@@ -1,8 +1,17 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-8 col-centered">
+    <div class="col-md-7 col-md-push-1 col-lg-push-0">
       <?php the_content(); ?>
-      <?php wp_link_pages(['before' => '<nav class="page-nav"><p>' . __('Pages:', 'sage'), 'after' => '</p></nav>']); ?>
+    </div>
+
+    <div class="col-md-3 col-md-push-1">
+      <div class="well sidebar">
+        <?php
+        if (has_nav_menu('primary_navigation')) :
+          wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav nav-stacked']);
+        endif;
+        ?>
+      </div>
     </div>
   </div>
 </div>

@@ -100,13 +100,13 @@ class NavWalker extends \Walker_Nav_Menu {
     $slug = sanitize_title($item->title);
 
     // Fix core `active` behavior for custom post types
-    if ($this->cpt) {
-      $classes = str_replace('current_page_parent', '', $classes);
-
-      if (\url_compare($this->archive, $item->url)) {
-        $classes[] = 'active';
-      }
-    }
+    // if ($this->cpt) {
+    //   $classes = str_replace('current_page_parent', '', $classes);
+    //
+    //   if (__NAMESPACE__ . '\\' . url_compare($this->archive, $item->url)) {
+    //     $classes[] = 'active';
+    //   }
+    // }
 
     // Remove most core classes
     $classes = preg_replace('/(current(-menu-|[-_]page[-_])(item|parent|ancestor))/', 'active', $classes);

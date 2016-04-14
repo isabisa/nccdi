@@ -11,12 +11,10 @@ use Roots\Sage\Assets;
       <p class="h4">
         Get the latest news
         <a class="btn btn-teal" href="#">Subscribe</a>
-        <a class="icon-facebook" href="#"></a>
-        <a class="icon-twitter" href="#"></a>
-        <a class="icon-flickr" href="#"></a>
+        <a class="icon-facebook" href="http://www.facebook.com/ncinitiative" target="_blank" rel="nofollow"></a>
+        <a class="icon-twitter" href="http://twitter.com/ncinitiative" target="_blank" rel="nofollow"></a>
+        <a class="icon-flickr" href="http://www.flickr.com/photos/ncinitiative/" target="_blank" rel="nofollow"></a>
       </p>
-
-      <p class="h4"><a href="#">Grantee Login</a></p>
 
       <p>Copyright &copy; <?php echo date('Y'); ?> &nbsp;|&nbsp; NC Community Development Initiative &nbsp;|&nbsp; 919.828.5655 &nbsp;|&nbsp; <a href="mailto:<?php echo antispambot('info@ncinitiative.org'); ?>"><?php echo antispambot('info@ncinitiative.org'); ?></a></p>
 
