@@ -98,7 +98,7 @@ img {
 
   @include respondto(md,lg) {
     &:not(.fullwidth):not(.collage):not(.g-carousel) {
-      body:not(.single-data-viz):not(.post-type-archive-data) & {
+      body:not(.single-data-viz):not(.post-type-archive-data):not(.single-resource) & {
         margin-left: -7.35%;
         margin-right: -7.35%;
         max-width: 114.7%;
@@ -216,7 +216,7 @@ object, embed {
     height: 0;
     margin-bottom: 34px;
 
-    body:not(.page):not(.post-type-archive-data):not(.single-data-viz) & {
+    body:not(.page):not(.post-type-archive-data):not(.single-data-viz):not(.single-resource) & {
       @include respondto(md,lg) {
         margin-left: -7.35%;
         margin-right: -7.35%;
@@ -257,7 +257,7 @@ object, embed {
   }
 
   &.wp-embed {
-    body:not(.page):not(.post-type-archive-data):not(.single-data-viz) & {
+    body:not(.page):not(.post-type-archive-data):not(.single-data-viz):not(.single-resource) & {
       @include respondto(md,lg) {
         margin-left: -7.35%;
         margin-right: -7.35%;

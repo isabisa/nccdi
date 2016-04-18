@@ -5,14 +5,16 @@ html {
 p {
   word-wrap: break-word;
 
-  .content & {
-    font-size: 18px;
-    margin-bottom: 1.88em;
-    line-height: 1.88em;
-  }
-
   @media (max-width: $screen-xs-max) {
     font-size: 16px;
+  }
+}
+
+.main {
+  p, ul, ol {
+    font-size: 18px;
+    line-height: 1.88em;
+    margin-bottom: 1.88em;
   }
 }
 
@@ -78,7 +80,7 @@ h6, .h6 {
   text-transform: uppercase;
 }
 
-.meta, .attr, .byline {
+.meta, .attr, .byline, .entry-meta {
   font-family: $font-family-sans-serif;
   font-weight: 400;
   font-size: 16px;

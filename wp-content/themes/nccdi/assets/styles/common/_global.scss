@@ -21,6 +21,21 @@
 }
 
 // Grid
+.content {
+  @include make-row();
+}
+
+.main {
+  @include make-md-column(7);
+  @include make-md-column-push(1);
+  @include make-lg-column-push(0);
+}
+
+.sidebar {
+  @include make-md-column(3);
+  @include make-md-column-push(1);
+}
+
 .container.narrow {
   @media (min-width: $screen-md-min) {
     width: 925px;
@@ -48,6 +63,10 @@
 
 .flex {
   display: flex;
+
+  &.grid {
+    flex-wrap: wrap;
+  }
 }
 
 @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {

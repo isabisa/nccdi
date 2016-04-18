@@ -1,12 +1,31 @@
 .btn.btn {
-  @extend .skew;
-  background: none;
+  background: $teal-light;
+  font-family: $font-family-sans-serif;
   border-radius: 0;
   color: $white;
   text-transform: uppercase;
   text-decoration: none;
-  font-size: 18px;
   z-index: 1;
+  transition: all .3s ease;
+
+  &.menu-item {
+    margin-left: 15px;
+    padding: 0;
+
+    & > a, a:hover, a:focus, a:active {
+      color: $white;
+    }
+  }
+
+  &:hover {
+    background: $teal;
+  }
+}
+
+.btn.btn-skew {
+  @extend .skew;
+  background: none;
+  font-size: 18px;
 
   &:before {
     @include tomato-right;
@@ -16,6 +35,8 @@
   }
 
   &:hover {
+    background: none;
+
     &:before {
       background-position: 100% 0;
     }
@@ -24,26 +45,4 @@
 
 .btn.btn-teal:before {
   @include teal-dark-right;
-}
-
-.nav-btn {
-  margin-left: 15px;
-
-  a {
-    color: $white !important;
-    text-transform: uppercase;
-  }
-
-  &:before {
-    @include tomato-right;
-    background-size: 200% 100%;
-    background-position: 0 0;
-    transition: background-position .4s ease;
-  }
-
-  &:hover {
-    &:before {
-      background-position: 100% 0;
-    }
-  }
 }

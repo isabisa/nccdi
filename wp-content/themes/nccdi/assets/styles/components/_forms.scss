@@ -1,72 +1,83 @@
-// Search form
-.search-form {
-  @extend .form-inline;
+.form-inline {
+  .form-group {
+    padding: 0;
+  }
+  
+  .form-control {
+    max-width: 100%;
+    border-radius: 0;
+  }
 }
-.search-form label {
-  font-weight: normal;
-  @extend .form-group;
-}
-.search-form .search-field {
-  @extend .form-control;
-}
-.search-form .search-submit {
-  @extend .btn;
-  @extend .btn-default;
-}
+
+// // Search form
+// .search-form {
+//   @extend .form-inline;
+// }
+// .search-form label {
+//   font-weight: normal;
+//   @extend .form-group;
+// }
+// .search-form .search-field {
+//   @extend .form-control;
+// }
+// .search-form .search-submit {
+//   @extend .btn;
+//   @extend .btn-default;
+// }
 
 // Email signup form
-.email-signup-form {
-  background-image: url('../images/emails.jpg');
-  background-size: cover;
-  background-position: center;
-  padding: 30px;
-
-  h2 {
-    background: $plum;
-    color: $white;
-    margin: 0 0 30px -30px;
-    padding: 10px 0 10px 30px;
-
-    span {
-      font-family: $font-family-serif;
-      font-style: italic;
-      font-weight: bold;
-    }
-  }
-
-  .mc_embed_signup {
-    background: $white70;
-    padding: 20px;
-
-    @media (min-width: $screen-sm-min) {
-      padding: 30px;
-    }
-  }
-}
-
-// Mailchimp
-.mc-field-group {
-  margin-bottom: 1em;
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin-right: 1em;
-  }
-
-  label {
-    font-weight: normal;
-    vertical-align: middle;
-    margin: 0;
-    display: inline;
-  }
-
-  input[type="checkbox"] {
-    width: 25px;
-  }
-}
+// .email-signup-form {
+//   background-image: url('../images/emails.jpg');
+//   background-size: cover;
+//   background-position: center;
+//   padding: 30px;
+//
+//   h2 {
+//     background: $plum;
+//     color: $white;
+//     margin: 0 0 30px -30px;
+//     padding: 10px 0 10px 30px;
+//
+//     span {
+//       font-family: $font-family-serif;
+//       font-style: italic;
+//       font-weight: bold;
+//     }
+//   }
+//
+//   .mc_embed_signup {
+//     background: $white70;
+//     padding: 20px;
+//
+//     @media (min-width: $screen-sm-min) {
+//       padding: 30px;
+//     }
+//   }
+// }
+//
+// // Mailchimp
+// .mc-field-group {
+//   margin-bottom: 1em;
+//
+//   ul {
+//     list-style: none;
+//     padding: 0;
+//     margin: 0;
+//   }
+//
+//   li {
+//     display: inline-block;
+//     margin-right: 1em;
+//   }
+//
+//   label {
+//     font-weight: normal;
+//     vertical-align: middle;
+//     margin: 0;
+//     display: inline;
+//   }
+//
+//   input[type="checkbox"] {
+//     width: 25px;
+//   }
+// }

@@ -138,6 +138,13 @@
 
   .post-title {
     margin: 0;
+    transition: all .3s ease;
+    font-weight: normal;
+    font-size: 26px;
+  }
+
+  .entry-meta {
+    color: $gray;
   }
 
   .author {
@@ -157,6 +164,10 @@
 
     .photo-overlay:after {
       transform: translate3d(0, 10%, 0);
+    }
+
+    .post-title {
+      color: $brown;
     }
   }
 }

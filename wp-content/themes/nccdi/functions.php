@@ -12,14 +12,14 @@
 $sage_includes = [
   'lib/assets.php',    // Scripts and stylesheets
   'lib/custom-post-types.php', // Custom post types
+  'lib/customizer.php',// Theme customizer
   'lib/extras.php',    // Custom functions
-  'lib/nav-data-dashboard.php', // Nav walker for Data Dashboard
+  'lib/media.php',     // Media functions
   'lib/nav-walker.php',// Nav walker
   'lib/setup.php',     // Theme setup
+  'lib/shortcodes.php',  // Shortcodes
   'lib/titles.php',    // Page titles
-  'lib/wrapper.php',   // Theme wrapper class
-  'lib/customizer.php',// Theme customizer
-  'lib/shortcodes.php'  // Shortcodes
+  'lib/wrapper.php'   // Theme wrapper class
 ];
 
 foreach ($sage_includes as $file) {

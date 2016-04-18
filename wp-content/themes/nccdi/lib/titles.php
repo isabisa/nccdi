@@ -18,6 +18,8 @@ function title() {
     return sprintf(__('Search Results for %s', 'sage'), get_search_query());
   } elseif (is_404()) {
     return __('Not Found', 'sage');
+  } elseif (is_singular('resource')) {
+    return 'Resource Center';
   } else {
     return get_the_title();
   }
@@ -35,6 +37,12 @@ add_filter( 'get_the_archive_title', function ($title) {
   }
   if ( is_author() ) {
     $title = get_the_author();
+  }
+  if ( is_post_type_archive('resource') ) {
+    $title = 'Resource Center';
+  }
+  if ( is_tax('resource-type') ) {
+    $title = '<span>Resource Center</span> ' . single_term_title('', false);
   }
   if ( is_post_type_archive('tribe_events') ) {
     $title = 'Events';
