@@ -1,3 +1,9 @@
 body#tinymce {
   margin: 12px !important;
+
+  p, ul, ol {
+    font-size: 18px;
+    line-height: 1.88em;
+    margin-bottom: 1.88em;
+  }
 }

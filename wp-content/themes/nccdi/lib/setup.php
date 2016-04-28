@@ -84,7 +84,7 @@ function display_sidebar() {
     // @link https://codex.wordpress.org/Conditional_Tags
     is_404(),
     is_front_page(),
-    // is_single(),
+    is_single(),
     // is_page(),
     // is_archive(),
     is_page('donate'),
@@ -109,6 +109,11 @@ function assets() {
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 
+function google_fonts() {
+  echo '<link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700|Raleway:400,800" rel="stylesheet" type="text/css">';
+}
+add_action('wp_head', __NAMESPACE__ . '\\google_fonts');
+add_action('embed_head', __NAMESPACE__ . '\\google_fonts');
 
 /**
  * Make sure WP SEO isn't adding meta tags to the head of data dashboard
@@ -130,11 +135,8 @@ add_filter('wp_enqueue_scripts', __NAMESPACE__ . '\\remove_yoast_data_dashboard'
  */
 function embed_assets() {
   wp_enqueue_style('sage/css', Assets\asset_path('styles/embed.css'), false, null);
-  wp_enqueue_script('sage/js', Assets\asset_path('scripts/main.js'), ['jquery'], null, true);
 }
-// add_action('enqueue_embed_scripts', __NAMESPACE__ . '\\embed_assets', 100);
-// remove_action( 'embed_head', 'print_emoji_detection_script' );
-// remove_action( 'embed_head', 'print_emoji_styles' );
+add_action('enqueue_embed_scripts', __NAMESPACE__ . '\\embed_assets', 100);
 
 
 /**

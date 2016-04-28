@@ -18,7 +18,7 @@
 @import "components/media";
 @import "components/pagination";
 // @import "components/social-share-buttons";
-// @import "components/wp-classes";
+@import "components/wp-classes";
 //
 @import "layouts/header";
 // @import "layouts/mobile-nav";
@@ -26,10 +26,10 @@
 @import "layouts/footer";
 //
 @import "layouts/pages";
-// @import "layouts/posts";
+@import "layouts/posts";
 @import "layouts/resources";
 @import "layouts/home";
 //
-// @import "layouts/data-dashboard";
+@import "layouts/data-dashboard";
 //
 @import "layouts/tinymce";

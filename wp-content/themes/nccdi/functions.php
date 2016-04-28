@@ -14,8 +14,10 @@ $sage_includes = [
   'lib/custom-post-types.php', // Custom post types
   'lib/customizer.php',// Theme customizer
   'lib/extras.php',    // Custom functions
+  'lib/http_build_url.php', // Required for resize
   'lib/media.php',     // Media functions
   'lib/nav-walker.php',// Nav walker
+  'lib/resize.php',   // Resize images on the fly
   'lib/setup.php',     // Theme setup
   'lib/shortcodes.php',  // Shortcodes
   'lib/titles.php',    // Page titles

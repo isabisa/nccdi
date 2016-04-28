@@ -20,6 +20,10 @@
   &:hover {
     background: $teal;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .btn.btn-skew {
@@ -45,4 +49,9 @@
 
 .btn.btn-teal:before {
   @include teal-dark-right;
+}
+
+.donately-submit {
+  @extend .btn;
+  @extend .btn-skew;
 }

@@ -305,6 +305,23 @@
   }
 }
 
+.whats-new {
+  .entry-header {
+    .post-title, .entry-meta {
+      display: inline;
+    }
+
+    .entry-meta {
+      color: $teal;
+
+      &:before {
+        color: $text-color;
+        content: ' | ';
+      }
+    }
+  }
+}
+
 .juicer-feed {
   &.slider {
     padding-bottom: 40px;

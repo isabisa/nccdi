@@ -22,7 +22,7 @@
   }
 }
 
-body:not(.page-template):not(.single-bio):not(.single-flash-cards) {
+body:not(.page-template):not(.post-type-archive-data) {
   @media (min-width: $screen-md-min) {
     .alignleft {
       margin-left: -7.35%;

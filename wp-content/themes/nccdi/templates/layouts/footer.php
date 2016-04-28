@@ -10,7 +10,7 @@ use Roots\Sage\Assets;
     <div class="text-center">
       <p class="h4">
         Get the latest news
-        <a class="btn btn-skew btn-teal" href="#">Subscribe</a>
+        <a class="btn btn-skew btn-teal" data-toggle="modal" data-target="#emailSignupModal">Subscribe</a>
         <a class="icon-facebook" href="http://www.facebook.com/ncinitiative" target="_blank" rel="nofollow"></a>
         <a class="icon-twitter" href="http://twitter.com/ncinitiative" target="_blank" rel="nofollow"></a>
         <a class="icon-flickr" href="http://www.flickr.com/photos/ncinitiative/" target="_blank" rel="nofollow"></a>
@@ -25,3 +25,5 @@ use Roots\Sage\Assets;
     </div>
   </div>
 </footer>
+
+<?php get_template_part('templates/components/email-signup'); ?>

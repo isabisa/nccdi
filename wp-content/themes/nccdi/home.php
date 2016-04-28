@@ -143,25 +143,17 @@ use Roots\Sage\Assets;
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="block-overlay photo-overlay">
-          <img class="post-thumbnail" src="<?php echo Assets\asset_path('images/placeholder.jpg'); ?>" />
-          <header class="entry-header">
-            <h5 class="post-title">N.C. Community Development Initiative seeks director of lending for Initiative Capital</h5>
-          </header>
-          <a class="mega-link" href="#"></a>
-        </div>
-      </div>
+      <?php
+      $news = new WP_Query([
+        'posts_per_page' => 2,
+      ]);
 
-      <div class="col-md-6">
-        <div class="block-overlay photo-overlay">
-          <img class="post-thumbnail" src="<?php echo Assets\asset_path('images/placeholder2.jpg'); ?>" />
-          <header class="entry-header">
-            <h5 class="post-title">N.C. Community Development Initiative and N.C. Housing Coalition seek development director</h5>
-          </header>
-          <a class="mega-link" href="#"></a>
-        </div>
-      </div>
+      if ($news->have_posts()) : while ($news->have_posts()) : $news->the_post();
+        echo '<div class="col-md-6">';
+        get_template_part('templates/layouts/block-overlay');
+        echo '</div>';
+      endwhile; endif; wp_reset_query();
+      ?>
     </div>
 
     <div class="row">
@@ -184,7 +176,7 @@ use Roots\Sage\Assets;
           <div class="title-top">Community Development</div>
           <div class="title-bottom">Data Tracker</div>
           <img class="data-bars" src="<?php echo Assets\asset_path('images/data-bars.png'); ?>" />
-          <a class="mega-link" href="#"></a>
+          <a class="mega-link" href="/data/"></a>
         </div>
       </div>
     </div>
@@ -202,7 +194,7 @@ use Roots\Sage\Assets;
             <img src="<?php echo Assets\asset_path('images/st-house.jpg'); ?>" />
           </div>
           <img class="st-logo" src="<?php echo Assets\asset_path('images/stronger-together-logo.png'); ?>" />
-          <a class="mega-link" href="#"></a>
+          <a class="mega-link" href="/nc-housing-coalition/"></a>
         </div>
       </div>
     </div>

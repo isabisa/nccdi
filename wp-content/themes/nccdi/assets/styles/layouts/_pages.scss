@@ -56,4 +56,32 @@
       }
     }
   }
+
+  .single-post &, .date & {
+    position: relative;
+    border: none;
+    margin: 0 0 50px;
+    padding: 0;
+    height: 50px;
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      position: absolute;
+      @include trans-teal-dark-slant;
+      transform: scale3d(1.5, 1.5, 1);
+      top: 0;
+      right: -50%;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  .post-type-archive-resource & {
+    background-image: url('../images/resources-header.jpg') !important;
+  }
+
+  .post-type-archive-data & {
+    background-image: url('../images/data-header.jpg') !important;
+  }
 }

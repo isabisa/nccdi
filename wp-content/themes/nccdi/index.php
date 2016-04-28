@@ -2,7 +2,7 @@
 
 use Roots\Sage\Setup;
 
-get_template_part('templates/components/header', get_post_type() != 'post' ? get_post_type() : get_post_format());
+get_template_part('templates/components/header', get_post_type());
 ?>
 
 <div class="container">
@@ -25,7 +25,7 @@ get_template_part('templates/components/header', get_post_type() != 'post' ? get
           } elseif (is_archive()) {
             get_template_part('templates/layouts/block', 'post-side');
           } else {
-            get_template_part('templates/layouts/content', get_post_type() != 'post' ? get_post_type() : get_post_format());
+            get_template_part('templates/layouts/content', get_post_type());
           }
         endwhile;
       endif;
@@ -36,7 +36,7 @@ get_template_part('templates/components/header', get_post_type() != 'post' ? get
         <?php if (is_page('whats-new')) {
           get_template_part('templates/components/sidebar', 'post');
         } else {
-          get_template_part('templates/components/sidebar', get_post_type() != 'post' ? get_post_type() : get_post_format());
+          get_template_part('templates/components/sidebar', get_post_type());
         } ?>
       </aside>
     <?php endif; ?>
