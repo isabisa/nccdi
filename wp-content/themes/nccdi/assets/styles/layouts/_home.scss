@@ -1,21 +1,32 @@
 .slanted-photos {
-  overflow: hidden;
   position: relative;
-  height: 375px;
   width: 100%;
 
-  .challenge, .approach {
-    height: 100%;
-    width: 70%;
-    transform: skewX(30deg);
-    position: absolute;
+  @media (min-width: $screen-md-min) {
     overflow: hidden;
+    height: 375px;
+  }
+
+  .challenge, .approach {
+    position: relative;
+    height: 375px;
+    overflow: hidden;
+
+    @media (min-width: $screen-md-min) {
+      height: 100%;
+      width: 70%;
+      position: absolute;
+      transform: skewX(30deg);
+    }
 
     .wrap-content {
       position: absolute;
       height: 100%;
       width: 100%;
-      transform: skewX(-30deg);
+
+      @media (min-width: $screen-md-min) {
+        transform: skewX(-30deg);
+      }
     }
 
     .background {
@@ -23,14 +34,23 @@
       top: 50%;
       width: 100%;
       min-height: 100%;
-      transform: skewX(-30deg) translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
+      transform: translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
       transition: transform .35s ease;
       transform-origin: right top;
+
+      @media (min-width: $screen-md-min) {
+        transform: skewX(-30deg) translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
+      }
     }
 
     .h2 {
       position: absolute;
       top: 10px;
+      left: -18px;
+
+      .skew {
+        padding-left: 30px;
+      }
     }
 
     &:before {
@@ -45,6 +65,10 @@
       z-index: 1;
       transform: translate3d(100%, 0, 0);
       transition: transform .45s ease;
+
+      @media (max-width: $screen-sm-max) {
+        transform: skewX(30deg) translate3d(130%, 0, 0);
+      }
     }
 
     .solid-notch {
@@ -88,11 +112,19 @@
 
     &:hover {
       .background {
-        transform: skewX(-30deg) translate3d(0, -50%, 0);
+        transform: translate3d(0, -50%, 0);
+
+        @media (min-width: $screen-md-min) {
+          transform: skewX(-30deg) translate3d(0, -50%, 0);
+        }
       }
 
       &:before {
         transform: translate3d(-100%, 0, 0);
+
+        @media (max-width: $screen-sm-max) {
+          transform: skewX(30deg) translate3d(-130%, 0, 0);
+        }
       }
 
       .hover {
@@ -106,76 +138,68 @@
   }
 
   .challenge {
-    left: -110px;
-
-    .wrap-content {
-      left: 110px;
-      width: calc(53% + 110px);
-    }
-
-    .h2 {
-      left: -18px;
-
-      .skew {
-        padding-left: 30px;
-      }
-    }
-
-    &:before {
-      background: $teal-lighter-50;
-    }
-
-    .shape {
-      float: right;
-      width: 218px;
-      height: 100%;
-      shape-outside: polygon(0 0, 100% 0, 100% 100%);
-    }
-
     .hover {
       li {
         clear: left;
         overflow: hidden;
       }
     }
+
+    @media (min-width: $screen-md-min) {
+      left: -110px;
+
+      .wrap-content {
+        left: 110px;
+        width: calc(30vw + 218px);
+      }
+
+      .shape {
+        float: right;
+        width: 218px;
+        height: 100%;
+        shape-outside: polygon(0 0, 100% 0, 100% 100%);
+      }
+    }
   }
 
-  .approach {
-    border-left: 7px solid $white;
-    right: -110px;
-    z-index: 1;
+  @media (min-width: $screen-md-min) {
+    .approach {
+      border-left: 7px solid $white;
+      right: -110px;
+      z-index: 1;
 
-    .background {
-      left: -110px;
-    }
+      .background, .wrap-content {
+        left: -110px;
+      }
 
-    .h2 {
-      left: 16px;
-    }
+      .h2 {
+        left: 16px;
 
-    .wrap-content {
-      left: -110px;
-    }
-
-    .solid-notch {
-      left: auto;
-      right: 40px;
-    }
-
-    .hover {
-      li {
-        padding-right: 20px;
-
-        &:nth-child(1) {
-          margin-left: 90px;
+        .skew {
+          padding-left: 0;
         }
+      }
 
-        &:nth-child(2) {
-          margin-left: 140px;
-        }
+      .solid-notch {
+        left: auto;
+        right: 40px;
+      }
 
-        &:nth-child(3) {
-          margin-left: 200px;
+      .hover {
+        li {
+          padding-right: 20px;
+
+          &:nth-child(1) {
+            margin-left: 90px;
+          }
+
+          &:nth-child(2) {
+            margin-left: 140px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 200px;
+          }
         }
       }
     }
@@ -185,9 +209,9 @@
 .solid-notch {
   position: absolute;
   top: 50%;
-  left: 15px;
+  left: 50%;
   width: 70%;
-  transform: translate3d(0, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
   padding: 15px 0 15px 15px;
   background: $teal-lightest;
   font-size: 18px;
@@ -209,6 +233,11 @@
     border-style: solid;
     border-color: transparent transparent transparent $teal-lightest;
     border-width: 37.5px 0 0 21.8px;
+  }
+
+  @media (min-width: $screen-md-min) {
+    left: 15px;
+    transform: translate3d(0, -50%, 0);
   }
 }
 
@@ -239,9 +268,11 @@
 .impact-blocks {
   margin-bottom: 2em;
 
-  .overlap {
-    & > div[class^="col-"]:nth-child(2) {
-      margin-top: -25px;
+  @media (min-width: $screen-md-min) {
+    .overlap {
+      & > div[class^="col-"]:nth-child(2) {
+        margin-top: -25px;
+      }
     }
   }
 }
@@ -276,10 +307,13 @@
       top: 50%;
       transform: translate3d(0, -50%, 0);
       transform-origin: top center;
-      font-size: 18px;
       line-height: 1.5em;
       padding: 0 20px;
       transition: transform .35s ease;
+
+      @media (min-width: $screen-sm-min) {
+        font-size: 18px;
+      }
     }
 
     .stat {
@@ -301,23 +335,6 @@
 
     .wrap-content {
       transform: scale3d(.9, .9, 1) translate3d(0, -50%, 0);
-    }
-  }
-}
-
-.whats-new {
-  .entry-header {
-    .post-title, .entry-meta {
-      display: inline;
-    }
-
-    .entry-meta {
-      color: $teal;
-
-      &:before {
-        color: $text-color;
-        content: ' | ';
-      }
     }
   }
 }
@@ -354,6 +371,8 @@
     transform-origin: top left;
     transform: scale3d(1.05, 1.05, 1);
     transition: transform .3s ease;
+    position: relative;
+    z-index: 2;
   }
 
   .title-top {
@@ -371,6 +390,7 @@
     right: 10%;
     top: 20px;
     height: 100%;
+    z-index: 1;
   }
 
   &:after {

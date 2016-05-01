@@ -26,17 +26,40 @@
     text-decoration: none;
     font-family: $font-family-sans-serif;
     cursor: pointer;
+
+    @media (min-width: $screen-md-min) {
+      .caret {
+        display: none;
+      }
+    }
+  }
+
+  .open.open > a {
+    color: $teal;
   }
 
   @media (max-width: 1125px) {
     padding-top: 21px;
+  }
 
-    .navbar-nav > li > a {
+  .navbar-nav > li > a {
+    color: $gray;
+    background: none !important;
+
+    &:hover {
+      color: $teal;
+    }
+
+    @media (max-width: 1125px) {
       font-size: 16x;
       padding-left: 8px;
       padding-right: 8px;
     }
   }
+}
+
+.navbar-toggle {
+  margin-top: 22px;
 }
 
 .dropdown {
@@ -60,9 +83,11 @@
       color: $teal !important;
     }
 
-    & > ul.dropdown-menu {
-      display: block;
-      margin-top: -1px;
+    @media (min-width: $screen-md-min) {
+      & > ul.dropdown-menu {
+        display: block;
+        margin-top: -1px;
+      }
     }
   }
 }

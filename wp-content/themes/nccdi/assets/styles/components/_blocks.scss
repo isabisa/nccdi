@@ -124,6 +124,21 @@
   padding-bottom: 56.25%;
   height: 0;
   margin-bottom: 2em;
+
+  .entry-header {
+    .post-title, .entry-meta {
+      display: inline;
+    }
+
+    .entry-meta {
+      color: $teal;
+
+      &:before {
+        color: $text-color;
+        content: ' | ';
+      }
+    }
+  }
 }
 
 .block-post {
@@ -167,7 +182,7 @@
     }
 
     .post-title {
-      color: $brown;
+      color: $teal;
     }
   }
 }

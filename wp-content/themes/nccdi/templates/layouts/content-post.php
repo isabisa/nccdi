@@ -6,10 +6,11 @@ $comments_open = comments_open();
 $image_id = get_post_thumbnail_id();
 $featured_image_src = wp_get_attachment_image_src($image_id, 'full');
 $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
-$featured_image_align = get_field('featured_image_alignment');
-$title_overlay = get_field('title_overlay');
-
+if (function_exists('get_field')) {
+  $featured_image_align = get_field('featured_image_alignment');
+}
 ?>
+
 <article <?php post_class('article'); ?>>
 
   <?php if (has_post_thumbnail() && $featured_image_align == 'hero') { ?>
@@ -110,7 +111,7 @@ $title_overlay = get_field('title_overlay');
         </div>
       </div>
     <?php } ?>
-    
+
     <?php get_template_part('templates/layouts/block', 'recommended'); ?>
   </footer>
 </article>

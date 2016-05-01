@@ -1,7 +1,8 @@
 .block-post.resource {
+  display: flex;
+  width: 100%;
   @include make-sm-column(4);
   @include make-lg-column(3);
-  display: flex;
 
   .entry-header {
     background-color: $yellow-lightest;
@@ -27,7 +28,11 @@
   &:hover {
     .entry-header {
       background-color: $brown-lightest;
-      transform: scale(1.1);
+      transform: scale(1.025);
+
+      @media (min-width: $screen-sm-min) {
+        transform: scale(1.1);
+      }
     }
 
     .post-title {

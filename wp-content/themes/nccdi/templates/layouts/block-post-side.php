@@ -6,7 +6,6 @@ use Roots\Sage\Media;
 $video = has_post_format('video');
 
 $featured_image = Media\get_featured_image('medium');
-$title_overlay = get_field('title_overlay');
 ?>
 
 <article <?php post_class('block-post row'); ?>>
@@ -16,17 +15,14 @@ $title_overlay = get_field('title_overlay');
       <?php if (!empty($featured_image)) { ?>
         <img class="post-thumbnail" src="<?php echo $featured_image; ?>" />
       <?php } ?>
-      
+
       <?php
       if ($video) {
         echo '<div class="video-play"></div>';
       }
 
       get_template_part('templates/components/labels', 'single');
-
-      if ( ! empty($title_overlay) ) { ?>
-        <img class="title-image-overlay" src="<?php echo $title_overlay['url']; ?>" alt="<?php the_title(); ?>" />
-      <?php } ?>
+      ?>
     </div>
   </div>
 

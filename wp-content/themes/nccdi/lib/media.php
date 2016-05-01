@@ -215,16 +215,6 @@ add_action( 'wp_print_footer_scripts', __NAMESPACE__ . '\\mejs_add_container_cla
 /**
  * Customize Embeds
  */
-// Add template path for customizing WP Embeds
-add_filter( 'embed_template', function() {
-  global $post;
-  if ($post->post_type == 'data-viz') {
-    return get_template_directory() . '/embed-data-viz.php';
-  } else {
-    return get_template_directory() . '/embed.php';
-  }
-});
-
 // Google Maps embed
 function wpgm_embed_handler_googlemapsv1( $matches, $attr, $url, $rawattr ) {
 	if ( ! empty( $rawattr['width'] ) && ! empty( $rawattr['height'] ) ) {

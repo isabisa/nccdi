@@ -15,8 +15,7 @@ use Roots\Sage\Wrapper;
     <![endif]-->
     <?php
       do_action('get_header');
-      // get_template_part('templates/layouts/header', 'sm-down');
-      get_template_part('templates/layouts/header', 'md-up');
+      get_template_part('templates/layouts/header');
     ?>
     <div class="wrap clearfix" role="document">
       <?php include Wrapper\template_path(); ?>

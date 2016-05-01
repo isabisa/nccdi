@@ -2,6 +2,23 @@
 
 namespace Roots\Sage\Nav;
 
+add_filter('nav_menu_link_attributes', function($atts, $item, $args, $depth) {
+  if ( $item->is_subitem && $depth === 0 ) {
+    $atts['data-toggle']	= 'dropdown';
+		$atts['class']			= 'dropdown-toggle';
+		$atts['aria-haspopup']	= 'true';
+  }
+  return $atts;
+}, 10, 4);
+
+add_filter('walker_nav_menu_start_el', function($item_output, $item, $depth, $args) {
+  if ($item->is_subitem && $depth === 0) {
+    $item_output = str_replace('</a>', ' <span class="caret"></span></a>', $item_output);
+  }
+
+  return $item_output;
+}, 10, 4);
+
 /**
  * Make a URL relative
  */
