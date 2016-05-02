@@ -83,11 +83,11 @@ $link-hover-color:      $teal-light;
 }
 
 @mixin trans-gray-gradient-bottom() {
-  @include filter-gradient($gray-transparent, $gray-60, vertical);
-  background-image: -o-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
-  background-image: -moz-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
-  background-image: -ms-linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
-  background-image: linear-gradient(180deg, $gray-transparent 0%, $gray-60 100%);
+  @include filter-gradient($gray-transparent, $gray-dark-60, vertical);
+  background-image: -o-linear-gradient(180deg, $gray-transparent 0%, $gray-dark-60 100%);
+  background-image: -moz-linear-gradient(180deg, $gray-transparent 0%, $gray-dark-60 100%);
+  background-image: -ms-linear-gradient(180deg, $gray-transparent 0%, $gray-dark-60 100%);
+  background-image: linear-gradient(180deg, $gray-transparent 0%, $gray-dark-60 100%);
 }
 
 @mixin trans-black-gradient-right() {

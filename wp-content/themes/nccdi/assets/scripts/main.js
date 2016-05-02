@@ -110,7 +110,7 @@
         $.expr[':'].childof = function(obj, index, meta, stack){
           return $(obj).parent().is(meta[3]);
         };
-        $('object').wrap('<div class="object-wrapper"></div>');
+        $('object:not(childof(.tableauPlaceholder)').wrap('<div class="object-wrapper"></div>');
 
         // Add special classes to .entry-content-wrapper divs for Instagram and Twitter embeds (not fixed ratio)
         $('.instagram-media').parent('.entry-content-asset').addClass('instagram');

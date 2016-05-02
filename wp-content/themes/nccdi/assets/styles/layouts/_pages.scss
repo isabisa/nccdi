@@ -57,13 +57,14 @@
     }
   }
 
-  .single-post &, .date & {
+  .single-post:not(.hero-image-full) &, .date & {
     position: relative;
     border: none;
     margin: 0 0 50px;
     padding: 0;
     height: 50px;
     overflow: hidden;
+    display: block;
 
     &:after {
       content: '';
@@ -75,6 +76,10 @@
       bottom: 0;
       left: 0;
     }
+  }
+
+  .single-post & {
+    display: none;
   }
 
   .post-type-archive-resource & {

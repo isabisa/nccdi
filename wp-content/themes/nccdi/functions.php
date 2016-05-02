@@ -11,6 +11,7 @@
  */
 $sage_includes = [
   'lib/assets.php',    // Scripts and stylesheets
+  'lib/cmb-fields.php', // Custom Meta Box fields
   'lib/custom-post-types.php', // Custom post types
   'lib/customizer.php',// Theme customizer
   'lib/extras.php',    // Custom functions
@@ -21,7 +22,8 @@ $sage_includes = [
   'lib/setup.php',     // Theme setup
   'lib/shortcodes.php',  // Shortcodes
   'lib/titles.php',    // Page titles
-  'lib/wrapper.php'   // Theme wrapper class
+  'lib/wrapper.php',   // Theme wrapper class
+  'vendor/cmb2/init.php', // Init CMB2 plugin
 ];
 
 foreach ($sage_includes as $file) {

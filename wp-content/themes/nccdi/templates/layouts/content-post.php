@@ -6,9 +6,9 @@ $comments_open = comments_open();
 $image_id = get_post_thumbnail_id();
 $featured_image_src = wp_get_attachment_image_src($image_id, 'full');
 $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
-if (function_exists('get_field')) {
-  $featured_image_align = get_field('featured_image_alignment');
-}
+
+$prefix = '_cdi_';
+$featured_image_align = get_post_meta(get_the_ID(), $prefix . 'featured_image_alignment', true);
 ?>
 
 <article <?php post_class('article'); ?>>

@@ -16,8 +16,9 @@
 
       &.hero-image {
         margin-top: 0;
+        margin-left: -10px;
+        margin-right: -10px;
         overflow: hidden;
-        width: 100%;
 
         @media (min-width: $screen-sm-min) {
           margin-bottom: 1em;
@@ -26,6 +27,10 @@
 
         @media (min-width: $screen-md-min) {
           height: 600px;
+        }
+
+        .parallax-img {
+          height: calc(100% + 59px);
         }
       }
 
@@ -83,6 +88,10 @@
             transform: translateY(-50%) translateX(-50%);
           }
 
+          .caption {
+            color: $white;
+          }
+
           &:after {
             content: '';
             position: absolute;
@@ -96,33 +105,6 @@
           }
         }
       }
-    }
-  }
-
-  .entry-content {
-    p {
-      font-size: 18px;
-      margin-bottom: 1.563em;
-      line-height: 1.563em;
-
-      @include respondto(sm,md,lg) {
-        margin-bottom: 1.5em;
-      }
-    }
-
-    @include respondto(xs) {
-      p, li {
-        font-size: 16px;
-      }
-    }
-
-    li {
-      margin: .75em 0;
-      line-height: 1.563em;
-    }
-
-    ol, ul {
-      margin-bottom: 1.563em;
     }
   }
 }
@@ -169,6 +151,14 @@
 
     h2, h3, h4, h5, h6 {
       color: $white;
+    }
+
+    a {
+      color: $teal-lightest;
+
+      &:hover, &:focus, &:active {
+        color: $white;
+      }
     }
 
     &.bg-img:after {
