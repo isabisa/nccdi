@@ -31,7 +31,6 @@ if ($counts === false) {
   $counts = json_decode($social_counts->getShareCounts());
   set_transient('social-counts-' . $id, $counts, HOUR_IN_SECONDS);
 }
-$counts->total = '1594';
 
 // Translate share counts to K if number is in thousands
 function num_format($val) {
