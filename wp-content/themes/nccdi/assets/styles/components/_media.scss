@@ -247,6 +247,11 @@ object, embed {
     }
   }
 
+  iframe.flickr-embed-frame {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
   &.soundcloud.soundcloud {
     padding-top: 0;
     padding-bottom: 166px !important;

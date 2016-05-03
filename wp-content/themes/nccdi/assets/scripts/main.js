@@ -201,6 +201,33 @@
           }
         });
 
+      },
+      finalize: function() {
+        /**
+         * Owl Carousel 2
+         */
+        $(window).on('load', function() {
+          $('.g-carousel').each(function() {
+            $(this).owlCarousel({
+              items: 1,
+              loop: true,
+              autoHeight: true,
+              animateOut: 'fadeOut',
+              autoplay: true,
+              autoplayTimeout: 3000,
+              autoplayHoverPause: true
+            });
+          });
+        });
+
+        // Manual carousel nav
+        $('.fc-nav .fc-next').on(clickortap, function() {
+          owl.trigger('next.owl.carousel');
+        });
+
+        $('.fc-nav .fc-prev').on(clickortap, function() {
+          owl.trigger('prev.owl.carousel');
+        });
       }
     }
   };

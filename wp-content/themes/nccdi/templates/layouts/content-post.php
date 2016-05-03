@@ -61,7 +61,7 @@ $featured_image_align = get_post_meta(get_the_ID(), $prefix . 'featured_image_al
     <header class="entry-header container">
       <div class="row">
         <div class="col-md-8 col-centered">
-          <h1 class="h2 entry-title"><?php the_title(); ?></h1>
+          <h1 class="entry-title"><?php the_title(); ?></h1>
           <?php get_template_part('templates/components/entry-meta'); ?>
         </div>
       </div>
