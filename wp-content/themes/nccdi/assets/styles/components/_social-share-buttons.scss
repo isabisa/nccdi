@@ -4,9 +4,9 @@
     width: 48px;
     height: 48px;
     right: 0;
-    bottom: 57px;
+    bottom: 0;
     z-index: 100;
-    // background: $pear;
+    background: $teal-lighter;
     text-decoration: none;
     color: $white;
 
@@ -37,39 +37,6 @@
 
     .social-share-link {
       display: inline-block;
-    }
-
-    .social-share-embed {
-      text-align: left;
-      // background: $stone;
-      padding: 1px 10px 10px;
-
-      h6 {
-        color: $white;
-      }
-    }
-
-    .wp-embed-share-input {
-      width: 100%;
-      border: none;
-      height: 28px;
-      margin: 0 0 10px;
-      padding: 0 5px;
-      font: 400 14px/1.5 $font-family-sans-serif;
-      resize: none;
-      cursor: text;
-    }
-
-    textarea.wp-embed-share-input {
-      height: 74px;
-    }
-
-    .wp-embed-share-description {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1;
-      font-style: italic;
-      // color: $pearl;
     }
   }
 
@@ -114,7 +81,7 @@
     left: 0;
     top: 30%;
     z-index: 100;
-    // background: $white70;
+    background: $white-80;
 
     .count {
       font-family: $font-family-sans-serif;
@@ -127,7 +94,7 @@
       .num {
         display: block;
         font-size: 28px;
-        font-family: 'Open Sans Condensed';
+        font-family: $font-family-sans-serif;
       }
     }
   }
@@ -168,16 +135,6 @@
     }
   }
 
-  .single-data-viz &, .post-type-archive-data & {
-    margin: 0;
-    width: 60px;
-    height: 60px;
-
-    &:before {
-      font-size: 32px;
-    }
-  }
-
   &.icon-facebook {
     background: #3b5998;
 
@@ -203,10 +160,10 @@
   }
 
   &.icon-email {
-    // background: $scarlet;
+    background: $teal-light;
 
     &:hover {
-      // background: darken($scarlet, 10%);
+      background: darken($teal-light, 10%);
     }
   }
 }
@@ -214,24 +171,18 @@
   @extend .social-share-link;
 
   &.icon-download {
-    // background: $indigo;
+    background: $rust-light;
 
     &:hover {
-      // background: darken($indigo, 10%);
+      background: darken($rust-light, 10%);
     }
   }
 
   &.icon-fax {
-    // background: $pear;
+    background: $brown-lighter;
 
     &:hover {
-      // background: darken($pear, 10%);
-    }
-  }
-
-  .single-data-viz &, .post-type-archive-data & {
-    @media screen and (max-width: $screen-sm-max) {
-      display: inline-block !important;
+      background: darken($brown-lighter, 10%);
     }
   }
 }

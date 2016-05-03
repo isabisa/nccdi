@@ -75,7 +75,7 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
 
       <div class="container-fluid full-bleed-text theme-<?php echo $bg_color; ?>">
         <div class="row">
-          <div class="col-md-7 col-centered content">
+          <div class="col-md-7 col-centered">
             <?php echo apply_filters('the_content', $inner_content); ?>
             <?php if ( ! empty( $cite ) ) { ?>
                 <cite>&mdash;<?php echo esc_html( $cite ); ?></cite>

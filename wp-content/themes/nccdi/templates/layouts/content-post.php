@@ -116,4 +116,4 @@ $featured_image_align = get_post_meta(get_the_ID(), $prefix . 'featured_image_al
   </footer>
 </article>
 
-<?php // get_template_part('templates/components/social-share'); ?>
+<?php get_template_part('templates/components/social-share'); ?>

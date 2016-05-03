@@ -6,17 +6,15 @@ use Roots\Sage\ShareCount;
 global $wp_query;
 $id = $wp_query->post->ID;
 
-// Get current page URL
 $crunchifyURL = urlencode(get_permalink($id));
-
-// Get current page title
 $crunchifyTitle = urlencode(get_the_title($id));
+$crunchifyText = urlencode(get_the_title($id) . ': ' . get_permalink($id));
 
 // Construct sharing URL without using any script
 $twitterURL = 'https://twitter.com/intent/tweet?text='.$crunchifyTitle.'&amp;url='.$crunchifyURL.'&amp;via=ncinitiative';
 $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
 $linkedinURL = 'http://www.linkedin.com/shareArticle?mini=true&amp;url='.$crunchifyURL.'&title='.$crunchifyTitle.'&source=NCInitiative';
-$emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyURL;
+$emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyText;
 
 // Get current counts of social media shares & store in transient
 $counts = get_transient('social-counts-' . $id);
@@ -33,6 +31,7 @@ if ($counts === false) {
   $counts = json_decode($social_counts->getShareCounts());
   set_transient('social-counts-' . $id, $counts, HOUR_IN_SECONDS);
 }
+$counts->total = '1594';
 
 // Translate share counts to K if number is in thousands
 function num_format($val) {
