@@ -1,8 +1,8 @@
-<?php get_template_part('templates/components/page', 'header'); ?>
+<?php get_template_part('templates/components/header'); ?>
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8 col-centered">
+    <main class="main">
       <div class="alert alert-warning">
         This is not the page you're looking for.
       </div>

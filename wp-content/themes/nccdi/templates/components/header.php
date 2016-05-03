@@ -4,6 +4,8 @@ use Roots\Sage\Titles;
 
 $image_id = get_post_thumbnail_id();
 $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
+
+if (!is_singular('post')) {
 ?>
 
 <header class="page-header photo-overlay" style="background-image: url('<?php echo $featured_image_lg[0]; ?>')">
@@ -17,3 +19,5 @@ $featured_image_lg = wp_get_attachment_image_src($image_id, 'large');
     </div>
   </div>
 </header>
+
+<?php } ?>
