@@ -1,6 +1,6 @@
 .single-post {
-  .content {
-    @include make-row();
+  .wrap > .container {
+    width: 100%;
   }
 
   .main {
