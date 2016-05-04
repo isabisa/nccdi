@@ -215,18 +215,10 @@
               animateOut: 'fadeOut',
               autoplay: true,
               autoplayTimeout: 3000,
-              autoplayHoverPause: true
+              autoplayHoverPause: true,
+              nav: true
             });
           });
-        });
-
-        // Manual carousel nav
-        $('.fc-nav .fc-next').on(clickortap, function() {
-          owl.trigger('next.owl.carousel');
-        });
-
-        $('.fc-nav .fc-prev').on(clickortap, function() {
-          owl.trigger('prev.owl.carousel');
         });
       }
     }

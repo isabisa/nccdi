@@ -51,19 +51,19 @@ $count_num = num_format($counts->total);
   <?php if ($count_num != 0) { ?>
     <div class="count"><span class="num"><?php echo $count_num; ?></span> shares</div>
   <?php } ?>
-  <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
+  <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>" target="_blank">
     Share on facebook
   </a>
-  <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>">
+  <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>" target="_blank">
     Tweet on Twitter
   </a>
-  <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
+  <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>" target="_blank">
     Share on LinkedIn
   </a>
-  <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
+  <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>" target="_blank">
     Email this page
   </a>
-  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" href="http://www.printfriendly.com/print?<?php echo $crunchifyURL; ?>">
+  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" href="http://www.printfriendly.com/print?<?php echo $crunchifyURL; ?>" target="_blank">
     Print this page
   </a>
 </div>
@@ -73,16 +73,16 @@ $count_num = num_format($counts->total);
 
     <div class="modal fade" id="social-share-modal" tabindex="-1" role="dialog" aria-labelledby="social-share-modal">
       <div class="modal-dialog" role="document">
-            <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>">
+            <a rel="nofollow" class="icon-facebook social-share-link" href="<?php echo $facebookURL; ?>" target="_blank">
               Share on facebook
             </a>
-            <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>">
+            <a rel="nofollow" class="icon-twitter social-share-link" href="<?php echo $twitterURL; ?>" target="_blank">
               Tweet on Twitter
             </a>
-            <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>">
+            <a rel="nofollow" class="icon-linkedin social-share-link" href="<?php echo $linkedinURL; ?>" target="_blank">
               Share on LinkedIn
             </a>
-            <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>">
+            <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>" target="_blank">
               Email this page
             </a>
             <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" href="http://www.printfriendly.com" onclick="window.print();return false;">

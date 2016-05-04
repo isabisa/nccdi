@@ -15,14 +15,13 @@ add_action( 'cmb2_init', function() {
 	) );
 
 	$cmb_featured_image->add_field( array(
-		'name' => 'Featured Image Alignment',
+		// 'name' => 'Featured Image Alignment',
 		'id' => $prefix . 'featured_image_alignment',
 		'type' => 'select',
-		'show_option_none' => '(Select one)',
 		'options' => array(
-			'contained' => 'Regular Contained Image',
-			'hero' => 'Full-Width Hero',
-			'none' => 'Hide Featured Image'
+			'contained' => 'Default',
+			'hero' => 'Full-Width',
+			'none' => 'Hidden'
 		)
 	) );
 

@@ -157,6 +157,7 @@ img {
   .owl-dots {
     text-align: center;
     -webkit-tap-highlight-color: transparent;
+    margin-top: 5px;
 
     .owl-dot {
       display: inline-block;
@@ -178,6 +179,25 @@ img {
         span {
           background: $gray;
         }
+      }
+    }
+  }
+
+  .owl-nav {
+    text-align: center;
+
+    [class*="owl-"] {
+      color: #fff;
+      font-size: 14px;
+      margin: 5px;
+      padding: 4px 7px;
+      background: $gray-lighter;
+      display: inline-block;
+      cursor: pointer;
+      border-radius: 3px;
+
+      &.active, &:hover {
+        background: $gray;
       }
     }
   }

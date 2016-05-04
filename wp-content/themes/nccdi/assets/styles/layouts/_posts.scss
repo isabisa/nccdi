@@ -111,6 +111,18 @@
       }
     }
   }
+
+  .entry-content {
+    margin-bottom: 5em;
+  }
+
+  .owl-carousel {
+    @media (min-width: $screen-md-min) {
+      margin-left: -7.35%;
+      margin-right: -7.35%;
+      width: 114.7%;
+    }
+  }
 }
 
 .article-intro-text {
