@@ -11,7 +11,7 @@ use Roots\Sage\Assets;
       <p class="h4">
         Get the latest news
         <a class="btn btn-skew btn-teal" data-toggle="modal" data-target="#emailSignupModal">Subscribe</a>
-        <a class="icon-facebook" href="http://www.facebook.com/ncinitiative" target="_blank" rel="nofollow"></a>
+        <a class="icon-facebook" href="http://www.facebook.com/ncinitiative5800" target="_blank" rel="nofollow"></a>
         <a class="icon-twitter" href="http://twitter.com/ncinitiative" target="_blank" rel="nofollow"></a>
         <a class="icon-flickr" href="http://www.flickr.com/photos/ncinitiative/" target="_blank" rel="nofollow"></a>
       </p>
