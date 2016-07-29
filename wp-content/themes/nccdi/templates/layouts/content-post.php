@@ -50,6 +50,14 @@ $featured_image_align = get_post_meta(get_the_ID(), $prefix . 'featured_image_al
       </div>
     </header>
 
+    <div id="chapters" class="chapters container hidden-xs hidden-sm print-no">
+      <div class="row">
+        <div class="col-md-8 col-centered">
+          <ul class="nav"></ul>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <div class="row">
         <div class="col-md-8 col-centered">
