@@ -71,7 +71,7 @@ use Roots\Sage\Assets;
                 <div class="spacer"></div>
                 <div class="circle">
                   <div class="wrap-content">
-                    <span class="stat">208</span>
+                    <span class="stat">230</span>
                     youth served through leadership program
                   </div>
                 </div>
@@ -87,7 +87,7 @@ use Roots\Sage\Assets;
                 <div class="spacer"></div>
                 <div class="circle">
                   <div class="wrap-content">
-                    <span class="stat">$68M</span>
+                    <span class="stat">$73M</span>
                     in capital investments since inception
                   </div>
                 </div>
