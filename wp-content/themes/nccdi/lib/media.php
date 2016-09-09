@@ -42,23 +42,6 @@ add_filter( 'wp_editor_set_quality', __NAMESPACE__ . '\\thumbnail_quality' );
 
 
 /**
- * Get first image inside post content
- */
-function catch_that_image() {
-  global $post, $posts;
-  $first_img = '';
-  ob_start();
-  ob_end_clean();
-  $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
-  if (isset($matches[1][0])) {
-    $first_img = $matches[1][0];
-  }
-
-  return $first_img;
-}
-
-
-/**
  * Get featured image for post blocks
  */
 function get_featured_image($size) {
@@ -81,17 +64,13 @@ function get_featured_image($size) {
     $image_url = wp_get_attachment_image_src($image_id, "featured-$size");
     $image_sized['url'] = $image_url[0];
   } else {
-    $image_src = catch_that_image();
-    if ($image_src) {
-      $image_sized = Resize\mr_image_resize($image_src, $width, $height, true, false);
+    global $post, $posts;
+    $first_img = '';
+    $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches);
+    if (isset($matches[1][0])) {
+      $image_sized = Resize\mr_image_resize($matches[1][0], $width, $height, true, false);
     } else {
-      if (has_term('perspectives', 'appearance')) {
-        $image_sized['url'] = false;
-      } elseif ($post->post_type == 'edtalk') {
-        $image_sized['url'] = Assets\asset_path("images/edtalk-featured-$size.jpg");
-      } else {
-        $image_sized['url'] = Assets\asset_path("images/logo-featured-$size.jpg");
-      }
+      $image_sized['url'] = Assets\asset_path("images/logo-featured-$size.jpg");
     }
   }
 
