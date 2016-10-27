@@ -200,22 +200,3 @@ use Roots\Sage\Assets;
     </div>
   </div>
 </section>
-
-<section class="sponsors">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 text-center">
-        <div class="striped-line">
-        </div>
-        <h4 class="extra-bottom-margin">Many thanks to our donors and investors</h4>
-        <img src="<?php echo Assets\asset_path('images/bbt-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/bbt-logo@2x.png'); ?> 2x" alt="BB&amp;T" />
-        <img src="<?php echo Assets\asset_path('images/oak-foundation-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/oak-foundation-logo@2x.png'); ?> 2x" alt="Oak Foundation" />
-        <img src="<?php echo Assets\asset_path('images/zsr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/zsr-logo@2x.png'); ?> 2x" alt="Z Smith Reynolds Foundation" />
-        <img src="<?php echo Assets\asset_path('images/wells-fargo-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/wells-fargo-logo@2x.png'); ?> 2x" alt="Wells Fargo" />
-        <img src="<?php echo Assets\asset_path('images/tcf-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/tcf-logo@2x.png'); ?> 2x" alt="Triangle Community Foundation" />
-        <img src="<?php echo Assets\asset_path('images/pnc-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/pnc-logo@2x.png'); ?> 2x" alt="PNC" />
-        <img src="<?php echo Assets\asset_path('images/suntrust-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/suntrust-logo@2x.png'); ?> 2x" alt="Suntrust" />
-      </div>
-    </div>
-  </div>
-</section>
