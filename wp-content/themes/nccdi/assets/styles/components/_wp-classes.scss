@@ -22,8 +22,24 @@
   }
 }
 
-body:not(.page-template):not(.post-type-archive-data) {
+body:not(.page-template):not(.sidebar-primary):not(.post-type-archive-data) {
   @media (min-width: $screen-md-min) {
+    .alignleft {
+      margin-left: -7.35%;
+    }
+    .alignright {
+      margin-right: -7.35%;
+    }
+    .alignnone {
+      margin-left: -7.35%;
+      margin-right: -7.35%;
+      max-width: 114.7%;
+    }
+  }
+}
+
+body.sidebar-primary {
+  @media (min-width: $screen-lg-min) {
     .alignleft {
       margin-left: -7.35%;
     }
