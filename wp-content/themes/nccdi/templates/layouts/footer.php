@@ -17,6 +17,8 @@ use Roots\Sage\Assets;
         <img src="<?php echo Assets\asset_path('images/tcf-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/tcf-logo@2x.png'); ?> 2x" alt="Triangle Community Foundation" />
         <img src="<?php echo Assets\asset_path('images/pnc-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/pnc-logo@2x.png'); ?> 2x" alt="PNC" />
         <img src="<?php echo Assets\asset_path('images/suntrust-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/suntrust-logo@2x.png'); ?> 2x" alt="Suntrust" />
+        <img src="<?php echo Assets\asset_path('images/kbr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/kbr-logo@2x.png'); ?> 2x" alt="Kate B Reynolds Charitable Trust" />
+        <img src="<?php echo Assets\asset_path('images/neighborworks-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/neighborworks-logo@2x.png'); ?> 2x" alt="NeighborWorks America" />
       </div>
     </div>
   </div>
