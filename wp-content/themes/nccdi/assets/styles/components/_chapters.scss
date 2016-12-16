@@ -2,6 +2,7 @@
   height: 0;
   overflow: visible;
   margin-bottom: 3em;
+  text-align: center;
 
   .nav {
     list-style: none;
@@ -25,10 +26,6 @@
     &.affix-bottom {
       position: absolute;
       width: calc(100% - 20px);
-    }
-
-    &.affix-top {
-      background: $gray-lightest;
     }
 
     li {

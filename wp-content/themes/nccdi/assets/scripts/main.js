@@ -54,6 +54,48 @@
 
         $('#mobile-nav .widgettitle-in-submenu').append('<span class="caret"></span>');
 
+        // Smooth scroll to anchor on same page
+        $('a[href*="#"]:not([href="#"]):not(.collapsed)').on(clickortap, function() {
+          if (location.pathname.replace(/^\//,'') === this.pathname.replace(/^\//,'') && location.hostname === this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+              $('html,body').animate({
+                scrollTop: target.offset().top
+              }, 1000);
+              return false;
+            }
+          }
+        });
+
+        // Automatically create TOC of chapters
+        $('a.chapter').each(function() {
+          $('#chapters .nav').append('<li><a href="#' + $(this).attr('name') + '">' + $(this).attr('data-name') + '</a></li>');
+        }).promise().done(function() {
+          if ($('#chapters .nav').is(':empty')) {
+            $('#chapters').hide();
+          }
+        });
+
+        // Chapters Affix
+        $(window).on('load', function() {
+          $('#chapters .nav').affix({
+            offset: {
+              top: function() {
+                return (this.top = $('#chapters .nav').offset().top);
+              },
+              bottom: function () {
+                return (this.bottom = $('footer.content-info').outerHeight(true) + $('.above-footer').outerHeight(true) + 100);
+              }
+            }
+          });
+        });
+
+        // Scrollspy for chapters
+        $('body').scrollspy({
+          target: '#chapters',
+          offset: 60
+        });
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired
@@ -187,48 +229,6 @@
           });
         });
 
-        // Smooth scroll to anchor on same page
-        $('a[href*="#"]:not([href="#"]):not(.collapsed)').on(clickortap, function() {
-          if (location.pathname.replace(/^\//,'') === this.pathname.replace(/^\//,'') && location.hostname === this.hostname) {
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-            if (target.length) {
-              $('html,body').animate({
-                scrollTop: target.offset().top
-              }, 1000);
-              return false;
-            }
-          }
-        });
-
-        // Automatically create TOC of chapters
-        $('.hentry a.chapter').each(function() {
-          $('#chapters .nav').append('<li><a href="#' + $(this).attr('name') + '">' + $(this).attr('data-name') + '</a></li>');
-        }).promise().done(function() {
-          if ($('#chapters .nav').is(':empty')) {
-            $('#chapters').hide();
-          }
-        });
-
-        // Chapters Affix
-        $(window).on('load', function() {
-          $('#chapters .nav').affix({
-            offset: {
-              top: function() {
-                return (this.top = $('#chapters .nav').offset().top);
-              },
-              bottom: function () {
-                return (this.bottom = $('footer.content-info').outerHeight(true) + $('.above-footer').outerHeight(true) + 100);
-              }
-            }
-          });
-        });
-
-        // Scrollspy for chapters
-        $('body').scrollspy({
-          target: '#chapters',
-          offset: 60
-        });
       },
       finalize: function() {
         /**

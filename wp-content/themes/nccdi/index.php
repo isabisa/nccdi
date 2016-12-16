@@ -7,6 +7,13 @@ get_template_part('templates/components/header', get_post_type());
 
 <div class="container">
   <div class="content">
+
+    <?php if (is_page('2015-16-annual-report')) { ?>
+      <div id="chapters" class="chapters container hidden-xs hidden-sm print-no">
+        <ul class="nav"></ul>
+      </div>
+    <?php } ?>
+
     <main class="main">
       <?php
       if (!have_posts()) : ?>

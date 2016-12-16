@@ -7,6 +7,30 @@
     height: 139px;
     z-index: 0;
 
+    [class*="2015-16-annual-report"] & {
+      height: 550px;
+
+      .article-title-overlay {
+        top: 50%;
+        bottom: auto;
+        transform: translate(0, -50%);
+        text-shadow: 0 0 30px $black;
+      }
+
+      h1 {
+        text-align: center;
+
+        em {
+          display: block;
+          font-size: $font-size-h2;
+          margin: 1em 0;
+          font-style: normal;
+          font-family: $font-family-sans-serif;
+          font-weight: bold;
+        }
+      }
+    }
+
     .article-title-overlay {
       position: absolute;
       padding-bottom: .5em;
