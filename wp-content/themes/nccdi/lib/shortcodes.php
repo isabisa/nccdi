@@ -85,7 +85,7 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
       </div>
 
       <div class="container">
-      <div class="row">
+      <div class="row content">
       <div class="col-md-7 col-md-push-2point5">
 
       <?php
@@ -203,7 +203,7 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
             <?php } elseif ( ! empty( $floating_text ) ) { ?>
               <div class="wash"></div>
               <div class="floating-text">
-                <?php echo esc_html( $floating_text ); ?>
+                <?php echo nl2br(urldecode($floating_text)); ?>
               </div>
             <?php } ?>
           </div>
@@ -216,7 +216,7 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
       </div>
 
       <div class="container">
-      <div class="row">
+      <div class="row content">
       <div class="col-md-7 col-md-push-2point5">
 
       <?php
@@ -261,8 +261,9 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
           array(
             'label'       => 'Floating Text',
             'attr'        => 'floating_text',
-            'type'        => 'text',
+            'type'        => 'textarea',
             'description' => 'Optional (will only appear if no floating image overlay is set)',
+            'encode'      => true
           )
         )
       )
@@ -392,7 +393,7 @@ if (function_exists('shortcode_ui_register_for_shortcode')) :
     </div>
 
     <div class="container">
-    <div class="row">
+    <div class="row content">
     <div class="col-md-7 col-md-push-2point5">
 
     <?php

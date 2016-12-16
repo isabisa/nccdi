@@ -22,7 +22,7 @@
   }
 }
 
-body:not(.page-template):not(.sidebar-primary):not(.post-type-archive-data) {
+body:not(.page-template):not(.sidebar-primary):not(.post-type-archive-data):not([class*="2015-16-annual-report"]) {
   @media (min-width: $screen-md-min) {
     .alignleft {
       margin-left: -7.35%;

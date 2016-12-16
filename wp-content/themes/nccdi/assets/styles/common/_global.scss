@@ -30,6 +30,11 @@
   @include make-md-column-push(1);
   @include make-lg-column-push(0);
   margin-bottom: 2em;
+
+  [class*="2015-16-annual-report"] & {
+    @include make-md-column-push(0);
+    @extend .col-centered;
+  }
 }
 
 .sidebar {
