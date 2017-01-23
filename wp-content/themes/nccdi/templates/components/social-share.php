@@ -16,6 +16,13 @@ $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
 $linkedinURL = 'http://www.linkedin.com/shareArticle?mini=true&amp;url='.$crunchifyURL.'&title='.$crunchifyTitle.'&source=NCInitiative';
 $emailURL = 'mailto:?subject='.$crunchifyTitle.'&amp;body='.$crunchifyText;
 
+// Pint button loads annual report PDF if on that page
+if (is_page('2015-16-annual-report')) {
+  $printLink = "href=\"http://ncinitiative.org/wp-content/uploads/2017/01/NC-Initiative-Annual-Report-Updated_Final.pdf\" target=\"blank\"";
+} else {
+  $printLink = "href=\"http://www.printfriendly.com/print\" onclick=\"window.open('http://www.printfriendly.com/print?url='+document.location.href); return false;\"";
+}
+
 // Get current counts of social media shares & store in transient
 $counts = get_transient('social-counts-' . $id);
 if ($counts === false) {
@@ -63,7 +70,7 @@ $count_num = num_format($counts->total);
   <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>" target="_blank">
     Email this page
   </a>
-  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" href="http://www.printfriendly.com/print?<?php echo $crunchifyURL; ?>" target="_blank">
+  <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?>>
     Print this page
   </a>
 </div>
@@ -85,7 +92,7 @@ $count_num = num_format($counts->total);
             <a rel="nofollow" class="icon-email social-share-link" href="<?php echo $emailURL; ?>" target="_blank">
               Email this page
             </a>
-            <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" href="http://www.printfriendly.com" onclick="window.print();return false;">
+            <a rel="nofollow" class="other-share icon-fax hidden-xs hidden-sm" <?php echo $printLink; ?>>
               Print this page
             </a>
           </div>
