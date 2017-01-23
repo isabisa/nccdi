@@ -7,3 +7,5 @@ if (is_page('donate')) {
   echo '<script type="text/javascript" src="//app.icontact.com/icp/loadsignup.php/form.js?c=871299&l=6783&f=4460"></script>';
 }
 ?>
+
+<?php get_template_part('templates/components/social-share'); ?>
