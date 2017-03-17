@@ -40,12 +40,20 @@
   img {
     display: inline-block;
     margin: 0 20px 15px;
+    max-height: 46px;
+    width: auto;
+  }
+}
+
+.footer-logos {
+  img {
+    max-width: 220px;
   }
 }
 
 .global-footer {
   background: $teal-lighter;
-  font-size: 18px;
+  font-size: 16px;
 
   a {
     color: $gray-dark;
@@ -88,6 +96,7 @@
       a {
         text-decoration: none;
         text-transform: uppercase;
+        font-family: $font-family-sans-serif;
 
         br {
           display: none;
@@ -105,7 +114,7 @@
 .below-footer {
   background: $white;
   color: $text-color;
-  font-size: 16px;
+  font-size: 14px;
 
   .container {
     padding-top: 15px;
@@ -121,6 +130,9 @@
   }
 
   .text-right {
+    text-transform: uppercase;
+    font-family: $font-family-sans-serif;
+
     @media (max-width: $screen-xs-max) {
       text-align: left;
     }

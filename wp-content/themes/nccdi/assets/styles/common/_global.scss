@@ -273,13 +273,14 @@
   position: relative;
   margin: 3em 0 3em;
 
-  .h2 {
+  .h2, h2 {
     background: $white;
     position: absolute;
     left: 50%;
     transform: translate3d(-50%, 0, 0);
-    top: -15px;
+    top: -8px;
     margin: 0;
     padding: 0 30px;
+    font-size: $font-size-h3;
   }
 }
