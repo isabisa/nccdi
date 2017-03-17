@@ -58,7 +58,7 @@ use Roots\Sage\Assets;
       <div class="row impact-blocks">
         <div class="col-md-4">
           <div class="row overlap">
-            <div class="col-xs-6 col-md-12">
+            <div class="hidden-xs col-sm-6 col-md-12">
               <div class="notch-img">
                 <div class="notch-inner">
                   <img src="<?php echo Assets\asset_path('images/leadership.jpg'); ?>" />
@@ -66,7 +66,7 @@ use Roots\Sage\Assets;
               </div>
             </div>
 
-            <div class="col-xs-6 col-md-12">
+            <div class="col-sm-6 col-md-12">
               <div class="circle-stat">
                 <div class="spacer"></div>
                 <div class="circle">
@@ -82,7 +82,7 @@ use Roots\Sage\Assets;
 
         <div class="col-md-4">
           <div class="row overlap">
-            <div class="col-xs-6 col-md-12">
+            <div class="col-sm-6 col-md-12">
               <div class="circle-stat">
                 <div class="spacer"></div>
                 <div class="circle">
@@ -94,7 +94,7 @@ use Roots\Sage\Assets;
               </div>
             </div>
 
-            <div class="col-xs-6 col-md-12">
+            <div class="hidden-xs col-sm-6 col-md-12">
               <div class="notch-img">
                 <div class="notch-inner">
                   <img src="<?php echo Assets\asset_path('images/investment.jpg'); ?>" />
@@ -106,7 +106,7 @@ use Roots\Sage\Assets;
 
         <div class="col-md-4">
           <div class="row overlap">
-            <div class="col-xs-6 col-md-12">
+            <div class="hidden-xs col-sm-6 col-md-12">
               <div class="notch-img">
                 <div class="notch-inner">
                   <img src="<?php echo Assets\asset_path('images/public-policy.jpg'); ?>" />
@@ -114,7 +114,7 @@ use Roots\Sage\Assets;
               </div>
             </div>
 
-            <div class="col-xs-6 col-md-12">
+            <div class="col-sm-6 col-md-12">
               <div class="circle-stat">
                 <div class="spacer"></div>
                 <div class="circle">
