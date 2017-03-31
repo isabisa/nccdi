@@ -114,3 +114,10 @@
     background-image: url('../images/data-header.jpg') !important;
   }
 }
+
+.page-template-template-full-width {
+  .main {
+    margin: 0 auto;
+    float: none;
+  }
+}
