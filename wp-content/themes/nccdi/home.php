@@ -5,26 +5,6 @@ use Roots\Sage\Assets;
 ?>
 <section class="challenge-approach-impact">
   <div class="slanted-photos">
-    <div class="challenge">
-      <img class="background" src="<?php echo Assets\asset_path('images/warehouse.jpg'); ?>" />
-      <div class="wrap-content">
-        <div class="h2">
-          <span class="skew">The Challenge</span>
-        </div>
-        <div class="hover">
-          <div class="shape"></div>
-          <ul>
-            <li><img src="<?php echo Assets\asset_path('images/people.svg'); ?>" /><strong>1 in 6 adults</strong> and <strong>1 in 4 children</strong> live in poverty in North Carolina.</li>
-            <li><img src="<?php echo Assets\asset_path('images/loans.svg'); ?>" /><strong>Little investment</strong> in communities and loans are <strong>difficult to obtain</strong>.</li>
-            <li><img src="<?php echo Assets\asset_path('images/unemployment.svg'); ?>" /><strong>High unemployment rate</strong> in rural NC and many communities have <strong>no voice in Raleigh</strong>.</li>
-          </ul>
-        </div>
-        <div class="solid-notch">
-          Too many communities have been left behind in North Carolina. <strong>We must address these challenges.</strong>
-        </div>
-      </div>
-    </div>
-
     <div class="approach">
       <img class="background" src="<?php echo Assets\asset_path('images/puzzle.jpg'); ?>" />
       <div class="wrap-content">
@@ -43,7 +23,52 @@ use Roots\Sage\Assets;
         </div>
       </div>
     </div>
+
+    <div class="spotlight">
+      <?php
+      $spotlight = get_posts(['numberposts' => 1, 'category_name' => 'current-opportunity']);
+      $background = get_the_post_thumbnail_url($spotlight[0]->ID, 'medium');
+      ?>
+      <a href="<?php echo get_the_permalink($spotlight[0]->ID); ?>" aria-label="Read full post"></a>
+      <img class="background" src="<?php echo $background ?>" alt="" />
+      <div class="wrap-content">
+        <h2>
+          <span class="skew">Current Opportunity</span>
+        </h2>
+        <div class="spotlight-content"><?php echo get_the_title($spotlight[0]->ID); ?>
+        </div>
+      </div>
+    </div>
   </div>
+
+
+  <div class="challenge container">
+    <div class="row">
+      <div class="col-md-12 text-center extra-bottom-margin">
+        <div class="h2">
+          <span class="skew">The Challenge</span>
+        </div>
+
+        <p>Too many communities have been left behind in North Carolina.<br /><strong>We must address these challenges.</strong></p>
+      </div>
+    </div>
+
+    <ul class="row">
+      <li class="col-md-4">
+        <img src="<?php echo Assets\asset_path('images/people.svg'); ?>" />
+        <strong>1 in 6 adults</strong> and <strong>1 in 4 children</strong> live in poverty in North Carolina.
+      </li>
+      <li class="col-md-4">
+        <img src="<?php echo Assets\asset_path('images/loans.svg'); ?>" />
+        <strong>Little investment</strong> in communities and loans are <strong>difficult to obtain</strong>.
+      </li>
+      <li class="col-md-4">
+        <img src="<?php echo Assets\asset_path('images/unemployment.svg'); ?>" />
+        <strong>High unemployment rate</strong> in rural NC and many communities have <strong>no voice in Raleigh</strong>.
+      </li>
+    </ul>
+  </div>
+
 
   <div class="gradient-bg">
     <div class="container">
