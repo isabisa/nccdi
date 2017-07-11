@@ -1,207 +1,320 @@
-.slanted-photos {
-  position: relative;
-  width: 100%;
+.challenge-approach-impact {
+  h2, .h2 {
+    position: relative;
+    top: 10px;
+    left: -18px;
+    margin: 0;
+    color: $white;
+    z-index: 5;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: normal;
 
-  @media (min-width: $screen-md-min) {
-    overflow: hidden;
-    height: 375px;
+    .skew {
+      padding-left: 30px;
+    }
   }
 
-  .challenge, .approach {
+  .slanted-photos {
     position: relative;
-    height: 375px;
-    overflow: hidden;
+    width: 100%;
 
     @media (min-width: $screen-md-min) {
-      height: 100%;
-      width: 70%;
-      position: absolute;
-      transform: skewX(30deg);
+      overflow: hidden;
+      height: 375px;
     }
 
-    .wrap-content {
+    h2, .h2 {
       position: absolute;
-      height: 100%;
-      width: 100%;
+    }
+
+    .approach, .spotlight {
+      position: relative;
+      height: 375px;
+      overflow: hidden;
 
       @media (min-width: $screen-md-min) {
-        transform: skewX(-30deg);
+        height: 100%;
+        position: absolute;
+        transform: skewX(30deg);
       }
-    }
 
-    .background {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      min-height: 100%;
-      transform: translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
-      transition: transform .35s ease;
-      transform-origin: right top;
+      .wrap-content {
+        position: absolute;
+        height: 100%;
+        width: 100%;
 
-      @media (min-width: $screen-md-min) {
-        transform: skewX(-30deg) translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
-      }
-    }
-
-    .h2 {
-      position: absolute;
-      top: 10px;
-      left: -18px;
-
-      .skew {
-        padding-left: 30px;
-      }
-    }
-
-    &:before {
-      content: '';
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: $teal-lightest-50;
-      z-index: 1;
-      transform: translate3d(100%, 0, 0);
-      transition: transform .45s ease;
-
-      @media (max-width: $screen-sm-max) {
-        transform: skewX(30deg) translate3d(130%, 0, 0);
-      }
-    }
-
-    .solid-notch {
-      opacity: 1;
-      transition: opacity .3s ease;
-    }
-
-    .hover {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      background: $gray-dark;
-      color: $white;
-      opacity: 0;
-      transition: opacity .45s ease;
-
-      ul {
-        list-style: none;
-        margin: 80px 0 0;
-        padding: 0 0 0 15px;
-
-        li {
-          font-size: 17px;
-          line-height: 1.55em;
-          margin-bottom: 20px;
-          overflow: hidden;
-
-          strong {
-            font-size: 1.3em;
-            font-family: $font-family-sans-serif;
-            font-weight: 800;
-          }
+        @media (min-width: $screen-md-min) {
+          transform: skewX(-30deg);
         }
       }
 
-      img {
-        float: left;
-        margin: 0 15px 0 0;
-      }
-    }
-
-    &:hover {
       .background {
-        transform: translate3d(0, -50%, 0);
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        min-height: 100%;
+        transform: translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
+        transition: transform .35s ease;
+        transform-origin: right top;
 
         @media (min-width: $screen-md-min) {
-          transform: skewX(-30deg) translate3d(0, -50%, 0);
+          transform: skewX(-30deg) translate3d(0, -50%, 0) scale3d(1.05, 1.05, 1);
         }
       }
 
       &:before {
-        transform: translate3d(-100%, 0, 0);
+        content: '';
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $teal-lightest-50;
+        z-index: 1;
+        transform: translate3d(100%, 0, 0);
+        transition: transform .45s ease;
 
         @media (max-width: $screen-sm-max) {
-          transform: skewX(30deg) translate3d(-130%, 0, 0);
+          transform: skewX(30deg) translate3d(130%, 0, 0);
         }
       }
 
-      .hover {
+      .solid-notch {
         opacity: 1;
+        transition: opacity .3s ease;
       }
 
-      .solid-notch {
+      .hover {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: $gray-dark;
+        color: $white;
         opacity: 0;
+        transition: opacity .45s ease;
+
+        ul {
+          list-style: none;
+          margin: 80px 0 0;
+          padding: 0 0 0 15px;
+
+          li {
+            font-size: 19px;
+            line-height: 1.55em;
+            margin-bottom: 20px;
+            overflow: hidden;
+
+            strong {
+              font-size: 1.1em;
+              font-family: $font-family-sans-serif;
+              font-weight: 800;
+            }
+          }
+        }
+
+        img {
+          float: left;
+          margin: 0 15px 0 0;
+        }
+      }
+
+      &:hover {
+        .background {
+          transform: translate3d(0, -50%, 0);
+
+          @media (min-width: $screen-md-min) {
+            transform: skewX(-30deg) translate3d(0, -50%, 0);
+          }
+        }
+
+        &:before {
+          transform: translate3d(-100%, 0, 0);
+
+          @media (max-width: $screen-sm-max) {
+            transform: skewX(30deg) translate3d(-130%, 0, 0);
+          }
+        }
+
+        .hover {
+          opacity: 1;
+        }
+
+        .solid-notch {
+          opacity: 0;
+        }
+      }
+    }
+
+    // .challenge {
+    //   .hover {
+    //     li {
+    //       clear: left;
+    //       overflow: hidden;
+    //     }
+    //   }
+    //
+    //   @media (min-width: $screen-md-min) {
+    //     left: -110px;
+    //
+    //     .wrap-content {
+    //       left: 110px;
+    //       width: calc(30vw + 218px);
+    //     }
+    //
+    //     .shape {
+    //       float: right;
+    //       width: 218px;
+    //       height: 100%;
+    //       shape-outside: polygon(0 0, 100% 0, 100% 100%);
+    //     }
+    //   }
+    // }
+
+    .spotlight {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $teal;
+        opacity: .7;
+        z-index: 1;
+      }
+
+      .wrap-content {
+        z-index: 2;
+      }
+
+      .spotlight-content {
+        color: $white;
+        font-size: 28px;
+        text-align: right;
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translate3d(0, -50%, 0);
+        width: 60%;
+      }
+
+      &:hover {
+        .background {
+          transform: translate3d(0, -50%, 0);
+
+          @media (min-width: $screen-md-min) {
+            transform: skewX(-30deg) translate3d(0, -50%, 0);
+          }
+        }
+      }
+    }
+
+    @media (min-width: $screen-md-min) {
+      .approach {
+        left: -110px;
+        width: 85%;
+        z-index: 1;
+
+        .background, .wrap-content {
+          left: 110px;
+        }
+
+        h2, .h2 {
+          // left: 16px;
+
+          .skew {
+            padding-left: 30px;
+          }
+        }
+
+        .solid-notch {
+          &::before {
+            right: -22px;
+          }
+        }
+
+        .hover {
+          li {
+            padding-right: 20px;
+            max-width: 70%;
+
+            // &:nth-child(1) {
+            //   margin-left: 90px;
+            // }
+            //
+            // &:nth-child(2) {
+            //   margin-left: 140px;
+            // }
+            //
+            // &:nth-child(3) {
+            //   margin-left: 200px;
+            // }
+          }
+        }
+      }
+
+      .spotlight {
+        border-left: 7px solid $white;
+        right: -110px;
+        z-index: 1;
+        width: 40%;
+
+        .background, .wrap-content {
+          left: -110px;
+        }
+
+        a {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 10;
+        }
+
+        h2, .h2 {
+          left: 0;
+
+          .skew {
+            padding-left: 30px;
+          }
+        }
       }
     }
   }
 
   .challenge {
-    .hover {
-      li {
-        clear: left;
-        overflow: hidden;
+    background: $teal-lightest;
+    padding-top: 4em;
+
+    h2, .h2 {
+      margin-bottom: 2em;
+    }
+
+    p {
+      font-size: 20px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 17px;
+
+      img {
+        display: block;
+        float: left;
+        margin: 0 15px 15px 0;
       }
     }
 
-    @media (min-width: $screen-md-min) {
-      left: -110px;
-
-      .wrap-content {
-        left: 110px;
-        width: calc(30vw + 218px);
-      }
-
-      .shape {
-        float: right;
-        width: 218px;
-        height: 100%;
-        shape-outside: polygon(0 0, 100% 0, 100% 100%);
-      }
-    }
-  }
-
-  @media (min-width: $screen-md-min) {
-    .approach {
-      border-left: 7px solid $white;
-      right: -110px;
-      z-index: 1;
-
-      .background, .wrap-content {
-        left: -110px;
-      }
-
-      .h2 {
-        left: 16px;
-
-        .skew {
-          padding-left: 30px;
-        }
-      }
-
-      .solid-notch {
-        left: auto;
-        right: 40px;
-      }
-
-      .hover {
-        li {
-          padding-right: 20px;
-
-          &:nth-child(1) {
-            margin-left: 90px;
-          }
-
-          &:nth-child(2) {
-            margin-left: 140px;
-          }
-
-          &:nth-child(3) {
-            margin-left: 200px;
-          }
-        }
-      }
+    strong {
+      font-size: 1.1em;
+      font-family: $font-family-sans-serif;
+      font-weight: 800;
     }
   }
 }
@@ -214,12 +327,12 @@
   transform: translate3d(-50%, -50%, 0);
   padding: 15px 0 15px 15px;
   background: $teal-lightest;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.55em;
   box-shadow: $gray-dark 0 0 30px;
 
   strong {
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-family: $font-family-sans-serif;
     font-weight: 800;
   }
