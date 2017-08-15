@@ -31,11 +31,11 @@ use Roots\Sage\Nav;
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" /></a>
       <br />
       <a href="http://nchousing.org" target="_blank"><img src="<?php echo Assets\asset_path('images/nchc-logo-footer.jpg'); ?>" /></a>
-      <hr>
+      <hr class="footer-hr">
       <div class="recognition">
-        <img src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
-        <img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" />
-        <img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" />
+        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
+        <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi.png'); ?>" />
+        <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" />
       </div>
     </div>
 
@@ -47,7 +47,7 @@ use Roots\Sage\Nav;
       <p><a class="btn btn-skew btn-lg btn-teal" data-toggle="modal" data-target="#emailSignupModal">Subscribe</a></p>
     </div>
 
-    <div class="col-sm-6 col-sm-push-6 col-md-push-0 col-md-3">
+    <div class="col-sm-6 col-md-3">
       <?php
       if (has_nav_menu('primary_navigation')) :
         wp_nav_menu(['theme_location' => 'footer_navigation', 'menu_class' => 'nav navbar-nav', 'depth' => 1, 'walker' => new Nav\NavWalker()]);
