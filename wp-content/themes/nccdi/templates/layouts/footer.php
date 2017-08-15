@@ -31,6 +31,12 @@ use Roots\Sage\Nav;
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" /></a>
       <br />
       <a href="http://nchousing.org" target="_blank"><img src="<?php echo Assets\asset_path('images/nchc-logo-footer.jpg'); ?>" /></a>
+      <hr>
+      <div class="recognition">
+        <img src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
+        <img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" />
+        <img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" />
+      </div>
     </div>
 
     <div class="col-sm-6 col-md-5">
