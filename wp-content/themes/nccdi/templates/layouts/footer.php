@@ -33,8 +33,8 @@ use Roots\Sage\Nav;
       <a href="http://nchousing.org" target="_blank"><img src="<?php echo Assets\asset_path('images/nchc-logo-footer.jpg'); ?>" /></a>
       <hr class="footer-hr">
       <div class="recognition">
-        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
         <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi.png'); ?>" />
+        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
         <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" />
       </div>
     </div>
