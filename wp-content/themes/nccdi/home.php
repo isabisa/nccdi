@@ -42,31 +42,33 @@ use Roots\Sage\Assets;
   </div>
 
 
-  <div class="challenge container">
-    <div class="row">
-      <div class="col-md-12 text-center extra-bottom-margin">
-        <div class="h2">
-          <span class="skew">The Challenge</span>
+  <div class="challenge">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center extra-bottom-margin">
+          <div class="h2">
+            <span class="skew">The Challenge</span>
+          </div>
+
+          <p>Too many communities have been left behind in North Carolina.<br /><strong>We must address these challenges.</strong></p>
         </div>
-
-        <p>Too many communities have been left behind in North Carolina.<br /><strong>We must address these challenges.</strong></p>
       </div>
-    </div>
 
-    <ul class="row">
-      <li class="col-md-4">
-        <img src="<?php echo Assets\asset_path('images/people.svg'); ?>" />
-        <strong>1 in 6 adults</strong> and <strong>1 in 4 children</strong> live in poverty in North Carolina.
-      </li>
-      <li class="col-md-4">
-        <img src="<?php echo Assets\asset_path('images/loans.svg'); ?>" />
-        <strong>Little investment</strong> in communities and loans are <strong>difficult to obtain</strong>.
-      </li>
-      <li class="col-md-4">
-        <img src="<?php echo Assets\asset_path('images/unemployment.svg'); ?>" />
-        <strong>High unemployment rate</strong> in rural NC and many communities have <strong>no voice in Raleigh</strong>.
-      </li>
-    </ul>
+      <ul class="row">
+        <li class="col-md-4">
+          <img src="<?php echo Assets\asset_path('images/people.svg'); ?>" />
+          <strong>1 in 6 adults</strong> and <strong>1 in 4 children</strong> live in poverty in North Carolina.
+        </li>
+        <li class="col-md-4">
+          <img src="<?php echo Assets\asset_path('images/loans.svg'); ?>" />
+          <strong>Little investment</strong> in communities and loans are <strong>difficult to obtain</strong>.
+        </li>
+        <li class="col-md-4">
+          <img src="<?php echo Assets\asset_path('images/unemployment.svg'); ?>" />
+          <strong>High unemployment rate</strong> in rural NC and many communities have <strong>no voice in Raleigh</strong>.
+        </li>
+      </ul>
+    </div>
   </div>
 
 
