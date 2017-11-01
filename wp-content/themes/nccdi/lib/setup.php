@@ -64,7 +64,6 @@ function display_sidebar() {
     is_page(['donate', '2015-16-annual-report']),
     is_search(),
     is_page_template('template-events.php'),
-    is_page_template('template-full-width.php')
   ]);
 
   return apply_filters('sage/display_sidebar', $display);

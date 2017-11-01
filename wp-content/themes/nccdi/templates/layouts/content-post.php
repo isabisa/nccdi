@@ -81,7 +81,7 @@ $featured_image_align = get_post_meta(get_the_ID(), $prefix . 'featured_image_al
       <div class="row">
         <div class="col-md-7 col-centered">
           <?php
-          if (has_post_thumbnail() && $featured_image_align !== 'hero') {
+          if (has_post_thumbnail() && $featured_image_align !== 'hero' && $featured_image_align !== 'none') {
             echo '<div class="alignnone no-top-margin">';
             the_post_thumbnail('large');
             $thumb_id = get_post_thumbnail_id();
