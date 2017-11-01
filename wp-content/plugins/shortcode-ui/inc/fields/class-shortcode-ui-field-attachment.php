@@ -106,7 +106,7 @@ class Shortcode_UI_Field_Attachment {
 
 					<button class="button button-small remove" data-id="{{ data.id }}">×</button>
 
-					<# if ( data.type === 'image' && data.sizes && data.sizes.thumbnail ) { #>
+					<# if ( data.sizes && data.sizes.thumbnail ) { #>
 						<div class="thumbnail">
 							<div class="centered">
 								<img src="{{ data.sizes.thumbnail.url }}" alt="" width="{{ data.sizes.thumbnail.width }}" height="{{ data.sizes.thumbnail.height }}" />
@@ -135,14 +135,14 @@ class Shortcode_UI_Field_Attachment {
 				</div>
 
 				<div class="thumbnail-details-container has-attachment">
-					<strong>Thumbnail Details</strong>
+					<strong><?php esc_html_e( 'Attachment Details', 'shortcode-ui' ); ?></strong>
 					<div class="filename">{{ data.filename }}</div>
 					<div class="date-formatted">{{ data.dateFormatted }}</div>
 					<div class="size">{{ data.filesizeHumanReadable }}</div>
 					<# if ( data.type === 'image' ) { #>
 						<div class="dimensions">{{ data.width }} &times; {{ data.height }}</div>
 					<# } #>
-					<div class="edit-link"><a href="{{ data.editLink }}">Edit Attachment</a></div>
+					<div class="edit-link"><a href="{{ data.editLink }}"><?php esc_html_e( 'Edit Attachment', 'shortcode-ui' ); ?></a></div>
 				</div>
 			</div>
 		</script>

@@ -99,8 +99,9 @@ class WDButton_CPT_class
 							<span class="dashicons dashicons-star-filled"></span>
 						</a>
 						<div class="link_wdbutton">
-							<a href="http://webdzier.com/demo/plugins/wd-button-pro/" class="view_demo_btn"><?php echo __( 'View Demo','button' ) ?></a>
-							<a href="https://webdzier.com/amember/signup/button-pro" class="buynow_btn"><?php echo __( 'Buy Now $15','button' ) ?></a>
+							<a href="https://webdzier.com/demo/plugins/wd-button-pro/" class="view_demo_btn"><?php echo __( 'View Demo','button' ) ?></a>
+							<a href="https://webdzier.com/amember/signup/button-pro" class="buynow_btn"><?php echo __( '$15 Buy Now','button' ) ?></a>
+							<a href="https://webdzier.com/demo/plugins/social-media-icon-pro/" class="view_demo_btn" style="background:#33ccff;"><?php echo __( 'New Social Icon Plugin $5','button' ) ?></a>
 							<a href="http://wordpress.org/support/plugins/button" class="get_support_btn"><?php echo __( 'Get Support','button' ) ?></a>
 						</div>
 						

@@ -105,7 +105,34 @@ class MMB_Installer extends MMB_Core
             );
         }
 
+        if (defined('WP_ADMIN') && WP_ADMIN) {
+            global $wp_current_filter;
+            $wp_current_filter[] = 'load-update-core.php';
+
+            if (function_exists('wp_clean_update_cache')) {
+                /** @handled function */
+                wp_clean_update_cache();
+            }
+
+            /** @handled function */
+            wp_update_plugins();
+
+            array_pop($wp_current_filter);
+
+            /** @handled function */
+            set_current_screen();
+            do_action('load-update-core.php');
+
+            /** @handled function */
+            wp_version_check();
+
+            /** @handled function */
+            wp_version_check(array(), true);
+        }
+
+        $wrongFileType = false;
         if ($type == 'plugins') {
+            $wrongFileType = true;
             include_once ABSPATH.'wp-admin/includes/plugin.php';
             $all_plugins = get_plugins();
             foreach ($all_plugins as $plugin_slug => $plugin) {
@@ -115,55 +142,69 @@ class MMB_Installer extends MMB_Core
                         continue;
                     }
                     if ($install['destination_name'] == $plugin_dir[0]) {
+                        $wrongFileType = false;
                         if ($activate) {
                             $install_info[$key]['activated'] = activate_plugin($plugin_slug, '', $network_activate);
                         }
 
-                        $install_info[$key]['basename'] = $plugin_slug;
+                        $install_info[$key]['basename']  = $plugin_slug;
                         $install_info[$key]['full_name'] = $plugin['Name'];
+                        $install_info[$key]['version']   = $plugin['Version'];
                     }
                 }
             }
         }
 
-        if ($activate) {
-            if ($type != 'plugins') {
-                if (count($install_info) == 1) {
-                    global $wp_themes;
-                    include_once ABSPATH.'wp-includes/theme.php';
+        if ($type == 'themes') {
+            $wrongFileType = true;
+            if (count($install_info) == 1) {
+                global $wp_themes;
+                include_once ABSPATH.'wp-includes/theme.php';
 
-                    $wp_themes = null;
-                    unset($wp_themes); //prevent theme data caching
-                    if (function_exists('wp_get_themes')) {
-                        $all_themes = wp_get_themes();
-                        foreach ($all_themes as $theme_name => $theme_data) {
-                            foreach ($install_info as $key => $install) {
-                                if (!$install || is_wp_error($install)) {
-                                    continue;
-                                }
-
-                                if ($theme_data->Template == $install['destination_name']) {
-                                    $install_info[$key]['activated'] = switch_theme($theme_data->Template, $theme_data->Stylesheet);
-                                }
-                            }
+                $wp_themes = null;
+                unset($wp_themes); //prevent theme data caching
+                if (function_exists('wp_get_theme')) {
+                    foreach ($install_info as $key => $install) {
+                        if (!$install || is_wp_error($install)) {
+                            continue;
                         }
-                    } else {
-                        $all_themes = get_themes();
-                        foreach ($all_themes as $theme_name => $theme_data) {
-                            foreach ($install_info as $key => $install) {
-                                if (!$install || is_wp_error($install)) {
-                                    continue;
-                                }
 
-                                if ($theme_data['Template'] == $install['destination_name']) {
+                        $theme = wp_get_theme($install['destination_name']);
+                        if ($theme->errors() !== false) {
+                            $install_info[$key] = $theme->errors();
+                            continue;
+                        }
+
+                        $wrongFileType = false;
+                        if ($activate) {
+                            $install_info[$key]['activated'] = switch_theme($theme->Template, $theme->Stylesheet);
+                        }
+
+                        $install_info[$key]['full_name'] = $theme->name;
+                        $install_info[$key]['version']   = $theme->version;
+                    }
+                } else {
+                    $all_themes = get_themes();
+                    foreach ($all_themes as $theme_name => $theme_data) {
+                        foreach ($install_info as $key => $install) {
+                            if (!$install || is_wp_error($install)) {
+                                continue;
+                            }
+
+                            if ($theme_data['Template'] == $install['destination_name'] || $theme_data['Stylesheet'] == $install['destination_name']) {
+                                $wrongFileType = false;
+                                if ($activate) {
                                     $install_info[$key]['activated'] = switch_theme($theme_data['Template'], $theme_data['Stylesheet']);
                                 }
+                                $install_info[$key]['full_name'] = $theme_data->name;
+                                $install_info[$key]['version']   = $theme_data->version;
                             }
                         }
                     }
                 }
             }
         }
+
         // Can generate "E_NOTICE: ob_clean(): failed to delete buffer. No buffer to delete."
         @ob_clean();
         $this->mmb_maintenance_mode(false);
@@ -175,6 +216,12 @@ class MMB_Installer extends MMB_Core
                     $install_info[$key] = array(
                         'error' => $value->get_error_message(),
                         'code'  => $value->get_error_code(),
+                    );
+                } elseif ($wrongFileType) {
+                    $otherType          = $type === 'themes' ? 'plugins' : $type;
+                    $install_info[$key] = array(
+                        'error' => 'You can\'t install '.$type.' on '.$otherType.' page.',
+                        'code'  => 'wrong_type_of_file',
                     );
                 }
             }
@@ -517,7 +564,7 @@ class MMB_Installer extends MMB_Core
             $upgrader = new Theme_Upgrader(mwp_container()->getUpdaterSkin());
             $result   = $upgrader->bulk_upgrade($themes);
 
-            $return  = array();
+            $return = array();
             if (!empty($result)) {
                 foreach ($result as $theme_tmp => $theme_info) {
                     if (is_wp_error($theme_info) || empty($theme_info)) {
@@ -550,14 +597,17 @@ class MMB_Installer extends MMB_Core
         if (class_exists('Language_Pack_Upgrader')) {
             /** @handled class */
             $upgrader = new Language_Pack_Upgrader(mwp_container()->getUpdaterSkin());
-            $result = $upgrader->bulk_upgrade();
+            $result   = $upgrader->bulk_upgrade();
 
             if (!empty($result)) {
                 $return = 1;
-                foreach ($result as $translate_tmp => $translate_info) {
-                    if (is_wp_error($translate_info) || empty($translate_info)) {
-                        $return = $this->mmb_get_error($translate_info);
-                        break;
+
+                if (is_array($result)) {
+                    foreach ($result as $translate_tmp => $translate_info) {
+                        if (is_wp_error($translate_info) || empty($translate_info)) {
+                            $return = $this->mmb_get_error($translate_info);
+                            break;
+                        }
                     }
                 }
 

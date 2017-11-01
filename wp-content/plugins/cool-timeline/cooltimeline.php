@@ -2,11 +2,11 @@
 /*
   Plugin Name:Cool Timeline 
   Plugin URI:http://www.cooltimeline.com
-  Description: Cool Timeline is a responsive wordpress plugin that allows you to create beautiful verticle storyline. You simply create posts, set images and date then Cool Timeline will automatically populate these posts in chronological order, based on the year and date
-  Version:1.1.9
-  Author:narinder-singh,satinder-singh
+  Description:Cool Timeline is a responsive wordpress plugin that allows you to create beautiful verticle storyline. You simply create posts, set images and date then Cool Timeline will automatically populate these posts in chronological order, based on the year and date
+  Version:1.3.2
+  Author:Cool Timeline Team
   Author URI:http://www.cooltimeline.com
-  License: GPL2
+  License:GPLv2 or later
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
   Domain Path: /languages
   Text Domain:cool-timeline
@@ -28,64 +28,95 @@
  */
 /** Configuration * */
 if (!defined('COOL_TIMELINE_VERSION_CURRENT')){
-    define('COOL_TIMELINE_VERSION_CURRENT', '1.1.9');
+    define('COOL_TIMELINE_VERSION_CURRENT', '1.3.2');
 }
-
+// define constants for further use
 define('COOL_TIMELINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
     define('COOL_TIMELINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
- 	define( 'FA_DIR', plugin_dir_path( __FILE__ ).'/fa-icons/' );
-	define( 'FA_URL', plugin_dir_url( __FILE__ ).'/fa-icons/'  );
+ 	define( 'FA_DIR', COOL_TIMELINE_PLUGIN_DIR.'/fa-icons/' );
+	define( 'FA_URL', COOL_TIMELINE_PLUGIN_URL.'/fa-icons/'  );
 
-if (!class_exists('Cool_Timeline')) {
+if (!class_exists('CoolTimeline')) {
 
-    class Cool_Timeline {
+    class CoolTimeline {
 
         /**
          * Construct the plugin object
          */
         public function __construct() {
-            // Initialize Settings
+          
             $this->plugin_path = plugin_dir_path(__FILE__);
-         
-            // cooltimeline post type
-           require COOL_TIMELINE_PLUGIN_DIR . 'includes/cool_timeline_posttype.php';
-            $cool_timeline_posttype = new CoolTimeline_Posttype();
+          /*
+            Including required files
+          */
+         $this->clt_include_files();
 
+         // Cool Timeline all hooks integrations
+         if(is_admin()){
+            $plugin = plugin_basename(__FILE__);
+            // plugin settings links hook
+            add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
+
+            // integrated shortcode generator on text editor
+          	add_action( 'after_setup_theme', array($this , 'ctl_add_tinymce' ) );
+            // loading date picker assets
+            add_action( 'admin_enqueue_scripts',array($this , 'load_ctdp_admin_style_script'));
+           
+           // admin notificaiton for review
+            add_action( 'admin_notices',array($this,'cool_admin_messages'));
+            add_action( 'wp_ajax_hideRating',array($this,'cool_HideRating' ));
+            }
+            
+            //loading plugin translation files
+            add_action('plugins_loaded', array($this, 'clt_load_plugin_textdomain'));
+		        //Fixed bridge theme confliction using this action hook
+            add_action( 'wp_print_scripts', array($this,'ctl_deregister_javascript'), 100 );
+          
+            add_image_size( 'ctl_avatar', 250, 250,true );
+         }
+		
+        /*
+          Including required files
+        */
+      public function clt_include_files(){
+
+           // cooltimeline post type
+            add_action( 'init', array($this, 'include_files' ) );
+            require COOL_TIMELINE_PLUGIN_DIR . 'includes/cool-timeline-posttype.php';
+            $cool_timeline_posttype = new CoolTimelinePosttype();
+
+            /*
+              Loaded Backend files only 
+            */
+            if(is_admin()){
             //metaboxes for cooltimeline post type
             include_once COOL_TIMELINE_PLUGIN_DIR . 'includes/metaboxes.php';
-      	   	require COOL_TIMELINE_PLUGIN_DIR.'fa-icons/fa-icons-class.php';
-      			new Ctl_Fa_Icons();
-            // Include other PHP scripts
-            add_action( 'init', array( $this, 'include_files' ) );
+            
             /*
-             * View
-             */
-
-            include_once COOL_TIMELINE_PLUGIN_DIR . 'includes/ctl-helper-functions.php';
-            require COOL_TIMELINE_PLUGIN_DIR . 'includes/cool_timline_template.php';
-       
-
-            new CoolTimeline_Template();
-            add_action('wp_enqueue_scripts','ctl_custom_style');
-
-
-            $plugin = plugin_basename(__FILE__);
-            add_filter("plugin_action_links_$plugin", array($this, 'plugin_settings_link'));
-           
-      			add_action( 'admin_head', array( &$this , 'ctl_add_tinymce' ) );
-      			add_image_size( 'ctl_avatar', 250, 250,true );
-        
-            add_image_size('cool_timeline_custom_size', '350', '120', true);
-            add_action( 'admin_enqueue_scripts',array( &$this , 'load_ctdp_admin_style_script'));
-			      add_action('plugins_loaded', array(&$this, 'clt_load_plugin_textdomain'));
-			//Fixed bridge theme confliction using this action hook
-            add_action( 'wp_print_scripts', array(&$this,'ctl_deregister_javascript'), 100 );
-      
-            //include the main class file
+             Plugin Settings panel 
+            */
             require_once(plugin_dir_path(__FILE__) ."admin-page-class/admin-page-class.php");
+             // Initialize Settings
             $this->ctl_option_panel();
-        }
-		
+
+            // icon picker for post type
+            require COOL_TIMELINE_PLUGIN_DIR.'fa-icons/fa-icons-class.php';
+            new Ctl_Fa_Icons();
+            }else{ 
+           
+             /*
+             *  Frontend files
+             */
+             // contains helper funciton for timeline
+            include_once COOL_TIMELINE_PLUGIN_DIR . 'includes/ctl-helper-functions.php';
+
+            //Cool Timeline Main shortcode
+            require COOL_TIMELINE_PLUGIN_DIR . 'includes/cool-timeline-shortcode.php';
+            new CoolTimelineShortcode();
+            add_action('wp_enqueue_scripts','ctl_custom_style');
+             } 
+      }
+
        function clt_load_plugin_textdomain() {
 
               $rs = load_plugin_textdomain('cool-timeline', FALSE, basename(dirname(__FILE__)) . '/languages/');
@@ -97,8 +128,8 @@ if (!class_exists('Cool_Timeline')) {
             array_unshift($links, $settings_link);
             return $links;
         }
-      function ctl_option_panel() {
-
+        
+         function ctl_option_panel() {
             /**
              * configure your admin page
              */
@@ -123,10 +154,10 @@ if (!class_exists('Cool_Timeline')) {
              * define your admin page tabs listing
              */
             $options_panel->TabsListing(array(
-                'links' => array(
+                    'links' => array(
                     'options_1' => __('General Settings', 'apc'),
-					'options_2' => __('Style Settings', 'apc'),
-					'options_3' => __('Typography Settings', 'apc'),
+          					'options_2' => __('Style Settings', 'apc'),
+          					'options_3' => __('Typography Settings', 'apc'),
                     'options_4' => __('Advance Settings', 'apc'),
                 )
             ));
@@ -144,7 +175,7 @@ if (!class_exists('Cool_Timeline')) {
              * textarea
              */
             //title
-        $options_panel->Title(__("General Settings", "apc"));
+           $options_panel->Title(__("General Settings", "apc"));
             //An optionl descrption paragraph
          //   $options_panel->addParagraph(__("This is a simple paragraph", "apc"));
             //text field
@@ -157,39 +188,39 @@ if (!class_exists('Cool_Timeline')) {
                 'h4' => 'H4',
                 'h5' => 'H5',
                 'h6' => 'H6'), array('name' => __('Title Heading Tag ', 'apc'), 'std' => array('h1'), 'desc' => __('', 'apc')));
-			$options_panel->addRadio('title_alignment', array('left' => 'Left',
-                'center' => 'Center','right'=>'Right'), array('name' => __('Title Alignment ?', 'apc'), 'std' => array('center'), 'desc' => __('', 'apc')));
-            $options_panel->addText('post_per_page', array('name' => __('Number of stories to display ?', 'apc'), 'std' => 10, 'desc' => __('', 'apc')));
-			$options_panel->addText('content_length', array('name' => __('Content Length ', 'apc'), 'std' => 50, 'desc' => __('', 'apc')));
-			//Image field
-		
-			$options_panel->addImage('user_avatar',array('name'=> __('Timeline default Image','apc'), 'desc' => __('','apc')));
+    	     	$options_panel->addRadio('title_alignment', array('left' => 'Left',
+                  'center' => 'Center','right'=>'Right'), array('name' => __('Title Alignment ?', 'apc'), 'std' => array('center'), 'desc' => __('', 'apc')));
+            $options_panel->addText('post_per_page', array('name' => __('Number of stories to display ?', 'apc'), 'std' => 10, 'desc' => __('This option is overridden by shortcode. Please check shortcode generator.', 'apc')));
+        		$options_panel->addText('content_length', array('name' => __('Content Length ', 'apc'), 'std' => 50, 'desc' => __('Please enter no of words', 'apc')));
+        		//Image field
+        	
+        		$options_panel->addImage('user_avatar',array('name'=> __('Timeline default Image','apc'), 'desc' => __('','apc')));
 
-          $options_panel->addRadio('desc_type', array('short' => 'Short (Default)',
-              'full' => 'Full (with HTML)'), array('name' => __('Stories Description?', 'apc'), 'std' => array('short'), 'desc' => __('', 'apc')));
+            $options_panel->addRadio('desc_type', array('short' => 'Short (Default)',
+                'full' => 'Full (with HTML)'), array('name' => __('Stories Description?', 'apc'), 'std' => array('short'), 'desc' => __('', 'apc')));
 
-          $options_panel->addRadio('display_readmore', array('yes' => 'Yes',
-                'no' => 'No'), array('name' => __('Display read more ?', 'apc'), 'std' => array('yes'), 'desc' => __('', 'apc')));
-			
-			$options_panel->addRadio('posts_orders', array('DESC' => 'DESC',
-                'ASC' => 'ASC'), array('name' => __('Stories Order ?', 'apc'), 'std' => array('DESC'), 'desc' => __('', 'apc')));
-			
+            $options_panel->addRadio('display_readmore', array('yes' => 'Yes',
+                  'no' => 'No'), array('name' => __('Display read more ?', 'apc'), 'std' => array('yes'), 'desc' => __('', 'apc')));
+    		
+        		$options_panel->addRadio('posts_orders', array('DESC' => 'DESC',
+                      'ASC' => 'ASC'), array('name' => __('Stories Order ?', 'apc'), 'std' => array('DESC'), 'desc' => __('', 'apc')));
+        		
 
-			 $options_panel->addCode('custom_styles', array('name' => 'Custom Styles', 'syntax' => 'css'));
+        		 $options_panel->addCode('custom_styles', array('name' => 'Custom Styles', 'syntax' => 'css'));
 
-	     $options_panel->CloseTab();
+             $options_panel->CloseTab();
 
-          /**
-           * Open admin page 2 tab
-           */
-   $options_panel->OpenTab('options_2');
-          $options_panel->Title(__("Style Settings", "apc"));
-          /**
-           * To Create a Conditional Block first create an array of fields (just like a repeater block
-           * use the same functions as above but add true as a last param
-           */
-          //   $Conditinal_fields[] = $options_panel->addText('con_text_field_id', array('name' => __('My Text ', 'apc')), true);
-          $Conditinal_fields[] =$options_panel->addColor('bg_color', array('name' => __('Background Color', 'apc')), true);
+            /**
+             * Open admin page 2 tab
+             */
+           $options_panel->OpenTab('options_2');
+            $options_panel->Title(__("Style Settings", "apc"));
+            /**
+             * To Create a Conditional Block first create an array of fields (just like a repeater block
+             * use the same functions as above but add true as a last param
+             */
+            //   $Conditinal_fields[] = $options_panel->addText('con_text_field_id', array('name' => __('My Text ', 'apc')), true);
+            $Conditinal_fields[] =$options_panel->addColor('bg_color', array('name' => __('Background Color', 'apc')), true);
 
 
           /**
@@ -212,45 +243,52 @@ if (!class_exists('Cool_Timeline')) {
           //Color field
           $options_panel->addColor('first_post',array('name'=> __('First Color','apc'),'std'=>'#29b246', 'desc' => __('','apc')));
           $options_panel->addColor('second_post',array('name'=> __('Second Color','apc'),'std'=>'#ce792f', 'desc' => __('','apc')));
-   $options_panel->CloseTab();
+          $options_panel->CloseTab();
 
 
           /**
              * Open admin page third tab
              */
-   $options_panel->OpenTab('options_3');
+          $options_panel->OpenTab('options_3');
 			
 			//title
             $options_panel->Title(__("Typography Settings", "apc"));
             $options_panel->addTypo('main_title_typo', array('name' => __("Main Title", "apc"), 'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'Montserrat', 'style' => 'normal'), 'desc' => __('', 'apc')));
             $options_panel->addTypo('post_title_typo', array('name' => __("Story Title", "apc"), 'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'Montserrat', 'style' => 'normal'), 'desc' => __('', 'apc')));
 			
-				$options_panel->addRadio('post_title_text_style', array('lowercase' => 'Lowercase',
+			     	$options_panel->addRadio('post_title_text_style', array('lowercase' => 'Lowercase',
                 'uppercase' => 'Uppercase','capitalize'=>'Capitalize'), array('name' => __('Story Title Style ?', 'apc'), 'std' => array('capitalize'), 'desc' => __('', 'apc')));
 				
             $options_panel->addTypo('post_content_typo', array('name' => __("Post Content", "apc"), 'std' => array('size' => '14px', 'color' => '#000000', 'face' => 'Montserrat', 'style' => 'normal'), 'desc' => __('', 'apc')));
            
 		
 	
-		   $options_panel->CloseTab();
+		     $options_panel->CloseTab();
 
           $options_panel->OpenTab('options_4');
 
-         $options_panel->addParagraph(__('<div class="advance_options"><a target="_blank" href="https://codecanyon.net/item/cool-timeline-pro-wordpress-responsive-timeline-plugin/17046256?ref=CoolHappy"><img src="'.COOL_TIMELINE_PLUGIN_URL.'/images/timeline-pro-buy.png"></a></div>', "cool-timeline"));
-    $options_panel->CloseTab();
+         $options_panel->addParagraph(__('<div class="advance_options"><a target="_blank" href="https://codecanyon.net/item/cool-timeline-pro-wordpress-responsive-timeline-plugin/17046256?ref=CoolHappy"><img src="https://res.cloudinary.com/cooltimeline/image/upload/v1504097451/timeline-pro-buy_l7ffks.png"></a></div>', "cool-timeline"));
+         $options_panel->CloseTab();
 		   }
-function load_ctdp_admin_style_script($hook) {
+
+
+      function load_ctdp_admin_style_script($hook) {
+   
 			if( 'post.php' != $hook && 'post-new.php' != $hook)
 				return;
-			if( apply_filters( 'add_ctdp_timepicker_js', true ) ){
-				wp_enqueue_script( 'timepicker-js', COOL_TIMELINE_PLUGIN_URL . 'js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
-			}
-			if( apply_filters( 'add_ctdp_js', true ) ){
-				wp_enqueue_script( 'ctdp-js', COOL_TIMELINE_PLUGIN_URL . 'js/ctdp.js', array( 'timepicker-js' ) );
-			}
-			if( apply_filters( 'add_ctdp_css', true ) ){
-				wp_enqueue_style( 'ctdp-css', COOL_TIMELINE_PLUGIN_URL . 'css/ctdp.css' );
-			}
+
+      if(get_cpt()=="cool_timeline"){
+
+    			if( apply_filters( 'add_ctdp_timepicker_js', true ) ){
+    				wp_enqueue_script( 'timepicker-js', COOL_TIMELINE_PLUGIN_URL . 'js/jquery-ui-timepicker-addon.js', array( 'jquery-ui-datepicker' ) );
+    			}
+    			if( apply_filters( 'add_ctdp_js', true ) ){
+    				wp_enqueue_script( 'ctdp-js', COOL_TIMELINE_PLUGIN_URL . 'js/ctdp.js', array( 'timepicker-js' ) );
+    			}
+    			if( apply_filters( 'add_ctdp_css', true ) ){
+    				wp_enqueue_style( 'ctdp-css', COOL_TIMELINE_PLUGIN_URL . 'css/ctdp.css' );
+    			}
+      }
 		}
        /*
         * Fixed Bridge theme confliction
@@ -264,26 +302,37 @@ function load_ctdp_admin_style_script($hook) {
                 }
             }
         }
-		 public function include_files() {
+		  public function include_files() {
             // Files specific for the front-ned
             if ( ! is_admin() ) {
                 // Load template tags (always last)
                 include COOL_TIMELINE_PLUGIN_DIR .'fa-icons/includes/template-tags.php';
             }
         }
-		
+
+    // integrated shortcode generator button in text editor
 		public function ctl_add_tinymce() {
-            global $typenow;
-         
-            if( ! in_array( $typenow, array( 'page' , 'post' ) ) )
-                    return;
-            add_filter( 'mce_external_plugins', array( &$this , 'ctl_add_tinymce_plugin' ) );
-            add_filter( 'mce_buttons', array( &$this , 'ctl_add_tinymce_button' ) );
-                 }
+         global $typenow;
+         if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') ) {
+              return;
+        }
+    
+        if(get_cpt()=="cool_timeline"){
+          return ;
+        }
+       if ( get_user_option('rich_editing') == 'true' ) {
+            add_filter('mce_external_plugins', array($this, 'ctl_add_tinymce_plugin'));
+            add_filter('mce_buttons', array($this, 'ctl_add_tinymce_button'));
+          }    
+
+        }
+
+        //loading tinymce plugin  js
 			public function ctl_add_tinymce_plugin( $plugin_array ) {
-            $plugin_array['cool_timeline'] = plugins_url( 'cool-timeline/includes/js/tinymce-custom-btn.js' );
-			return $plugin_array;
+            $plugin_array['cool_timeline'] =COOL_TIMELINE_PLUGIN_URL.'/includes/js/tinymce-custom-btn.js';
+			     return $plugin_array;
 			}
+      //added shortcode button in array
 		function ctl_add_tinymce_button( $buttons ) {
             array_push( $buttons, 'cool_timeline_btn' );
 			return $buttons;
@@ -291,10 +340,13 @@ function load_ctdp_admin_style_script($hook) {
           
             
        	/**
-         * Activate the plugin
+         * Activating plugin and adding some info
          */
         public static function activate() {
-            // Do nothing
+              update_option("cool-timelne-v",COOL_TIMELINE_VERSION_CURRENT);
+              update_option("cool-timelne-type","FREE");
+              update_option("cool-timelne-installDate",date('Y-m-d h:i:s') );
+              update_option("cool-timelne-ratingDiv","no");
         }
 
 		// END public static function activate
@@ -304,36 +356,97 @@ function load_ctdp_admin_style_script($hook) {
          */
         public static function deactivate() {
             // Do nothing
-        }     
-            
+        } 
+      
+      // Admin notificaiton for review  
+   public function cool_admin_messages() {
+  
+     if( !current_user_can( 'update_plugins' ) ){
+        return;
+     }
+    $install_date = get_option( 'cool-timelne-installDate' );
+    $ratingDiv =get_option( 'cool-timelne-ratingDiv' )!=false?get_option( 'cool-timelne-ratingDiv'):"no";
+
+    $dynamic_msz='<div class="cool_fivestar update-nag" style="box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);">'.__('
+      <p>Dear Cool Timeline Plugin User, Hopefully you\'re happy with our plugin. <br> May I ask you to give it a <strong>5-star rating</strong> on WordPress.org ? 
+        This will help to spread its popularity and to make this plugin a better one.
+        <br><br>Your help is much appreciated.Thank you very much!').'
+        <ul>
+            <li class="float:left"><a href="https://wordpress.org/support/plugin/cool-timeline/reviews/?filter=5#new-post" class="thankyou button button-primary" target="_new" title="I Like Cool Timeline" style="color: #ffffff;-webkit-box-shadow: 0 1px 0 #256e34;box-shadow: 0 1px 0 #256e34;font-weight: normal;float:left;margin-right:10px;">'.__('I Like Cool Timeline').'</a></li>
+            <li><a href="javascript:void(0);" class="coolHideRating button" title="I already did" style="">'.__('I already rated it').'</a></li>
+            <li><a href="javascript:void(0);" class="coolHideRating" title="No, not good enough" style="">'.__('No, not good enough, i do not like to rate it!').'</a></li>
+        </ul>
+    </div>
+    <script>
+    jQuery( document ).ready(function( $ ) {
+
+    jQuery(\'.coolHideRating\').click(function(){
+        var data={\'action\':\'hideRating\'}
+             jQuery.ajax({
+        
+        url: "' . admin_url( 'admin-ajax.php' ) . '",
+        type: "post",
+        data: data,
+        dataType: "json",
+        async: !0,
+        success: function(e) {
+            if (e=="success") {
+               jQuery(\'.cool_fivestar\').slideUp(\'fast\');
+         
+            }
+        }
+         });
+        })
+    
+    });
+    </script>';
+
+     if(get_option( 'cool-timelne-installDate' )==false && $ratingDiv== "no" )
+       {
+       echo $dynamic_msz;
+       }else{
+            $display_date = date( 'Y-m-d h:i:s' );
+            $install_date= new DateTime( $install_date );
+            $current_date = new DateTime( $display_date );
+            $difference = $install_date->diff($current_date);
+          $diff_days= $difference->days;
+        if (isset($diff_days) && $diff_days>=15 && $ratingDiv == "no" ) {
+            echo $dynamic_msz;
+          }
+      }      
+
+  }   
+  
+  // ajax handler for feedback callback
+  public function cool_HideRating() {
+    update_option( 'cool-timelne-ratingDiv','yes' );
+    echo json_encode( array("success") );
+    exit;
+    }
+  
+
         } //end class
 
     }
-function get_cpt() {
-    global $post, $typenow, $current_screen;
 
- 
-    if ( $post && $post->post_type )
-        return $post->post_type;
+   // get current page post type
+    function get_cpt() {
+        global $post, $typenow, $current_screen;
+       if ( $post && $post->post_type )
+            return $post->post_type;
+       elseif( $typenow )
+            return $typenow;
+       elseif( $current_screen && $current_screen->post_type )
+            return $current_screen->post_type;
+        elseif( isset( $_REQUEST['post_type'] ) )
+            return sanitize_key( $_REQUEST['post_type'] );
+       return null;
+      }
 
-  
-    elseif( $typenow )
-        return $typenow;
 
-   
-    elseif( $current_screen && $current_screen->post_type )
-        return $current_screen->post_type;
-
-  
-    elseif( isset( $_REQUEST['post_type'] ) )
-        return sanitize_key( $_REQUEST['post_type'] );
-
-  
-    return null;
-}
     // Installation and uninstallation hooks
-    register_activation_hook(__FILE__, array('Cool_Timeline', 'activate'));
-    register_deactivation_hook(__FILE__, array('Cool_Timeline', 'deactivate'));
+    register_activation_hook(__FILE__, array('CoolTimeline', 'activate'));
+    register_deactivation_hook(__FILE__, array('CoolTimeline', 'deactivate'));
 
     // instantiate the plugin class
-    $cool_timeline = new Cool_Timeline();
+    $cool_timeline = new CoolTimeline();

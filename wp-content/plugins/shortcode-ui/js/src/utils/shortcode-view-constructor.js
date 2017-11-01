@@ -84,7 +84,7 @@ var shortcodeViewConstructor = {
 
 			if ( attr && attr.get('encode') ) {
 				value = decodeURIComponent( value );
-				value = value.replace( "&#37;", "%" );
+				value = value.replace( /&#37;/g, "%" );
 			}
 
 			if ( attr ) {
@@ -160,7 +160,7 @@ var shortcodeViewConstructor = {
 	 *
 	 * @param {string} shortcodeString String representation of the shortcode
 	 */
-	edit: function( shortcodeString ) {
+	edit: function( shortcodeString, update ) {
 
 		var currentShortcode = this.parseShortcodeString( shortcodeString );
 
@@ -170,37 +170,25 @@ var shortcodeViewConstructor = {
 
 			if ( frame ) {
 				frame.mediaController.setActionUpdate( currentShortcode );
+				frame.mediaController.props.set( 'editor', wpActiveEditor );
 				frame.open();
 			} else {
 				frame = wp.media.editor.open( window.wpActiveEditor, {
 					frame : "post",
 					state : 'shortcode-ui',
 					currentShortcode : currentShortcode,
+					editor : wpActiveEditor,
 				});
 			}
 
-			// Make sure to reset state when closed.
-			frame.once( 'close submit', function() {
-				frame.state().props.set('currentShortcode', false);
-				var menuItem = frame.menu.get().get('shortcode-ui');
-				menuItem.options.text = shortcodeUIData.strings.media_frame_title;
-				menuItem.render();
-				frame.setState( 'insert' );
+			frame.mediaController.props.set( 'insertCallback', function( shortcode ) {
+				update( shortcode.formatShortcode() );
 			} );
 
-			/* Trigger render_edit */
-			/*
-			 * Action run after an edit shortcode overlay is rendered.
-			 *
-			 * Called as `shortcode-ui.render_edit`.
-			 *
-			 * @param shortcodeModel (object)
-			 *           Reference to the shortcode model used in this overlay.
-			 */
-			var hookName = 'shortcode-ui.render_edit';
-			var shortcodeModel = this.shortcodeModel;
-			wp.shortcake.hooks.doAction( hookName, shortcodeModel );
-
+			// Make sure to reset state when closed.
+			frame.once( 'close submit', function() {
+				frame.mediaController.reset();
+			} );
 		}
 
 	},

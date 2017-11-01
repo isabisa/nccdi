@@ -69,13 +69,13 @@ Shortcode = Backbone.Model.extend({
 		this.get( 'attrs' ).each( function( attr ) {
 
 			// Skip empty attributes.
-			if ( ! attr.get( 'value' ) ||  attr.get( 'value' ).length < 1 ) {
+			if ( ! attr.get( 'value' ) || attr.get( 'value' ).length < 1 ) {
 				return;
 			}
 
 			// Encode textareas incase HTML
 			if ( attr.get( 'encode' ) ) {
-				attr.set( 'value', encodeURIComponent( decodeURIComponent( attr.get( 'value' ).replace( "%", "&#37;" ) ) ), { silent: true } );
+				attr.set( 'value', encodeURIComponent( decodeURIComponent( attr.get( 'value' ).replace( /%/g, "&#37;" ) ) ), { silent: true } );
 			}
 
 			attrs.push( attr.get( 'attr' ) + '="' + attr.get( 'value' ) + '"' );

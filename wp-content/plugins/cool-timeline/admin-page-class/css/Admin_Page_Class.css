@@ -16,6 +16,18 @@
 .at-file-upload-label{ clear: both; margin: 5px 0px 5px 1px; }  
 
 
+.wrap.ctl_left_section {
+    max-width: 66%;
+}
+.ctl_right_section {
+    max-width: 25%;
+}
+.ctl_left_section #tabs .panel_menu {
+    max-width: 25%;
+}
+.ctl_left_section #tabs .sections {
+    max-width: 75%;
+}
 /* =Form Fields
 ----------------------------------------------- */
 .postbox .at-field input,

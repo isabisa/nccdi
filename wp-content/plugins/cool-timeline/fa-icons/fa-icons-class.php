@@ -136,7 +136,7 @@
           add_meta_box( 'fa_field', __( 'Select Story Icon', 'cool-timeline' ), array(
             $this,
             'ctl_populate_metabox'
-          ), $screen, 'side','high' );
+          ), $screen, 'normal','high' );
         }
       }
 
