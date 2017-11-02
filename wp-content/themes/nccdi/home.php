@@ -220,7 +220,7 @@ use Roots\Sage\Assets;
           <div class="house">
             <img src="<?php echo Assets\asset_path('images/st-house.jpg'); ?>" />
           </div>
-          <img class="st-logo" src="<?php echo Assets\asset_path('images/stronger-together-logo.png'); ?>" />
+          <img class="st-logo" src="<?php echo Assets\asset_path('images/thriving-communities-logo.png'); ?>" />
           <a class="mega-link" href="/nc-housing-coalition/"></a>
         </div>
       </div>
