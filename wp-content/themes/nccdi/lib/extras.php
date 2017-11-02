@@ -32,6 +32,21 @@ function excerpt_more() {
 }
 add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
 
+
+/**
+* Add options pages for weekly wrapups
+*/
+if( function_exists('acf_add_options_page') ) {
+
+  acf_add_options_page(array(
+    'page_title'     => 'Weekly Wrapup',
+    'menu_title'    => 'Weekly Wrapup',
+    'menu_slug'     => 'weekly-wrapup',
+    'redirect'        => false
+  ));
+}
+
+
 /**
  * Modify TinyMCE editor to remove unused items
  */
