@@ -17,6 +17,10 @@ use Roots\Sage\Nav;
     </div>
 
     <nav class="navbar collapse navbar-collapse" data-topbar role="navigation" id="navbar-collapse-1">
+      <div class="navbar-right-top">
+        <a class="icon-facebook" href="http://www.facebook.com/ncinitiative5800" target="_blank" rel="nofollow"></a>
+        <a class="icon-twitter" href="http://twitter.com/ncinitiative" target="_blank" rel="nofollow"></a>
+      </div>
       <div class="navbar-right">
         <?php
         if (has_nav_menu('primary_navigation')) :

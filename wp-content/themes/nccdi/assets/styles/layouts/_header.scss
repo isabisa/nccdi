@@ -18,9 +18,26 @@
   }
 }
 
-.navbar {
-  padding-top: 31px;
+.navbar-right-top {
+  position: relative;
+  text-align: right;
 
+  a {
+    color: $gray;
+
+    &[class^='icon-'] {
+      text-decoration: none;
+      font-size: 22px;
+      padding: 0 5px;
+    }
+
+    &:hover {
+      color: darken($teal, 10%);
+    }
+  }
+}
+
+.navbar {
   a {
     font-size: 18px;
     text-decoration: none;

@@ -8,4 +8,4 @@ if (is_page('donate')) {
 }
 ?>
 
-<?php get_template_part('templates/components/social-share'); ?>
+<?php //get_template_part('templates/components/social-share'); ?>

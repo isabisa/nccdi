@@ -61,7 +61,8 @@ use Roots\Sage\Nav;
       <div class="row">
         <div class="col-md-9">
           <a href="https://www.unitymakes.us/" target="_blank" class="unity-link">
-            <?php echo file_get_contents(Assets\asset_path('images/made-with-unity.svg')); ?>
+            <?php echo file_get_contents(Assets\asset_path_rel('images/made-with-unity.svg')); ?>
+            <?php //echo file_get_contents(get_stylesheet_directory() . '/images/made-with-unity.svg'); ?>
           </a>
           <span class="copyright">Copyright &copy; <?php echo date('Y'); ?> NC Community Development Initiative</span>
         </div>

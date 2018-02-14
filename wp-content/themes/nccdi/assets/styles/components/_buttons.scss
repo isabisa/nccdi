@@ -12,6 +12,10 @@
     margin-left: 15px;
     padding: 0;
 
+    & + .menu-item {
+      margin-left: 0;
+    }
+
     @media (max-width: $screen-sm-max) {
       max-width: 200px;
     }
