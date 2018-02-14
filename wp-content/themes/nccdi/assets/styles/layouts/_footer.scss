@@ -159,20 +159,20 @@
 
   }
 
-    .cdfi {
-      height: 100px;
-    }
-
-    .ofn {
-      height: 50px;
-      margin: 30px;
-
-      @media only screen and (max-width: 990px) {
-        margin: 30px 0;
-      }
-    }
+  .cdfi {
+    height: 100px;
   }
 
-    .footer-hr {
-      border-color: #436A67;
+  .ofn {
+    height: 50px;
+    margin: 30px;
+
+    @media only screen and (max-width: 990px) {
+      margin: 30px 0;
     }
+  }
+}
+
+.footer-hr {
+  border-color: #436A67;
+}

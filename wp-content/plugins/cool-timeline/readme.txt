@@ -1,9 +1,13 @@
 ﻿=== Cool Timeline ===
 Contributors: narinder-singh,satindersingh
-Tags:cool timeline, dates, events, history, milestone, process, stories, story, time, timeline, vertical, program, appointments, about
+Tags:timeline, history, events, shortcodes,free,stories
 Donate link: http://www.cooltimeline.com
 Requires at least: 3.5
+<<<<<<< HEAD
 Tested up to: 4.8.1
+=======
+Tested up to: 4.9
+>>>>>>> develop
 Stable tag:1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
