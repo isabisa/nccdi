@@ -325,9 +325,9 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     public function AddMenuTopPage() {
       $default = array(
         'capability' => 'manage_optionss',
-        'menu_title' => '',
+        'menu_title' => 'Cool Timeline',
         'id'         => 'id',
-       'icon_url'   => COOL_TIMELINE_PLUGIN_URL.'/images/timeline-icon-222.png',
+       'icon_url'   => COOL_TIMELINE_PLUGIN_URL.'/images/timeline-icon-small.png',
         'position'   => null
       );
 
@@ -664,13 +664,13 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
      */
     public function DisplayPage() {
       do_action('admin_page_class_before_page');
-      echo '<div class="wrap">'."\n";
+      echo '<div class="wrap ctl_left_section">'."\n";
       echo '<form method="post" name="'.apply_filters('apc_form_name', 'admin_page_class',$this).'" class="'.apply_filters('apc_form_class', 'admin_page_class',$this).'" id="'.apply_filters('apc_form_id', 'admin_page_class',$this).'" action="" enctype="multipart/form-data">
         '."\n".'<div class="header_wrap">'."\n".'
         <div style="float:left">'."\n";
 		
         echo apply_filters('admin_page_class_before_title','');
-        echo '<h1><img src="'.COOL_TIMELINE_PLUGIN_URL.'/images/cooltimeline.png"> '.apply_filters('admin_page_class_h2',$this->args['page_title']).'&nbsp;&nbsp;&nbsp; <small style="font-size:12px;">V '.COOL_TIMELINE_VERSION_CURRENT.'</small></h1>'."\n".((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
+        echo '<h1><img style="vertical-align:middle" src="'.COOL_TIMELINE_PLUGIN_URL.'/images/cooltimeline.png"><span> '.apply_filters('admin_page_class_h2',$this->args['page_title']).'&nbsp;&nbsp;&nbsp; <small style="font-size:12px;">V '.COOL_TIMELINE_VERSION_CURRENT.'</small></span></h1>'."\n".((isset($this->args['page_header_text']))? $this->args['page_header_text'] : '').' 
         </div>'."\n".'
         <div style="float:right;margin:32px 0 0 0">'."\n".'
           <input type="submit" style="margin-left: 25px;" value="'.esc_attr(__('Save Changes','apc')).'" name="Submit" class="'.apply_filters('admin_page_class_submit_class', 'btn-info').' btn"><br><br>
@@ -786,28 +786,31 @@ if ( ! class_exists( 'BF_Admin_Page_Class') ) :
     <hr>  
     <div>
 	<h2 class="ctl_add_head">Leave A Review</h2>
-	<p>Please Give us Your support by providing <br> positive rating.</p>
-	<div><a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/cool-timeline"><img src="' . COOL_TIMELINE_PLUGIN_URL . '/images/stars5.png"></a>
+	<p>If you find our plugin and support helpful.<br>Please rate and review us,It helps us grow <br>and improve our services.</p>
+	<div>
+  <a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/cool-timeline">WordPress.org</a>
 	</div>
    <h2 class="ctl_add_head">Cool Timeline PRO features</h2>
 <ul style="list-style:disc;margin: 2px 16px;">
 <li>Create multiple timeline stories</li>
-<li>3 New designs (Flat, Elegant,Classic).</li>
+<li>4 New designs (Flat, Elegant,Classic,Default).</li>
 <li>Create Category Specific Blog posts / <br> Content Timeline</li>
 <li>Horizontal timeline</li>
 <li>Historical dates - (starting from 1000)</li>
 <li>Multiple timeline skins (light, dark & multicolor)</li>
-<li>Multiple Layouts (one side ,both side)</li>
+<li>Multiple Layouts (one side ,both side,Compact,Horizontal)</li>
 <li>Advanced style options</li>
 <li>Beautiful <strong>timeline</strong> scrolling navigation</li>
 <li>Add slider & video inside timeline</li>
 <li>Stories category management</li>
 <li>Visual Composer support/ Addon</li>
+<li>Ajax load more stories</li>
+<li>Create any type of custom timeline </li>
 </ul>
     <hr>
     <div><h2 class="ctl_add_head">Upgrade to Pro version</h2>
     <a target="_blank" href="http://www.cooltimeline.com">
-    <img src="' . COOL_TIMELINE_PLUGIN_URL . '/images/7-cool-timeline-demos.png"></a> <a target="_blank" href="http://www.cooltimeline.com/downloads/buy-now-cool-timeline-pro"><img src="' . COOL_TIMELINE_PLUGIN_URL . '/images/6-buy-cool-timeline.png"></a></div>
+    <img src="https://res.cloudinary.com/cooltimeline/image/upload/v1503490189/website-images/cool-timeline-demos.png"></a> <a target="_blank" href="http://www.cooltimeline.com/downloads/buy-now-cool-timeline-pro"><img src="https://res.cloudinary.com/cooltimeline/image/upload/v1468242487/6-buy-cool-timeline_vabou4.png"></a></div>
     </div>';
     do_action('admin_page_class_after_page');
     }

@@ -1,479 +1,97 @@
 <?php
-add_action( 'admin_head','ctl_metaboxes_options_array' );  
-add_action( 'admin_menu', 'ctl_metabox_add', 10 ); // Triggers cool_timeline_metabox_create()
-add_action( 'admin_print_styles', 'ct_custom_enqueue_css', 10 );
-add_action( 'admin_enqueue_scripts', 'ct_custom_enqueue', 10, 1 );
+  add_action( 'add_meta_boxes_cool_timeline', 'ctl_add_meta_boxes' );
+  add_action( 'save_post_cool_timeline', 'ctl_save_meta_boxes_data', 10, 2 );
+  
+    /**
+     * Add meta box
+     *
+     * @param post $post The post object
+     * @link https://codex.wordpress.org/Plugin_API/Action_Reference/add_meta_boxes
+     */
+    function ctl_add_meta_boxes( $post ){
 
-add_action( 'edit_post', 'ctl_metabox_handle', 10 ); //save postmeta
+       add_action( 'admin_enqueue_scripts', 'ctl_post_settings_style' ); 
+        add_meta_box( 'cool_timeline_meta_box', __( 'Cool Timeline Settings', 'cool-timeline' ), 'ctl_build_meta_box', 'cool_timeline', 'normal', 'high' );
+        add_meta_box(
+                'ctl-pro-banner',
+                __( 'Please Give Us Your Feedback','cool-timeline'),
+                'ctl_right_section',
+                'cool_timeline',
+                'side',
+                'low'
+            );
+     }
+     
+         /**
+         * Cool timeline custom field meta box
+         *
+         * @param post $post The post object
+         */
+        function ctl_build_meta_box( $post ){
+          // make sure the form request comes from WordPress
+             wp_nonce_field( basename( __FILE__ ), 'ctl_meta_box_nonce' );
 
-
-function ctl_metaboxes_options_array()
-		{
-
-$ct_metaboxes = array();
-if( get_post_type() == 'cool_timeline'){
-	    $ptype=get_post_type();
-      $ct_metaboxes[] = array('name' => 'image_container_type',
-            'std' => __('default', 'apc'),
-            'label' => __('Image Size', 'apc'),
-            'type' => 'select',
-            'desc' => __('Select your story image size e.g(full,small)', 'apc'),
-            'options' => array(
-                 'large' => __('Full', 'apc'),
-               // 'Medium' => 'Medium',
-                'small' =>__('Small', 'apc')));
+         // retrieve the image_container_type current value
+         $image_container_type = get_post_meta( $post->ID, 'image_container_type', true );
+         ?>
+            <div class="ctl_meta_box_lbl">
+          <label><strong><?php _e( 'Story Image Size', 'cool-timeline' ); ?></strong></label>
+          </div>
+            <div class="ctl_meta_box_fields">
+         <div class='ctl-switch-fields'>
+          <?php if(empty($image_container_type)){ ?>
+          <input type="radio" id="image_container_large" name="image_container_type" value="Full" checked="true" ?><label for="image_container_large"><?php _e('Full', 'cool-timeline'); ?></label>
+          <?php }else{ ?>
+          <input type="radio" id="image_container_large" name="image_container_type" value="Full" <?php checked( $image_container_type, 'Full' ); ?> /><label for="image_container_large"><?php _e('Full', 'cool-timeline'); ?></label>
+        <?php } ?>
+            <input type="radio" id="image_container_small" name="image_container_type" value="Small" <?php checked( $image_container_type, 'Small' ); ?> /><label for="image_container_small"><?php _e('Small', 'cool-timeline'); ?></label>
+             </div> 
+             <div style="clear:both"></div>
+      
+          </div>
+            
+        <?php 
     }
 
-	if ( get_option('ct_metaboxes') != $ct_metaboxes) update_option('ct_metaboxes',$ct_metaboxes);   
-
-}
-
-
-/**
- * cool_timeline_metabox_add()
- *
- * 
- * @access public
- * @since 1.0.0
- * @return void
- */
-function ctl_metabox_add() {
-    $ct_metaboxes = get_option('ct_metaboxes', array());
-    if (function_exists('add_meta_box')) {
-        if (function_exists('get_post_types')) {
-            $custom_post_list = get_post_types();
-
-            // Get the theme name for use in multiple meta boxes.
-            $theme_name ='Cool Timeline';
-             $settings = array(
-                    'id' => 'weo-meta-settings',
-                    'title' => sprintf(__('%s Custom Settings', 'apc'), $theme_name),
-                    'callback' => 'ct_metabox_create',
-                    'page' =>'cool_timeline',
-                    'priority' => 'normal',
-                    'callback_args' => ''
-                );
-                $type='';
-                // Allow child themes/plugins to filter these settings.
-                $settings = apply_filters('weothemes_metabox_settings', $settings, $type, $settings['id']);
-                add_meta_box($settings['id'], $settings['title'], $settings['callback'], $settings['page'], $settings['priority'], $settings['callback_args']);
-          
-
-//add_meta_box('weo-side-settings',sprintf(__('%s Custom Settings', 'cool_timeline'),'ct_metabox_create','cool_timeline','side','low');
-			add_meta_box(
-				'ctl-pro-banner',
-				__( 'Support Cool Timeline','cool-timeline'),
-				'ctl_right_section',
-				'cool_timeline',
-				'side',
-				'low'
-			);
-        }/* else {
-          add_meta_box( 'weo-settings', sprintf( __( '%s Custom Settings', 'cool_timeline' ), $theme_name ), 'ct_metabox_create', 'post', 'normal' );
-          add_meta_box( 'weo-settings', sprintf( __( '%s Custom Settings', 'cool_timeline' ), $theme_name ), 'ct_metabox_create', 'page', 'normal' );
-          } */
-    }
-}
-
-
-function ctl_right_section($post, $callback){
-	global $post;
-	$pro_add=__('<div>
-	<strong class="ctl_add_head">Leave A Review</strong>','apc');
-	$pro_add .='<div><a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/cool-timeline"><img src="'.COOL_TIMELINE_PLUGIN_URL.'/images/stars5.png"></a></div>';
-
-	$pro_add .='</div><hr><div><strong class="ctl_add_head">Upgrade to Pro version</strong><a target="_blank" href="http://www.cooltimeline.com"><img src="'.COOL_TIMELINE_PLUGIN_URL.'/images/7-cool-timeline-demos.png"></a> <a target="_blank" href="http://www.cooltimeline.com/downloads/buy-now-cool-timeline-pro"><img src="'.COOL_TIMELINE_PLUGIN_URL.'/images/6-buy-cool-timeline.png"></a></div>';
-	echo $pro_add ;
-}
-
-// End cool_timeline_metabox_add()
-
-/**
- * ct_metabox_create()
- *
- * Create the markup for the meta box.
- *
- * @access public
- * @param object $post
- * @param array $callback
- * @return void
- */
-function ct_metabox_create($post, $callback) {
-    global $post;
-// Allow child themes/plugins to act here.
-    do_action('ct_metabox_create', $post, $callback);
-    $template_to_show = $callback['args'];
-
-    $ct_metaboxes = get_option('ct_metaboxes', array());
-
-    //var_dump( $ct_metaboxes);
-// Array sanity check.
-    if (!is_array($ct_metaboxes)) {
-        $ct_metaboxes = array();
-    }
-
-    // Determine whether or not to display general fields.
-    $display_general_fields = true;
-    if (count($ct_metaboxes) <= 0) {
-        $display_general_fields = false;
-    }
-    $output = '';
-    // Add nonce for custom fields.
-    $output .= wp_nonce_field('weo-custom-fields', 'weo-custom-fields-nonce', true, false);
-
-    if ($callback['id'] == 'weo-meta-settings') {
-        // Add tabs.
-        $output .= '<div class="ctlframework-tabs">' . "\n";
-        $output .= '<ul style="border:0" class="tabber hide-if-no-js">' . "\n";
-        if ($display_general_fields) {
-           // $output .= '<li class="wf-tab-general"><a href="#wf-tab-general">' . __('Extra Settings', 'cool_timeline') . '</a></li>' . "\n";
+    /**
+     * Store custom field meta box data
+     *
+     * @param int $post_id The post ID.
+     */
+    function ctl_save_meta_boxes_data( $post_id ){
+       // verify meta box nonce
+        if ( !isset( $_POST['ctl_meta_box_nonce'] ) || !wp_verify_nonce( $_POST['ctl_meta_box_nonce'], basename( __FILE__ ) ) ){
+            return;
         }
-        // Allow themes/plugins to add tabs to ctlFramework custom fields.
-        $output .= apply_filters('ctlframework_custom_field_tab_headings', '');
-        $output .= '</ul>' . "\n";
-    }
-    if ($display_general_fields) {
-        $output .= cool_timeline_metabox_create_fields($ct_metaboxes, $callback, 'general');
-    }
-    // Allow themes/plugins to add tabs to ctlFramework custom fields.
-    $output = apply_filters('ctlframework_custom_field_tab_content', $output);
-
-    $output .= '</div>' . "\n";
-
-    echo $output;
-}
-
-// End cool_timeline_metabox_create()
-
-/**
- * cool_timeline_metabox_create_fields()
- *
- * Create markup for custom fields based on the given arguments.
- * 
- * @access public
- * @since 5.3.0
- * @param array $metaboxes
- * @param array $callback
- * @param string $token (default: 'general')
- * @return string $output
- */
-function cool_timeline_metabox_create_fields ( $metaboxes, $callback, $token = 'Extra Meta' ) {
-global $post;
-
-    if ( ! is_array( $metaboxes ) ) { return; }
-	$template_to_show = $token;
-	
-	$output = '';
-	$output .= '<div id="wf-tab-' . esc_attr( $token ) . '">' . "\n";
-	$output .= '<table class="ct_metaboxes_table">'."\n";
-	 foreach ( $metaboxes as $k => $ct_metabox ) {
-	 
-	 // Setup CSS classes to be added to each table row.
-    	$row_css_class = 'ctl-custom-field';
-    	if ( ( $k + 1 ) == count( $metaboxes ) ) { $row_css_class .= ' last'; }
-    $ct_id = 'ct_' . $ct_metabox['name'];
-    	$ct_name = $ct_metabox['name'];
-	
-		if( isset( $ct_metabox['type'] ) && ( in_array( $ct_metabox['type'], $ct_metabox) ) ) {
-			$ct_metaboxvalue = get_post_meta($post->ID,$ct_name,true);
-			}
-				
-				
-				// Make sure slashes are stripped before output.
-				foreach ( array( 'label', 'desc', 'std' ) as $k ) {
-					if ( isset( $ct_metabox[$k] ) && ( $ct_metabox[$k] != '' ) ) {
-						$ct_metabox[$k] = stripslashes( $ct_metabox[$k] );
-					}
-				}
-				if ( $ct_metaboxvalue == '' && isset( $ct_metabox['std'] ) ) {
-
-        	        $ct_metaboxvalue = $ct_metabox['std'];
-        	    } 
-				// Add a dynamic CSS class to each row in the table.
-        	    $row_css_class .= ' ctl-field-type-' . strtolower( $ct_metabox['type'] );
-				
-				if( $ct_metabox['type'] == 'text' ) {
-
-        	    	$add_class = ''; $add_counter = '';
-        	    	if($template_to_show == 'seo'){$add_class = 'words-count'; $add_counter = '<span class="counter">0 characters, 0 words</span>';}
-        	        $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="'.esc_attr( $ct_id ).'">'.$ct_metabox['label'].'</label></th>'."\n";
-        	        $output .= "\t\t".'<td><input class="ct_input_text '.$add_class.'" type="'.$ct_metabox['type'].'" value="'.esc_attr( $ct_metaboxvalue ).'" name="'.$ct_name.'" id="'.esc_attr( $ct_id ).'"/>';
-        	        $output .= '<span class="ct_metabox_desc">'.$ct_metabox['desc'] .' '. $add_counter .'</span></td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-
-        	    }
-				elseif ( $ct_metabox['type'] == 'textarea' ) {
-
-        	   		$add_class = ''; $add_counter = '';
-        	    	if( $template_to_show == 'seo' ){ $add_class = 'words-count'; $add_counter = '<span class="counter">0 characters, 0 words</span>'; }
-        	        $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="'.$ct_metabox.'">'.$ct_metabox['label'].'</label></th>'."\n";
-        	        $output .= "\t\t".'<td><textarea class="ct_input_textarea '.$add_class.'" name="'.$ct_name.'" id="'.esc_attr( $ct_id ).'">' . esc_textarea(stripslashes($ct_metaboxvalue)) . '</textarea>';
-        	        $output .= '<span class="ct_metabox_desc">'.$ct_metabox['desc'] .' '. $add_counter.'</span></td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-
-        	    }
-				  elseif ( $ct_metabox['type'] == 'select' ) {
-
-        	        $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="' . esc_attr( $ct_id ) . '">' . $ct_metabox['label'] . '</label></th>'."\n";
-        	        $output .= "\t\t".'<td><select class="ct_input_select" id="' . esc_attr( $ct_id ) . '" name="' . esc_attr( $ct_name ) . '">';
-        	        $output .= '<option value="">Select option</option>';
-
-        	        $array = $ct_metabox['options'];
-
-        	        if( $array ) {
-
-        	            foreach ( $array as $id => $option ) {
-        	                $selected = '';
-
-        	                if( isset( $ct_metabox['default'] ) )  {
-								if( $ct_metabox['default'] == $option && empty( $ct_metaboxvalue ) ) { $selected = 'selected="selected"'; }
-								else  { $selected = ''; }
-							}
-
-        	                if( $ct_metaboxvalue == $option ){ $selected = 'selected="selected"'; }
-        	                else  { $selected = ''; }
-
-        	                $output .= '<option value="' . esc_attr( $option ) . '" ' . $selected . '>' . $option . '</option>';
-        	            }
-        	        }
-
-        	        $output .= '</select><span class="ct_metabox_desc">' . $ct_metabox['desc'] . '</span></td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-        	    }
-				  else if( $ct_metabox['type'] == 'info' ) {
-
-        	        $output .= "\t".'<tr class="' . $row_css_class . '" style="background:#f8f8f8; font-size:11px; line-height:1.5em;">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="'. esc_attr( $ct_id ) .'">'.$ct_metabox['label'].'</label></th>'."\n";
-        	        $output .= "\t\t".'<td style="font-size:11px;">'.$ct_metabox['desc'].'</td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-
-        	    }
-				  elseif ( $ct_metabox['type'] == 'select2' ) {
-
-        	        $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="' . esc_attr( $ct_id ) . '">' . $ct_metabox['label'] . '</label></th>'."\n";
-        	        $output .= "\t\t".'<td><select class="ct_input_select" id="' . esc_attr( $ct_id ) . '" name="' . esc_attr( $ct_name ) . '">';
-        	        $output .= '<option value="">Select to return to default</option>';
-
-        	        $array = $ct_metabox['options'];
-
-        	        if( $array ) {
-
-        	            foreach ( $array as $id => $option ) {
-        	                $selected = '';
-
-        	                if( isset( $ct_metabox['default'] ) )  {
-								if( $ct_metabox['default'] == $id && empty( $ct_metaboxvalue ) ) { $selected = 'selected="selected"'; }
-								else  { $selected = ''; }
-							}
-
-        	                if( $ct_metaboxvalue == $id ) { $selected = 'selected="selected"'; }
-        	                else  {$selected = '';}
-
-        	                $output .= '<option value="'. esc_attr( $id ) .'" '. $selected .'>' . $option . '</option>';
-        	            }
-        	        }
-
-        	        $output .= '</select><span class="ct_metabox_desc">'.$ct_metabox['desc'].'</span></td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-        	    }
-				 elseif ( $ct_metabox['type'] == 'checkbox' ){
-
-        	        if( $ct_metaboxvalue == 'true' ) { $checked = ' checked="checked"'; } else { $checked=''; }
-
-        	        $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	        $output .= "\t\t".'<th class="ct_metabox_names"><label for="'.esc_attr( $ct_id ).'">'.$ct_metabox['label'].'</label></th>'."\n";
-        	        $output .= "\t\t".'<td><input type="checkbox" '.$checked.' class="ct_input_checkbox" value="true"  id="'.esc_attr( $ct_id ).'" name="'. esc_attr( $ct_name ) .'" />';
-        	        $output .= '<span class="ct_metabox_desc" style="display:inline">'.$ct_metabox['desc'].'</span></td>'."\n";
-        	        $output .= "\t".'</tr>'."\n";
-        	    }
-				  elseif ( $ct_metabox['type'] == 'radio' ) {
-
-        	    $array = $ct_metabox['options'];
-
-        	    if( $array ) {
-
-        	    $output .= "\t".'<tr class="' . $row_css_class . '">';
-        	    $output .= "\t\t".'<th class="ct_metabox_names"><label for="' . esc_attr( $ct_id ) . '">' . $ct_metabox['label'] . '</label></th>'."\n";
-        	    $output .= "\t\t".'<td>';
-
-        	        foreach ( $array as $id => $option ) {
-        	            if($ct_metaboxvalue == $id) { $checked = ' checked'; } else { $checked=''; }
-
-        	                $output .= '<input type="radio" '.$checked.' value="' . $id . '" class="ct_input_radio"  name="'. esc_attr( $ct_name ) .'" />';
-        	                $output .= '<span class="ct_input_radio_desc" style="display:inline">'. $option .'</span><div class="ct_spacer"></div>';
-        	            }
-        	            $output .= "\t".'</tr>'."\n";
-        	         }
-        	    } elseif ( $ct_metabox['type'] == 'images' ) {
-
-				$i = 0;
-				$select_value = '';
-				$layout = '';
-
-				foreach ( $ct_metabox['options'] as $key => $option ) {
-					 $i++;
-
-					 $checked = '';
-					 $selected = '';
-					 if( $ct_metaboxvalue != '' ) {
-					 	if ( $ct_metaboxvalue == $key ) { $checked = ' checked'; $selected = 'ctl-meta-radio-img-selected'; }
-					 }
-					 else {
-					 	if ( isset( $option['std'] ) && $key == $option['std'] ) { $checked = ' checked'; }
-						elseif ( $i == 1 ) { $checked = ' checked'; $selected = 'ctl-meta-radio-img-selected'; }
-						else { $checked = ''; }
-
-					 }
-
-						$layout .= '<div class="ctl-meta-radio-img-label">';
-						$layout .= '<input type="radio" id="ctl-meta-radio-img-' . $ct_name . $i . '" class="checkbox ctl-meta-radio-img-radio" value="' . esc_attr($key) . '" name="' . $ct_name . '" ' . $checked . ' />';
-						$layout .= '&nbsp;' . esc_html($key) . '<div class="ct_spacer"></div></div>';
-						$layout .= '<img src="' . esc_url( $option ) . '" alt="" class="ctl-meta-radio-img-img '. $selected .'" onClick="document.getElementById(\'ctl-meta-radio-img-'. esc_js( $ct_metabox["name"] . $i ) . '\').checked = true;" />';
-					}
-
-				$output .= "\t".'<tr class="' . $row_css_class . '">';
-				$output .= "\t\t".'<th class="ct_metabox_names"><label for="' . esc_attr( $ct_id ) . '">' . $ct_metabox['label'] . '</label></th>'."\n";
-				$output .= "\t\t".'<td class="ct_metabox_fields">';
-				$output .= $layout;
-				$output .= '<span class="ct_metabox_desc">' . $ct_metabox['desc'] . '</span></td>'."\n";
-        	    $output .= "\t".'</tr>'."\n";
-
-				}
-				  elseif( $ct_metabox['type'] == 'upload' )
-        	    {
-					if( isset( $ct_metabox['default'] ) ) $default = $ct_metabox['default'];
-					else $default = '';
-
-        	    	// Add support for the ctlThemes Media Library-driven Uploader Module // 2010-11-09.
-        	    	if ( function_exists( 'cool_timeline_medialibrary_uploader' ) ) {
-
-        	    		$_value = $default;
-
-        	    		$_value = get_post_meta( $post->ID, $ct_metabox['name'], true );
-
-        	    		$output .= "\t".'<tr class="' . $row_css_class . '">';
-	    	            $output .= "\t\t".'<th class="ct_metabox_names"><label for="'.$ct_metabox['name'].'">'.$ct_metabox['label'].'</label></th>'."\n";
-	    	            $output .= "\t\t".'<td class="ct_metabox_fields">'. cool_timeline_medialibrary_uploader( $ct_metabox['name'], $_value, 'postmeta', $ct_metabox['desc'], $post->ID );
-	    	            $output .= '</td>'."\n";
-	    	            $output .= "\t".'</tr>'."\n";
-
-        	    	} 
-        	    }
-        	    
-				
-		}
-		 $output .= '</table>'."\n\n";
-    $output .= '</div><!--/#wf-tab-' . $token . '-->' . "\n\n";
-    
-    return $output;
-} // End cool_timeline_metabox_create_fields()
-
- function ctl_metabox_handle($post_id) {
-    $pID = '';
-    global $globals, $post;
-    if (isset($_POST['post_type']) && 'page' == $_POST['post_type']) {
-        if (!current_user_can('edit_page', $post_id)) {
-            return $post_id;
+        // return if autosave
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ){
+            return;
         }
-    } else {
-        if (!current_user_can('edit_post', $post_id)) {
-            return $post_id;
+        // Check the user's permissions.
+        if ( ! current_user_can( 'edit_post', $post_id ) ){
+            return;
+        }
+
+        // store custom fields values
+        // image_container_type string
+        if ( isset( $_REQUEST['image_container_type'] ) ) {
+            update_post_meta( $post_id, 'image_container_type', sanitize_text_field( $_POST['image_container_type'] ) );
         }
     }
-    $ct_metaboxes = get_option('ct_metaboxes', array());
-     // Sanitize post ID.
-    if (isset($_POST['post_ID'])) {
-        $pID = intval($_POST['post_ID']);
+  
+    function ctl_right_section($post, $callback){
+        global $post;
+        $pro_add='';
+        $pro_add .='<div><div>'.
+        __('If you find our plugin and support helpful.<br>Please rate and review us,It helps us grow <br>and improve our services','cool-timeline').'.<br>
+        <a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/cool-timeline">'.__('WordPress.org','cool-timeline').'</a><br>
+        <a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/cool-timeline"><img src="https://res.cloudinary.com/cooltimeline/image/upload/v1504097450/stars5_gtc1rg.png"></a></div>';
+
+        $pro_add .='</div><hr><div><strong class="ctl_add_head">'.__('Upgrade to Pro version','cool-timeline').'</strong><a target="_blank" href="http://www.cooltimeline.com"><img src="https://res.cloudinary.com/cooltimeline/image/upload/v1503490189/website-images/cool-timeline-demos.png"></a> <a target="_blank" href="http://www.cooltimeline.com/downloads/buy-now-cool-timeline-pro"><img src="https://res.cloudinary.com/cooltimeline/image/upload/v1468242487/6-buy-cool-timeline_vabou4.png"></a></div>';
+        echo $pro_add ;
     }
 
-
-    // Don't continue if we don't have a valid post ID.
-    if ($pID == 0)
-        return;
-    if (( get_post_type() != '' ) && ( get_post_type() != 'nav_menu_item' ) && wp_verify_nonce($_POST['weo-custom-fields-nonce'], 'weo-custom-fields')) {
-
-
-        /* var_dump( $_POST);
-          die(); */
-        foreach ($ct_metaboxes as $k => $ct_metabox) { // On Save.. this gets looped in the header response and saves the values submitted
-            if (isset($ct_metabox['type'])) {
-                $var = $ct_metabox['name'];
-                // Get the current value for checking in the script.
-                $current_value = '';
-                $current_value = get_post_meta($pID, $var, true);
-                if (isset($_POST[$var])) {
-                    // Sanitize the input.
-                    $posted_value = '';
-                    $posted_value = $_POST[$var];
-                    // If it doesn't exist, add the post meta.
-                    if (get_post_meta($pID, $var) == "") {
-                        add_post_meta($pID, $var, $posted_value, true);
-                    }
-                    // Otherwise, if it's different, update the post meta.
-                    elseif ($posted_value != get_post_meta($pID, $var, true)) {
-                        update_post_meta($pID, $var, $posted_value);
-                    }
-                    // Otherwise, if no value is set, delete the post meta.
-                    elseif ($posted_value == "") {
-                        delete_post_meta($pID, $var, get_post_meta($pID, $var, true));
-                    } // End IF Statement
-                } elseif (!isset($_POST[$var]) && $ct_metabox['type'] == 'checkbox') {
-                    update_post_meta($pID, $var, 'false');
-                } else {
-                    delete_post_meta($pID, $var, $current_value); // Deletes check boxes OR no $_POST
-                }
-            } // End IF Statement	
+     /* Meta boxes styles */   
+     function ctl_post_settings_style($hook) {
+        wp_enqueue_style( 'custom_wp_admin_css',COOL_TIMELINE_PLUGIN_URL.'css/admin-style.css');
         }
-    }
-}
-
-if ( ! function_exists( 'ct_custom_enqueue' ) ) {
-/**
- * ct_custom_enqueue()
- * 
- * Enqueue JavaScript files used with the custom fields.
- *
- * @access public
- * @param string $hook
- * @since 2.6.0
- * @return void
- */
-function ct_custom_enqueue ( $hook ) {
-
-	wp_register_script( 'ctl-custom-fields',plugin_dir_url( __FILE__ ). 'js/ctl-custom-fields.js', array( 'jquery', 'jquery-ui-tabs' ) );
-		
-  	if ( in_array( $hook, array( 'post.php', 'post-new.php') ) ) {
-	
-  		wp_enqueue_script( 'ctl-custom-fields' );
-  	}
-} // End ct_custom_enqueue()
-}
-
-
-
-if ( ! function_exists( 'ct_custom_enqueue_css' ) ) {
-/**
- * ct_custom_enqueue_css()
- *
- * Enqueue CSS files used with the custom fields.
- *
- * @access public
- * @author Matty
- * @since 4.8.0
- * @return void
- */
-function ct_custom_enqueue_css () {
-	global $pagenow;
-	wp_register_style( 'ctl-custom-fields',plugin_dir_url( __FILE__ )  . 'css/ctl-custom-fields.css' );
-	if ( in_array( $pagenow, array( 'post.php', 'post-new.php') ) ) {
-		wp_enqueue_style( 'ctl-custom-fields' );
-	}
-} // End ct_custom_enqueue_css()
-}
-
-
-?>

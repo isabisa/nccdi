@@ -14,16 +14,10 @@ jQuery('document').ready(function($){
 	});
 	
 	 $(".cool_timeline").find("a[class^='ctl_prettyPhoto']").prettyPhoto({
-	 social_tools: false
-	 
+	 social_tools: false,
+	 show_title:false,
 	});
-/*
-	$('.grid').masonry({
-	  // set itemSelector so .grid-sizer is not used in layout
-	  itemSelector: '.grid-item',
-	  // use element for option
-	  columnWidth: '.grid-sizer',
-	  percentPosition: true
-	}) 
- */
+
+
+
 });

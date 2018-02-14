@@ -1,10 +1,10 @@
 ﻿=== Cool Timeline ===
 Contributors: narinder-singh,satindersingh
-Tags:cool timeline, dates, events, history, milestone, process, stories, story, time, timeline, vertical, program, appointments, about
+Tags:timeline, history, events, shortcodes,free,stories
 Donate link: http://www.cooltimeline.com
 Requires at least: 3.5
-Tested up to: 4.7.3
-Stable tag: 1.1.9
+Tested up to: 4.9
+Stable tag:1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,21 +13,26 @@ Cool Timeline plugin creates responsive vertical history timeline automatically 
 
 == Description ==
 <p>Cool Timeline is a responsive <strong>WordPress</strong> pure HTML & CSS <strong>Timeline Plugin</strong> that allows you to create beautiful vertical <strong>history timeline</strong>. You simply create posts, set images and date then Cool Timeline will automatically populate these posts in chronological order, based on the year and date. You can easily show timeline on any page of your website using shortcode - <strong>[cool-timeline]</strong></p>
-
-<p>You can show your events, appointments, concerts, stories, future & history happenings using <strong>Cool Timeline plugin</strong> on your site.</p>
-
 <h4>Check Cool Timeline Demos</h4>
 <blockquote>
-<p><a href="http://www.cooltimeline.com/#cool-demos" title="View Pro Timeline Demos">Cool Timeline Pro Demos</a> | <a href="http://free.cooltimeline.com" title="View Free Timeline Demos">Cool Timeline Free Demo<a/></p>
+<p><a href="https://www.cooltimeline.com/#cool-demos" title="View Pro Timeline Demos">Cool Timeline Pro Demos</a> | <a href="http://free.cooltimeline.com" title="View Free Timeline Demos">Cool Timeline Free Demo<a/></p>
 </blockquote>
-
+<p>You can show your events, appointments, concerts, stories, future & history happenings using <strong>Cool Timeline plugin</strong> on your site.</p>
 <h4>Full Short-Code of Cool Timeline</h4>
 <blockquote>
 <p>[cool-timeline layout="default" animation="FadeInOut" date-format="F j" icons="YES" show-posts="10"]</p>
 <p><a href="https://wordpress.org/plugins/cool-timeline/faq/" title="Timeline Shortcode Explaination">Learn More About Short-Code</a> | <a href="https://wordpress.org/plugins/cool-timeline/installation/" title="Cool Timeline Installation">Check Timeline Installation Guide</a></p>
 </blockquote> 
 
-<h4>Cool Timeline Plugin Features</h4>
+<h4>New Features Of Cool Timeline</h4>
+<ul>
+<li><strong>Compact Timeline</strong>:- Now our free users can also create a compact timeline, means a timeline without a lot of space between stories. <a href="http://free.cooltimeline.com/compact-timeline/" target="_blank">Check Demo Here >></a>
+</li>
+<li><strong>Clean Layout</strong>:- If you love clean and clear look without a lot of colors then you can showcase your story via our clean layout.<a href="http://free.cooltimeline.com" target="_blank">Check Demo Here >></a>
+</li>
+<li><strong>Advanced Design & Optimized Code</strong>:- We have also made it developer friendly, you can easily customize timeline story default query.</li>
+</ul>
+
 <p>You can create a cool history/events timeline inside your website with our advanced options - custom colors, fonts, icons, date-format and beautiful animation effects. Here are some cool features of our plugin:-</p>
 <ul>
 <li>Create both-sided/one-sided timeline</li>
@@ -69,6 +74,7 @@ Cool Timeline plugin creates responsive vertical history timeline automatically 
 <li>Optimized timelines loading speed </li>
 <li>Use Custom Label Instead of Date/Years</li>
 <li>Social Timeline (Facebook Page Timeline)</li>
+<li>Ajax Load More Stories Pagination</li>
 </ul>
 </blockquote>
 
@@ -161,16 +167,45 @@ We have tried our best to create an awesome <strong>timeline plugin</strong> but
 <p>Yes, You can contact us anytime at here - <strong>contact@cooltimeline.com</strong>. We will try to provide an answer with in 24 hours.</p>
 
 == Screenshots ==
-1. Cool timeline frontend view.
-2. Cool timeline story elements.
-3. Cool timeline story creation screen with instructions.
-4. Cool timeline general settings section.
-5. Cool timeline PRO features.
-6. Cool timeline PRO Single Sided.
-7. Cool timeline PRO Horizontal view.
-8. Create any type of timeline using Cool timeline PRO .
+1. Cool timeline frontend view and story elements.
+2. Cool timeline story creation screen with instructions.
+3. Cool timeline general settings section.
+4. Cool timeline PRO features.
+5. Cool timeline PRO Single Sided.
+6. Cool timeline PRO Horizontal view.
+7. Create any type of timeline using Cool timeline PRO .
 == Changelog ==
 
+= Version 1.3.2 |September 13 2017 =
+<ul>
+<li>Fixed:-Fixed animation effect compatibility issue with new version of google chrome(Version 61.0.3163.79)</li>
+<li>Improvements:-added timeline styles in header and scripts in footer</li>
+<li>Improvements:-Changed pagination position in center</li>
+</ul>
+= Version 1.3.1 |September 5 2017 =
+<ul>
+<liFixed:Fixed Minor Clean Timeline styling issues.</li>
+</ul>
+= Version 1.3 |September 4 2017 =
+<ul>
+<li>Added:- Added new skins options in shortcode generator.Now user can easily create simple and clean timeline without background colors.  </li>
+<li>Added:- Added new setting panel for story image size </li>
+<li>Added:-Integrated Hooks.User can easily customize timeline stories query arguments using add_filter('ctl_stories_query','callback_function'); filter hook.</li>
+<li>Added:- Added ctl_story_clasess filter hook.Using this hook users can easily add your own custom classes in timeline stories</li>
+<li>Improvements:-Improved All stories section added story dates and story icons sections</li>
+	<li>Added:-Integrated new font awesome icons Version 4.7</li>
+	<li>Improvements:-Improved overall code.included files based upon conditions</li>
+	<li>Improvements:-Created function for story images and story date</li>
+	<li>Improvements:-Optimized timeline loading speed. Minified all CSS and JS files.</li>
+</ul>
+= Version 1.2 |May 8 2017 =
+<ul>
+<li>Added:- Added brand new compact timeline layout.Using this layout you can easily show your stories in compact mode like(facebook timeline)</li>
+	<li>Added:-Added shortcode generator in all type of posts and pages.</li>
+ 	<li>Fixed:- Google fonts loading problem of all pages </li>
+ 	<li>Improvements:-Minor Textual changes</li>
+ 	<li>Fixed:-Minor CSS and js Fixes</li>
+</ul>
 = Version 1.1.8 |12/1/2017=
 <ul>
  	<li>Added:- Added brand new designs for default timeline</li>

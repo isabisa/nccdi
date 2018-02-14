@@ -2,8 +2,8 @@
 Contributors: fusionengineering, mattheu, danielbachhuber, zebulonj, goldenapples, jitendraharpalani, sanchothefat, bfintal, davisshaver, garyj, mte90, fredserva, khromov, bronsonquick, dashaluna, mehigh, sc0ttkclark, kraftner, pravdomil
 Tags: shortcodes
 Requires at least: 4.5
-Tested up to: 4.7.3
-Stable tag: 0.7.1
+Tested up to: 4.8.1
+Stable tag: 0.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,7 +68,26 @@ We've removed the compatibility shim for the magical `content` attribute. If you
 
 == Changelog ==
 
-= 0.7.1 (December 16, 2016) =
+= 0.7.3 (September 5, 2017) =
+* Security: Use nonce validation in ajax render shortcode callback to protect against CSRF.
+* Bug fix: Make sure that the same js hooks fire on all field types.
+* Bug fix: Fix bugs affecting multiple select fields (values could not be unset once set, and multiple default values couldn't be set).
+* Bug fix: Prevent encoded fields containing two percent characters from breaking.
+* Bug fix: Fix some issues where the media modal state was not reset properly if a shortcode was closed without saving.
+* Bug fix: Support cases where there are multiple WP_Editor instances on a page, and make sure that the shortcode being edited is sent to the correct page.
+* Enhancement: When post_select field is selecting from more than one post type, show the post type alongside the post name for easier selection.
+* Enhancement: Show attachment thumbnails for any attachment type, not just images.
+* Enhancement: Add more helpful error messages if no shortcodes with Shortcake UI are registered.
+* Update Norwegian translation
+
+= 0.7.2 (April 24, 2017) =
+* Bug fix: Fix behavior in WordPress 4.7.4 where editing a shortcode would insert a new shortcode into the editor rather than updating the shortcode being edited.
+* Bug fix: The replacement used to escape percent (%) characters in attributes only replaced the first appearance
+* Bug fix: For select fields with multiple=true, allow multiple options to be selected by default
+* Added i18n for all strings in attachment field template
+* Added Finnish translation
+
+= 0.7.1 (March 16, 2017) =
 * Change shortcode formatting to add a space before the self-closing trailing slash.
 * Fix alignment of attachment previews with long filenames.
 * Bug fix: Set an initial value on select fields (previously, no value would be set for a select field unless the user interacts with the field).

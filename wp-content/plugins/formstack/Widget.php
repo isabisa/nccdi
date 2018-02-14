@@ -1,131 +1,203 @@
 <?php
-
-/*
-Plugin Name: Formstack Widget
-Plugin URI: http://wordpress.org/extend/plugins/formstack
-Description: Easily embed Formstack forms into your sidebar.
-Version: 1.0.10
-Author: Formstack, LLC
-Author URI: http://www.formstack.com
-*/
-
 /**
- * This file is part of Formstack's WordPress Plugin.
+ * Formstack Form Widget
  *
- * Formstack's WordPress Plugin is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * Formstack's WordPress Plugin is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * @package Formstack
+ * @author Formstack
  */
 
-require_once dirname(__FILE__) . '/API.php';
-
+/**
+ * Class Formstack_Widget
+ */
 class Formstack_Widget extends WP_Widget {
 
-    private $fields = array('formkey', 'formstack_api_key');
+	private $fields = array( 'formkey', 'nojquery', 'nojqueryui', 'nomodernizr', 'no_style', 'no_style_strict' );
 
-    function  __construct() {
+	/**
+	 * Formstack_Widget constructor.
+	 */
+	public function __construct() {
+		parent::__construct(
+			'fs_wp_widget',
+			esc_html__( 'Formstack', 'formstack' ),
+			array(
+				'description' => esc_html__( 'Easily embed Formstack forms into your sidebar.', 'formstack' ),
+			),
+			array(
+				'width' => 200,
+			)
+		);
+	}
 
-        $desc = "Easily embed Formstack forms into your sidebar.";
-        parent::__construct('fs_wp_widget', 'Formstack', array('description' => $desc), array('width' => 200));
-    }
+	/**
+	 * Render our frontend output.
+	 *
+	 * @since unknown
+	 *
+	 * @param array $args
+	 * @param array $instance
+	 */
+	public function widget( $args, $instance ) {
 
-    function widget($args, $instance) {
+		if ( empty( $instance['formkey'] ) ) {
+			return;
+		}
 
-        if (empty($instance['formkey'])) {
-            return;
-        }
+		list( $form ) = explode( '-', $instance['formkey'] );
+		$wp = wp_remote_get( "https://www.formstack.com/forms/wp-ad.php?form={$form}" );
+		$extras = formstack_get_extra_url_params( $instance );
 
-        list($form, ) = explode('-', $instance['formkey']);
-        $wp = wp_remote_fopen("http://www.formstack.com/forms/wp-ad.php?form={$form}");
+		$script_url   = add_query_arg( $extras, "https://www.formstack.com/forms/js.php?{$instance['formkey']}" );
+		$noscript_url = add_query_arg( $extras, "https://www.formstack.com/forms/?{$instance['formkey']}" );
+	    ?>
 
-        print <<< EOF
-        <div class="fs_wp_sidebar">
-        <link href="https://www.formstack.com/forms/css/2/wordpress-widget.css" type="text/css" rel="stylesheet" />
-        <script type="text/javascript" src="https://www.formstack.com/forms/js.php?{$instance['formkey']}">
-        </script><noscript><a href="https://www.formstack.com/forms/?{$instance['formkey']}" title="Online Form">Online Form</a></noscript>
-        {$wp}
-        </div>
-EOF;
+		<div class="fs_wp_sidebar">
+			<script type="text/javascript" src="<?php echo esc_url( $script_url ); ?>"></script>
+			<noscript>
+				<a href="<?php echo esc_url( $noscript_url ); ?>" title="<?php esc_attr_e( 'Online Form', 'formstack' ); ?>"><?php esc_html_e( 'Online Form', 'formstack' ); ?></a>
+			</noscript>
+			<?php
+				echo wp_kses_post( wp_remote_retrieve_body( $wp ) );
+			?>
+		</div>
+	<?php
 
-    }
+	}
 
-    function update($new_instance, $old_instance) {
-        $instance = $old_instance;
-        foreach ($this->fields as $i => $field) {
-            $instance[$field] = strip_tags($new_instance[$field]);
-        }
-        return $instance;
-    }
+	/**
+	 * Save our widget settings.
+	 *
+	 * @since unknown
+	 *
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
+	 */
+	public function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+		foreach ( $this->fields as $i => $field ) {
+			if ( empty( $new_instance[ $field ] ) ) {
+				unset( $instance[ $field ] );
+				continue;
+			}
 
-    function form($instance) {
+			$instance[ $field ] = 'true';
+			if ( 'formkey' === $field ) {
+				$instance[ $field ] = strip_tags( $new_instance[ $field ] );
+			}
+		}
 
-        $api_key = $instance['formstack_api_key'];
+		return $instance;
+	}
 
-        if (empty($api_key)) {
-            $api_key = get_option('formstack_api_key');
-        }
+	/**
+	 * Render our admin side widget form.
+	 *
+	 * @since unknown
+	 *
+	 * @param array $instance
+	 * @return mixed
+	 */
+	public function form( $instance ) {
 
-        $keyFieldId = $this->get_field_id('formstack_api_key');
-        $keyFieldName = $this->get_field_name('formstack_api_key');
+		$settings      = get_option( 'formstack_settings', '' );
+		$client_id     = ( isset( $settings['client_id'] ) ) ? $settings['client_id'] : '';
+		$client_secret = ( isset( $settings['client_secret'] ) ) ? $settings['client_secret'] : '';
+		$oauth_code    = get_option( 'formstack_oauth2_code', '' );
 
-        if (empty($api_key)) {
-            include 'tmpl/widget_empty_api_key.php';
-            return;
-        }
+		if ( empty( $client_id ) || empty ( $client_secret ) ) {
+			echo $this->no_app_set_up();
+			return;
+		}
+		if ( $client_id && $client_secret && $oauth_code ) {
+			$formstack_api = new Formstack_API_V2(
+				array(
+					'client_id'     => $client_id,
+					'client_secret' => $client_secret,
+					'redirect_uri'  => admin_url( 'admin.php?page=Formstack' ),
+					'code'          => $oauth_code
+				)
+			);
+		}
 
-        $res = Formstack_API::request($api_key, 'forms');
+		$form_count = $formstack_api->get_form_count();
+		if ( empty( $form_count ) ) {
+			printf(
+				'<p>' . esc_attr( 'Your account does not appear to have any forms at the moment, please add some at %s or refresh form cache', 'formstack' ) . '</p>',
+				'<a href="https://www.formstack.com" target="_blank">https://www.formstack.com</a>'
+			);
+			return;
+		}
 
-        if ($res->status == "error") {
-            include 'tmpl/widget_empty_api_key.php';
-            return;
-        } elseif ($res->status != "ok") {
-            include 'tmpl/api_error.php';
-            return;
-        }
+		$fields = array();
+		foreach ( $this->fields as $i => $field ) {
+			$fields[ $field ] = array(
+				'id'    => $this->get_field_id( $field ),
+				'name'  => $this->get_field_name( $field ),
+				'value' => ( isset( $instance[ $field ] ) ) ? esc_attr( $instance[ $field ] ) : '',
+			);
+		}
+		?>
+		<label for="<?php echo esc_attr( $fields['formkey']['id'] ); ?>">
+			<?php esc_html_e( 'Choose a form to embed:', 'formstack' ); ?>
+			<select class="widefat" name="<?php echo esc_attr( $fields['formkey']['name'] ); ?>" id="<?php echo esc_attr( $fields['formkey']['id'] ); ?>">
+				<option value=''><?php esc_html_e( 'Select a form to display', 'formstack' ); ?></option>
+			<?php
+			$forms_response = $formstack_api->get_forms();
+			if ( ! empty( $forms_response['forms'] ) ) {
+				foreach ( $forms_response['forms'] as $form ) {
+					$sel = selected( $fields['formkey']['value'], "{$form->id}-{$form->viewkey}", false );
+					?>
+					<option <?php echo $sel; ?> value="<?php echo esc_attr( "{$form->id}-{$form->viewkey}" ); ?>">
+						<?php echo esc_html( $form->name ); ?></option>
+					<?php
+				}
+			}
+			?>
+			</select>
+		</label>
 
-        $res = $res->response;
+		<ul>
+			<?php
+			$extras = $this->get_url_extras();
+			foreach ( $extras as $name => $text ) {
+				$extras_field = ( isset( $instance[ $name ] ) ) ? 'on' : '';
+				?>
+				<li>
+					<label for="<?php echo $this->get_field_id( $name ); ?>"><input class="checkbox" name="<?php echo $this->get_field_name( $name ); ?>" id="<?php echo $this->get_field_id( $name ); ?>" type="checkbox" value="<?php echo esc_attr( $name ); ?>" <?php checked( $extras_field, 'on' ); ?>><?php echo $text; ?>
+					</label></li>
+				<?php
+			}
+			?>
+		</ul>
+		<?php
+	}
 
-        $fields = array();
-        foreach ($this->fields as $i => $field) {
-            $fields[$field] = array(
-                 'id' => $this->get_field_id($field),
-                 'name'  => $this->get_field_name($field),
-                 'value' => esc_attr(@$instance[$field])
-             );
-        }
+	public function no_app_set_up() {
+	?>
+		<p>
+			<?php esc_html_e( 'Please set your app client credentials on the Formstack settings page.', 'formstack' ); ?>
+		</p>
+	<?php
+	}
 
-        print "<p>";
-        print "<label for='{$fields['formkey']['id']}'>Choose a form to embed:";
-        print "<select class='widefat' name='{$fields['formkey']['name']}' id='{$fields['formkey']['id']}'>";
-
-        if ($fields['formkey']['value'] == '') {
-            print "<option value=''></option>";
-        }
-
-        foreach ($res->forms as $form) {
-            $sel = esc_attr($fields['formkey']['value']) == "{$form->id}-{$form->viewkey}"
-                ? "selected='selected'" : '';
-            print "<option {$sel} value='{$form->id}-{$form->viewkey}'>" . htmlspecialchars($form->name) . "</option>";
-        }
-        print "</select>";
-        print "</label>";
-        print "<input type='hidden' name='{$keyFieldName}' id='{$keyFieldId}' value='{$api_key}' />";
-        print "</p>";
-
-    }
-
+	public function get_url_extras() {
+		return array(
+			'nojquery'         => esc_html__( 'I do not need jQuery', 'formstack' ),
+			'nojqueryui'       => esc_html__( 'I do not need jQuery UI', 'formstack' ),
+			'nomodernizr'      => esc_html__( 'I do not need Modernizr', 'formstack' ),
+			'no_style'         => esc_html__( 'Use bare-bones-css', 'formstack' ),
+			'no_style_strict' => esc_html__( 'Use no CSS', 'formstack' ),
+		);
+	}
 }
 
+/**
+ * Register our widget.
+ *
+ * @since unknown
+ */
+function formstack_widget_init() {
+	register_widget( 'Formstack_Widget' );
+}
 add_action( 'widgets_init', 'formstack_widget_init' );
-function formstack_widget_init() { register_widget('Formstack_Widget'); }
-
-?>
