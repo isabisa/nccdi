@@ -3,7 +3,7 @@
 Plugin Name: Button
 Plugin URI: http://webdzier.com
 Description: WordPress button generator plugin.You can create any type of button. <a href="http://webdzier.com">Get Pro version</a>. Button is a powerful plugin.
-Version: 1.0.4
+Version: 1.1.0
 Author: webdzier
 Author URI: http://webdzier.com
 Text Domain: button 

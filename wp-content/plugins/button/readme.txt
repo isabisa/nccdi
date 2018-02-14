@@ -1,11 +1,11 @@
-=== Wordpress Button Plugin ===
+=== Button ===
 Contributors: webdzier
 Donate link: https://www.webdzier.com/
 version: 1.0.4
 Tags: buttons, Wordpress Button Plugin,social buttons plugin wordpress,like button plugin for wordpress,wordpress buttons, wd buttons plugin, button plugin wordpress,css3 buttons,  social icons buttons, sharing buttons,widget buttons, widget buttons, css3 buttons generator, fontawesome buttons, icon buttons, , social icons buttons, whatsapp buttons, woocommerce buttons, google buttons, linkedin buttons, reddit buttons, facebook buttons, like buttons, twitter buttons, pinterest buttons, icons buttons, 2d buttons, 3d buttons, button animation, social navbar, menubar, navigation bar, paypal button,paypal donate button wordpress plugin, wordpress plugin social media share buttons,shopping cart buttons, register botton, login button, link button, add to cart buttons, signup button, payment method botton, social share button, google analytics button, feature button, services button, bootstrap buttons, funny buttons
 Requires at least: 3.5.1
-Tested up to: 4.8.1
-Stable tag: 1.0.0
+Tested up to: 4.8.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
