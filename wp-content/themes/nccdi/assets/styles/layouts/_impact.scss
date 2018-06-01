@@ -1,0 +1,44 @@
+.impact-story {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 4em;
+
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 20%;
+  }
+
+  div {
+    width: 75%;
+
+    p, h3 {
+      margin: 10px 0;
+    }
+
+    h3 {
+      color: $gray-light;
+      font-family: $font-family-sans-serif;
+      font-weight: 400;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .impact-story {
+    flex-direction: column;
+    margin: 0 auto 4em auto;
+
+    img {
+      width: 250px;
+      height: 250px;
+      margin-bottom: 1em;
+    }
+
+    div {
+      width: 100%;
+    }
+  }
+}
