@@ -15,11 +15,12 @@ use Roots\Sage\Nav;
         <img src="<?php echo Assets\asset_path('images/oak-foundation-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/oak-foundation-logo@2x.png'); ?> 2x" alt="Oak Foundation" />
         <img src="<?php echo Assets\asset_path('images/zsr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/zsr-logo@2x.png'); ?> 2x" alt="Z Smith Reynolds Foundation" />
         <img src="<?php echo Assets\asset_path('images/wells-fargo-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/wells-fargo-logo@2x.png'); ?> 2x" alt="Wells Fargo" />
-        <img src="<?php echo Assets\asset_path('images/tcf-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/tcf-logo@2x.png'); ?> 2x" alt="Triangle Community Foundation" />
         <img src="<?php echo Assets\asset_path('images/pnc-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/pnc-logo@2x.png'); ?> 2x" alt="PNC" />
         <img src="<?php echo Assets\asset_path('images/suntrust-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/suntrust-logo@2x.png'); ?> 2x" alt="Suntrust" />
         <img src="<?php echo Assets\asset_path('images/kbr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/kbr-logo@2x.png'); ?> 2x" alt="Kate B Reynolds Charitable Trust" />
-        <img src="<?php echo Assets\asset_path('images/neighborworks-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/neighborworks-logo@2x.png'); ?> 2x" alt="NeighborWorks America" />
+        <img src="<?php echo Assets\asset_path('images/first-bank-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/first-bank-logo@2x.png'); ?> 2x" alt="Local First Bank" />
+        <img src="<?php echo Assets\asset_path('images/fifth-third-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/fifth-third-logo@2x.png'); ?> 2x" alt="Fifth Third Bank" />
+        <img src="<?php echo Assets\asset_path('images/first-tenn-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/first-tenn-logo@2x.png'); ?> 2x" alt="First Tennessee Bank" />
       </div>
     </div>
   </div>
@@ -33,9 +34,9 @@ use Roots\Sage\Nav;
       <a href="http://nchousing.org" target="_blank"><img src="<?php echo Assets\asset_path('images/nchc-logo-footer.jpg'); ?>" /></a>
       <hr class="footer-hr">
       <div class="recognition">
-        <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi.png'); ?>" />
-        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" />
-        <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" />
+        <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi-2018.png'); ?>" srcset="<?php echo Assets\asset_path('images/cdfi-2018@2x.png'); ?> 2x" alt="Certified CDFI" />
+        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" alt="Aeris Rated since 2016" />
+        <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" alt="OFN Member" />
       </div>
     </div>
 
