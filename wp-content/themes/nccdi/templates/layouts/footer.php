@@ -28,19 +28,8 @@ use Roots\Sage\Nav;
 
 <footer class="global-footer">
   <div class="container">
-    <div class="col-sm-6 col-md-4 footer-logos">
+    <div class="col-sm-12 col-md-3 footer-logos">
       <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo Assets\asset_path('images/nccdi-logo-footer.jpg'); ?>" /></a>
-      <br />
-      <a href="http://nchousing.org" target="_blank"><img src="<?php echo Assets\asset_path('images/nchc-logo-footer.jpg'); ?>" /></a>
-      <hr class="footer-hr">
-      <div class="recognition">
-        <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi-2018.png'); ?>" srcset="<?php echo Assets\asset_path('images/cdfi-2018@2x.png'); ?> 2x" alt="Certified CDFI" />
-        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" alt="Aeris Rated since 2016" />
-        <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" alt="OFN Member" />
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-5">
       <address>5800 Faringdon Place<br />
         Raleigh, NC 27609</address>
       <p><tel>919.828.5655</tel> | <a href="/contact/">Contact Us</a></p>
@@ -48,7 +37,15 @@ use Roots\Sage\Nav;
       <p><a class="btn btn-skew btn-lg btn-teal" data-toggle="modal" data-target="#emailSignupModal">Subscribe</a></p>
     </div>
 
-    <div class="col-sm-6 col-md-3">
+    <div class="col-sm-12 col-md-6">
+      <div class="recognition">
+        <img class="cdfi" src="<?php echo Assets\asset_path('images/cdfi-2018.png'); ?>" srcset="<?php echo Assets\asset_path('images/cdfi-2018@2x.png'); ?> 2x" alt="Certified CDFI" />
+        <img class="aeris" src="<?php echo Assets\asset_path('images/aeris.svg'); ?>" alt="Aeris Rated since 2016" />
+        <img class="ofn" src="<?php echo Assets\asset_path('images/ofnmember.png'); ?>" alt="OFN Member" />
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-3">
       <?php
       if (has_nav_menu('primary_navigation')) :
         wp_nav_menu(['theme_location' => 'footer_navigation', 'menu_class' => 'nav navbar-nav', 'depth' => 1, 'walker' => new Nav\NavWalker()]);

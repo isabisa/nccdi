@@ -209,21 +209,3 @@ use Roots\Sage\Assets;
     </div>
   </div>
 </section>
-
-<section class="stronger-together">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="striped-line"></div>
-
-        <div class="st-banner has-notch">
-          <div class="house">
-            <img src="<?php echo Assets\asset_path('images/st-house.jpg'); ?>" />
-          </div>
-          <img class="st-logo" src="<?php echo Assets\asset_path('images/thriving-communities-logo.png'); ?>" />
-          <a class="mega-link" href="/nc-housing-coalition/"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
