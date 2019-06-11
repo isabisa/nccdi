@@ -105,7 +105,7 @@ class Formstack_Widget extends WP_Widget {
 		$client_secret = ( isset( $settings['client_secret'] ) ) ? $settings['client_secret'] : '';
 		$oauth_code    = get_option( 'formstack_oauth2_code', '' );
 
-		if ( empty( $client_id ) || empty ( $client_secret ) ) {
+		if ( empty( $client_id ) || empty ( $client_secret ) || empty ( $oauth_code ) ) {
 			echo $this->no_app_set_up();
 			return;
 		}

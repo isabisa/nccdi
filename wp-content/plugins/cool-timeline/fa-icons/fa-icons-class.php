@@ -14,7 +14,13 @@
         $this->ctl_generate_icon_array();
         // Set screens
         $this->screens = array('cool_timeline');
-        $posttype = get_cpt();
+        $posttype = ctl_get_ctp();
+
+         $old_version= get_option("cool-timelne-v");
+        if( isset($old_version) || version_compare($old_version, CTLPV , '<' ) ){
+          delete_option('fa_icons');
+        }
+      
         // These should only be loaded in the admin, and for users that can edit posts
         if (is_admin() && $posttype="cool_timeline") {
           if (is_admin()) {
@@ -29,7 +35,6 @@
           }
           // Load scripts and/or styles in the front-end
           add_action('wp_enqueue_scripts', array($this, 'clt_front_scripts'));
-
           // Add a shortcode
           add_shortcode('fa', array($this, 'ctl_shortcode'));
         }
@@ -70,31 +75,26 @@
 
       public function clt_front_scripts() {
         if ( apply_filters( 'fa_field_load_styles', true ) ) {
-          wp_enqueue_style( 'font-awesome', FA_URL . 'css/font-awesome/css/font-awesome.min.css' );
+          wp_enqueue_style( 'font-awesome', CT_FA_URL . 'css/font-awesome/css/font-awesome.min.css' );
         }
       }
 
       public function ctl_modal() {
         ?>
-
         <div class="fa-field-modal" id="fa-field-modal" style="display:none">
           <div class="fa-field-modal-close">&times;</div>
           <h1 class="fa-field-modal-title"><?php _e( 'Select Font Awesome Icon', 'cool-timeline' ); ?></h1>
-
-          <div class="fa-field-modal-icons">
+         <div class="icon_search_container">
+          <input type="text" id="searchicon" onkeyup="ctlSearchIcon()" placeholder="Search Icon..">
+           </div>
+          <div id="ctl_icon_wrapper" class="fa-field-modal-icons">
             <?php if ( $this->icons ) : ?>
-
               <?php foreach ( $this->icons as $icon ) : ?>
-
                 <div class="fa-field-modal-icon-holder" data-icon="<?php echo $icon['class']; ?>">
                   <div class="icon">
-                    <i class="fa <?php echo $icon['class']; ?>"></i>
-                  </div>
-                  <div class="label">
-                    <?php echo $icon['class']; ?>
+                    <i  data-icon-name="<?php echo $icon['class']; ?>" class="<?php echo $icon['class']; ?>"></i>
                   </div>
                 </div>
-
               <?php endforeach; ?>
 
             <?php endif; ?>
@@ -112,11 +112,12 @@
         // only load the styles for eligable post types
         if ( in_array( get_current_screen()->post_type, $this->screens ) ) {
           // load up font awesome
-          wp_enqueue_style( 'fa-field-fontawesome-css', FA_URL . 'css/font-awesome/css/font-awesome.min.css' );
+          wp_enqueue_style( 'fa-field-fontawesome-css', CT_FA_URL . 'css/font-awesome/css/all.min.css' );
+          wp_enqueue_style('ctl-font-shims','https://use.fontawesome.com/releases/v5.7.2/css/v4-shims.css'); 
           // load up plugin css
-          wp_enqueue_style( 'fa-field-css', FA_URL . 'css/fa-field.css' );
+          wp_enqueue_style( 'fa-field-css', CT_FA_URL . 'css/fa-field.css' );
           // load up plugin js
-          wp_enqueue_script( 'fa-field-js', FA_URL . 'js/fa-field.js', array( 'jquery' ) );
+          wp_enqueue_script( 'fa-field-js', CT_FA_URL . 'js/fa-field.js', array( 'jquery' ) );
         }
       }
       /**
@@ -136,7 +137,7 @@
           add_meta_box( 'fa_field', __( 'Select Story Icon', 'cool-timeline' ), array(
             $this,
             'ctl_populate_metabox'
-          ), $screen, 'normal','high' );
+          ), $screen, 'side','high' );
         }
       }
 
@@ -147,8 +148,20 @@
         <div class="fa-field-metabox">
           <div class="fa-field-current-icon">
             <div class="icon">
-              <?php if ( $icon ) : ?>
-                <i class="fa <?php echo $icon; ?>"></i>
+              <?php 
+              
+           
+              if ( $icon ) : 
+                if(strpos($icon, '-o') !==false){
+                  $icon="fa ".$icon;
+                }else if(strpos($icon, 'fas')!==false || strpos($icon, 'fab') !==false) {
+                  $icon=$icon;
+                }else{
+                  $icon="fa ".$icon;
+                } 
+                
+                ?>
+                <i class="<?php echo $icon; ?>"></i>
               <?php endif; ?>
             </div>
             <div class="delete <?php echo $icon ? 'active' : ''; ?>">&times;</div>
@@ -188,18 +201,14 @@
       private function ctl_generate_icon_array() {
         $icons = get_option( 'fa_icons' );
         if ( ! $icons ) {
-          $pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
-          $subject = file_get_contents( FA_DIR . 'css/font-awesome/css/font-awesome.css' );
-          preg_match_all( $pattern, $subject, $matches, PREG_SET_ORDER );
-          $icons = array();
-          foreach ( $matches as $match ) {
-            $icons[] = array( 'css' => $match[2], 'class' => stripslashes( $match[1] ) );
-          }
-          update_option( 'fa_icons', $icons );
-        }
-        $this->icons = $icons;
+              $all_icons=json_decode(file_get_contents(CT_FA_DIR.'fontawesome-5.json'),true);
+              foreach ( $all_icons as $icon ) {
+                $icons[] = array( 'class' =>$icon );
+                } 
+                update_option( 'fa_icons', $icons ); 
+                $this->icons = $icons;
+            }
       }
-    }
+    
   }
-
-?>
+}

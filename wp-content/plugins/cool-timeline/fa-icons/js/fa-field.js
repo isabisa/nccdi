@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 			input = $( '.fa-field-metabox #fa_field_icon' ),
 			close = $( '.fa-field-modal-close' );
 
-		holder.html( '<i class="fa '+ icon +'" />' );
+		holder.html( '<i class="'+ icon +'" />' );
 		deleter.addClass( 'active' );
 		input.val(icon);
 		close.trigger( 'click' );
@@ -43,4 +43,24 @@ jQuery(document).ready(function($) {
 
 	});
 
+
+	
 });
+function ctlSearchIcon() {
+	// Declare variables
+	var input, filter, ul, li, a, i, txtValue;
+	input = document.getElementById('searchicon');
+	filter = input.value.toUpperCase();
+	iconsWrapper = document.getElementById("ctl_icon_wrapper");
+	allIcons = iconsWrapper.getElementsByTagName('div');
+	// Loop through all list items, and hide those who don't match the search query
+	for (i = 0; i < allIcons.length; i++) {
+	  txtValue = allIcons[i].getElementsByTagName("i")[0].getAttribute("data-icon-name");;
+	 // txtValue = icon.attr("data-icon-name");
+	  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		allIcons[i].style.display = "";
+	  } else {
+		allIcons[i].style.display = "none";
+	  }
+	}
+  }

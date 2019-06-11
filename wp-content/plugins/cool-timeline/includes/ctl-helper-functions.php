@@ -1,4 +1,70 @@
 <?php
+
+
+ // getting story date 
+ function ctlfree_get_story_date($post_id,$date_formats) {
+    $ctl_story_date = get_post_meta($post_id, 'ctl_story_date', true);
+    if ($ctl_story_date) {
+          if (strtotime($ctl_story_date)!==false) {
+              $posted_date = date_i18n(__("$date_formats", 'cool-timeline'), strtotime("$ctl_story_date"));
+          }
+            return  $posted_date;
+         }
+  }
+
+  
+/*
+Create own custom timestamp for stories
+*/
+function ctlfree_generate_custom_timestamp($story_date){
+    if(!empty($story_date)){
+         $ctl_story_date=strtotime($story_date);
+       if( $ctl_story_date!==false){
+           $story_timestamp =date('YmdHi',$ctl_story_date);
+         } 
+       return $story_timestamp;  
+    }
+}
+
+/*
+    Migrate old stories 
+*/
+function ctl_run_migration(){
+    $args = array( 
+        'post_type'   => 'cool_timeline',
+         'post_status'=>array('publish','future','scheduled'),
+         'numberposts' => -1 );
+       $posts = get_posts( $args );
+   
+    if(isset($posts)&& is_array($posts) && !empty($posts))
+    {
+       foreach ( $posts as $post )
+              {
+               $published_date= get_the_date('m/d/Y h:i a', $post->ID );
+                  if($published_date){
+                     update_post_meta($post->ID, 'ctl_story_date', $published_date);
+                     $story_timestamp= ctlfree_generate_custom_timestamp($published_date);
+                     update_post_meta($post->ID,'ctl_story_timestamp',$story_timestamp );
+                   }
+               }
+     }
+}
+
+
+// get post type from url
+function ctl_get_ctp() {
+    global $post, $typenow, $current_screen;
+ if ( $post && $post->post_type )
+        return $post->post_type;
+  elseif( $typenow )
+        return $typenow;
+ elseif( $current_screen && $current_screen->post_type )
+        return $current_screen->post_type;
+ elseif( isset( $_REQUEST['post_type'] ) )
+        return sanitize_key( $_REQUEST['post_type'] );
+  return null;
+}
+//generate dyamic CSS styles
 function ctl_custom_style()
 {
             
@@ -74,7 +140,16 @@ function ctl_custom_style()
     background-image: -webkit-linear-gradient(top,'.$line_color.' 0%, '.$line_color.' 8%, '.$line_color.' 92%, '.$line_color.' 100%);
     background-image: -moz-linear-gradient(top, '.$line_color.' 0%, '.$line_color.' 8%, '.$line_color.' 92%, '.$line_color.' 100%);
     background-image: -ms-linear-gradient(top, '.$line_color.' 0%, '.$line_color.' 8%, '.$line_color.' 92%, '.$line_color.' 100%);
-    }';
+    }
+	
+	.cool_timeline_horizontal ul.ctl_road_map_wrp:before	{
+		background: '.$line_color.' !important;
+    }
+    .ctl_road_map_wrp .clt_h_nav_btn i {
+       color: '.$line_color.';
+    }
+	
+	';
   
     $styles.=' .cool-timeline.white-timeline .timeline-year{
         -webkit-box-shadow: 0 0 0 4px white, inset 0 0 0 2px rgba(0, 0, 0, 0.05), 0 0 0 8px '.$line_color.';
@@ -113,13 +188,18 @@ if($post_title_f){
 }
 
 $styles.='
- .cool-timeline .timeline-post .timeline-content h2.content-title{
+ .cool-timeline .timeline-post .timeline-content h2.content-title,
+ .ctl-popup-content h2{
     font-size:'.$post_title_s.'!important;
     font-family:'.$post_title_f.'!important;
     font-weight:'.$post_title_w.'!important;
     text-transform:'.$post_title_text_style.';
+}
+.ctl-popup-content .story-posted-date {
+	font-family:'.$post_title_f.'!important;
 }';
-$styles.=' .cool-timeline .timeline-post .timeline-content .content-details{
+$styles.=' .cool-timeline .timeline-post .timeline-content .content-details,
+.ctl-popup-content{
     font-size:'.$post_content_s.'!important;
     font-family:'.$post_content_f.'!important;
     font-weight:'.$post_content_w.'!important;
@@ -137,7 +217,13 @@ if($first_post_color){
 
     .cool-timeline.white-timeline.one-sided .timeline-post.even .timeline-content .content-title:before {
         border-right-color:'.$first_post_color.';
-    }';
+    }
+
+    .ctl_road_map_wrp li.even .ctl-story-year:before {
+        border-color:'.$first_post_color.';
+        background:'.$first_post_color.';
+    }
+    ';
 
     $styles.='
     .cool-timeline.white-timeline  .timeline-post.even .icon-dot-full, .cool-timeline.one-sided.white-timeline .timeline-post.even .icon-dot-full{
@@ -147,7 +233,10 @@ if($first_post_color){
     .cool-timeline.white-timeline  .timeline-post.even .icon-color-white, .cool-timeline.one-sided.white-timeline .timeline-post.even .icon-color-white{
         background:'.$first_post_color.';
     } 
-    .cool-timeline.white-timeline  .timeline-post.even .timeline-meta .meta-details{
+    .cool-timeline.white-timeline  .timeline-post.even .timeline-meta .meta-details,
+	.ctl_road_map_wrp li.even .ctl-story-year,
+	.ctl_road_map_wrp li.even .ctl-story-title,
+	.ctl_road_map_wrp li.even .ctl-story-title a{
         color:'.$first_post_color.';
     }
     .cool-timeline.white-timeline  .timeline-post.even .timeline-content .content-title{
@@ -162,6 +251,11 @@ if($first_post_color){
     .clean-skin-tm .cool-timeline.white-timeline.compact  .timeline-post.ctl-left .timeline-content {
     border-right:3px solid '.$first_post_color.';
     border-radius:0;
+}
+.ctl_road_map_wrp li.even .ctl-story-year:after {
+	background: -moz-linear-gradient(top, '.$first_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
+    background: -webkit-linear-gradient(top, '.$first_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
+    background: linear-gradient(to bottom, '.$first_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
 }
 .cool-timeline.white-timeline.compact .timeline-post.ctl-left .icon-dot-full{
   background:'.$first_post_color.';
@@ -187,7 +281,12 @@ if($second_post_color){
     .cool-timeline.white-timeline.one-sided .timeline-post.odd .timeline-content .content-title:before {
         border-right-color:'.$second_post_color.';
         border-left-color: transparent;
-    }';
+    }
+    .ctl_road_map_wrp li.odd .ctl-story-year:before {
+        border-color:'.$second_post_color.';
+        background:'.$second_post_color.';
+    }
+    ';
 
     $styles.='
     .cool-timeline.white-timeline  .timeline-post.odd .icon-dot-full, .cool-timeline.one-sided.white-timeline .timeline-post .icon-dot-full{
@@ -199,7 +298,11 @@ if($second_post_color){
     }';
     $styles.='
 
-    .cool-timeline.white-timeline  .timeline-post.odd .timeline-meta .meta-details{
+    .cool-timeline.white-timeline  .timeline-post.odd .timeline-meta .meta-details,
+	.ctl_road_map_wrp li.odd .ctl-story-year,
+	.ctl_road_map_wrp li.odd .ctl-story-title,
+	.ctl_road_map_wrp li.odd .ctl-story-title a,
+	.ctl-popup-content h2{
         color:'.$second_post_color.';
     }';
     $styles.='
@@ -226,6 +329,12 @@ if($second_post_color){
     background:'.$second_post_color.';
 }
 
+.ctl_road_map_wrp li.odd .ctl-story-year:after {
+	background: -moz-linear-gradient(top, '.$second_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
+    background: -webkit-linear-gradient(top, '.$second_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
+    background: linear-gradient(to bottom, '.$second_post_color.' 0%, rgba(229, 229, 229, 0) 100%);
+}
+
 .cool-timeline.white-timeline.compact .timeline-post.ctl-right .icon-dot-full{
   background:'.$second_post_color.';
 } ';
@@ -247,7 +356,17 @@ $styles.='
    font-size:'.$post_title_s.'!important;
     font-family:'.$post_title_f.'!important;
     font-weight:'.$post_title_w.'!important;
-}';
+}
+.ctl_road_map_wrp li .ctl-story-title {
+	font-size:calc('.$post_title_s.' - 3px)!important;
+    font-family:'.$post_title_f.'!important;
+    font-weight:'.$post_title_w.'!important;
+}
+.ctl-story-year .rm_year {
+	font-family:'.$post_title_f.'!important;
+}
+
+';
 
 $styles.='
 @media (max-width: 860px) {
@@ -255,11 +374,21 @@ $styles.='
     border-right-color:'.$second_post_color.';
     border-left-color: transparent;
 }
-.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.even .timeline-content .content-title,.cool-timeline.white-timeline.compact .timeline-post.ctl-left.even .icon-color-white, .cool-timeline.white-timeline.compact .timeline-post.ctl-left.even .icon-dot-full{
+.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.even .timeline-content .content-title,
+.cool-timeline.white-timeline.compact .timeline-post.ctl-left.even .icon-color-white,
+.cool-timeline.white-timeline.compact .timeline-post.ctl-left.even .icon-dot-full{
     background:'.$first_post_color.';
 }
-.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.odd .timeline-content .content-title,.cool-timeline.white-timeline.compact .timeline-post.ctl-left.odd .icon-color-white, .cool-timeline.white-timeline.compact .timeline-post.ctl-left.odd .icon-dot-full{
+.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.odd .timeline-content .content-title,
+.cool-timeline.white-timeline.compact .timeline-post.ctl-left.odd .icon-color-white,
+.cool-timeline.white-timeline.compact .timeline-post.ctl-left.odd .icon-dot-full{
     background:'.$second_post_color.';
+}
+.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.even .timeline-content .content-title:after {
+    border-right-color:'.$first_post_color.';
+}
+.cool-timeline.white-timeline.compact  .timeline-post.ctl-left.odd .timeline-content .content-title:after {
+    border-right-color:'.$second_post_color.';
 }
 .ultimate-style .timeline-post.timeline-mansory.ctl-left .timeline-content .content-title:after {
 border-left-color:transparent;}
@@ -268,10 +397,10 @@ border-left-color:transparent;}
 
     $styles.='   /*-----Custom CSS-------*/';
     $styles.=$custom_styles;
-    wp_add_inline_style( 'ctl_styles',clt_minify_css($styles) );
+    wp_add_inline_style( 'ctl-styles',clt_minify_css($styles) );
 
  }
-
+// compress CSS
     function clt_minify_css($css){
          $buffer = $css;
           // Remove comments
@@ -284,7 +413,8 @@ border-left-color:transparent;}
           // Write everything out
         return $buffer;
          }
-        
+  
+// Timeline stories pagination handler
 function ctl_pagination($numpages = '', $pagerange = '', $paged='') {
  if (empty($pagerange)) {
     $pagerange = 2;

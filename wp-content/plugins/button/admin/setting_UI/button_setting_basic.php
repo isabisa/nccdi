@@ -20,6 +20,26 @@
 		</div>
 		<div class="clear_fix"></div> 
 	</div>
+
+	<div class="input_group">
+		<div class="input_label">
+			<label><?php _e( 'Attribute Id', 'button-pro' ); ?></label>
+		</div>
+		<div class="input_field">
+			<input type="text" class="input_box" name="attribute_id" placeholder="data-id" value="<?php printf( __( '%s', 'button-pro' ),$custom_data['attribute_id']); ?>">
+		</div>
+		<div class="clear_fix"></div> 
+	</div>
+
+	<div class="input_group">
+		<div class="input_label">
+			<label><?php _e( 'Attribute Value', 'button-pro' ); ?></label>
+		</div>
+		<div class="input_field">
+			<input type="text" class="input_box" name="attribute_value" placeholder="Enter Value" value="<?php printf( __( '%s', 'button-pro' ),$custom_data['attribute_value']); ?>">
+		</div>
+		<div class="clear_fix"></div> 
+	</div>
 	
 	<div class="input_group">
 		<div class="input_label">

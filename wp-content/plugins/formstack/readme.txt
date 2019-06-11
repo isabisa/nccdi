@@ -3,8 +3,8 @@ Contributors: mmattax, noahwesley, jeremyformstack, brianFormstack
 Donate link: https://www.formstack.com
 Tags: form builder, forms, lead generation, online forms, web forms, surveys, quizzes
 Requires at least: 2.8
-Tested up to: 4.8.1
-Stable tag: 2.0.1
+Tested up to: 5.1.1
+Stable tag: 2.0.2
 
 This plugin allows you to easily embed Web forms built with Formstack's online form builder
 into your sidebar, pages, and posts.
@@ -40,6 +40,9 @@ Your Formstack API key can be found in your account settings. Go here
 to find or create your API key: [https://www.formstack.com/admin/apiKey/main](https://www.formstack.com/admin/apiKey/main).
 
 == Changelog ==
+
+= 2.0.2 =
+* Fixed: Errors with unauthenticated accounts and trying to use API in widget.
 
 = 2.0.1 =
 * Fixed: Adjusted timeout value to 120seconds for API requests to accommodate for large responses.
@@ -100,6 +103,9 @@ to find or create your API key: [https://www.formstack.com/admin/apiKey/main](ht
 * Hello World
 
 == Upgrade Notice ==
+
+= 2.0.2 =
+* Fixed: Errors with unauthenticated accounts and trying to use API in widget.
 
 = 2.0.1 =
 * Fixed: Adjusted timeout value to 120seconds for API requests to accommodate for large responses.

@@ -15,7 +15,14 @@ if( ! function_exists( 'get_fa' ) ) {
 			return;
 		}
 		if ( $format ) {
-			$output = '<i class="fa ' . $icon . '"></i>';
+			if(strpos($icon, '-o') !==false){
+				$icon="fa ".$icon;
+			 }else if(strpos($icon, 'fas')!==false || strpos($icon, 'fab') !==false) {
+                  $icon=$icon;
+             }else{
+				$icon="fa ".$icon;
+			 }
+			$output = '<i class="' . $icon . '"></i>';
 		} else {
 			$output = $icon;
 		}

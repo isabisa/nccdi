@@ -10,24 +10,28 @@ if (!class_exists('CoolTimelineShortcode')) {
         public function __construct() {
            
             // registering cool timeline shortcode
-			add_action('init', array($this, 'cooltimeline_register_shortcode'));
-			//adding required assetns
-            add_action('wp_enqueue_scripts', array($this, 'ctl_load_scripts_styles'));
-			
+			 add_action('init', array($this, 'cooltimeline_register_shortcode'));
+			//adding required assets
+			 add_action('wp_enqueue_scripts', array($this, 'ctl_load_scripts_styles'));
+			 add_action( 'plugins_loaded', array($this,'load_ctl_for_elementor'));
 			// Call actions and filters in after_setup_theme hook
-			add_action( 'after_setup_theme',array($this, 'ctl_crm'),999 );
+		 	add_action( 'after_setup_theme',array($this, 'ctl_crm'),999 );
 			// custom excerpt length filter for story content
 			add_filter('excerpt_length', array($this, 'ctl_f_custom_excerpt_length'), 999);
+	
         }
-		
+	
 		function ctl_crm() {
 		   // add more link to excerpt
 		   function ctl_f_custom_excerpt_length($more) {
 			  global $post;
-			   $ctl_options_arr = get_option('cool_timeline_options');
+			   $ctl_options_arr =get_option('cool_timeline_options');
+			   $ctl_display_readmore = isset($ctl_options_arr['display_readmore'])?$ctl_options_arr['display_readmore']:'yes';
+
 				if ($post->post_type == 'cool_timeline' && !is_single() ){
-					 if( $ctl_options_arr['display_readmore']=='yes'){
-							 return '..<a class="read_more ctl_read_more" href="'. get_permalink($post->ID) . '">'. __('Read More', 'cool-timeline') .'</a>';
+					 if($ctl_display_readmore=='yes'){
+							$read_more_txt = apply_filters('cool_timeline_read_more_text',__('Read More', 'cool-timeline'));
+							 return '..<a class="read_more ctl_read_more" href="'. get_permalink($post->ID) . '">'.$read_more_txt .'</a>';
 					   }  
 				 }else{
 				  	return $more;
@@ -36,11 +40,18 @@ if (!class_exists('CoolTimelineShortcode')) {
 			add_filter('excerpt_more', 'ctl_f_custom_excerpt_length', 999);
 		}
 
+		function load_ctl_for_elementor(){
+
+		if (did_action( 'elementor/loaded' ) ) {
+			add_shortcode('cool-timeline', array($this,'cooltimeline_view'));
+			}
+			
+		}
 		// story content length filter callback
 		function ctl_f_custom_excerpt_length( $length ) {
 			global $post;
 			$ctl_options_arr = get_option('cool_timeline_options');
-			$ctl_content_length = $ctl_options_arr['content_length']?$ctl_options_arr['content_length']:100;
+			$ctl_content_length = isset($ctl_options_arr['content_length'])?$ctl_options_arr['content_length']:100;
 			if ($post->post_type == 'cool_timeline' && !is_single() ){
 				return $ctl_content_length;
 				}
@@ -52,7 +63,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 		*/
 
         function cooltimeline_register_shortcode() {
-            add_shortcode('cool-timeline', array($this,'cooltimeline_view'));
+        	 add_shortcode('cool-timeline', array($this,'cooltimeline_view'));
 		 }
 
 		 // shortcode callback
@@ -60,6 +71,8 @@ if (!class_exists('CoolTimelineShortcode')) {
 			$attribute = shortcode_atts(array(
                'post_per_page' => 10,
 				'layout'=>'',
+				'order'=>'',
+				'story-content'=>'',
 				'animation'=>'',
 				'date-format'=>'',
 				'icons'=>'',
@@ -68,76 +81,54 @@ if (!class_exists('CoolTimelineShortcode')) {
                     ), $atts);
 			$skin=$attribute['skin'];
 			$ctl_options_arr = get_option('cool_timeline_options');
-		
-			wp_enqueue_style('clt-font-awesome');
-			wp_enqueue_script('ctl_viewportchecker');
-			wp_enqueue_style('ctl_animate');
-			wp_enqueue_style('ctl_prettyPhoto');
-			wp_enqueue_style('ctl-gfonts');
-			wp_enqueue_style('ctl_default_fonts');
-	        wp_enqueue_script('ctl_prettyPhoto');	
-	        wp_enqueue_script('ctl_scripts');
-	        wp_enqueue_style('ctl_styles');
-	        
-		if($attribute['layout'] == "compact"){
-			  wp_enqueue_script( 'masonry',false, array(), false, false );
+			$layout=$attribute['layout'];
+			// loading timeline assets on shortcode specific page
+			$this->ctl_load_assets($layout);
 
-			  wp_add_inline_script( 'masonry',"( function($) {
-			  $(window).load(function(){ 
-			   // masonry plugin call
-			$('.compact-wrapper .cooltimeline_cont').masonry({itemSelector : '.timeline-mansory'});
-			$('.compact-wrapper .cooltimeline_cont').find('.timeline-mansory').each(function(index){
-				var firstPos=$(this).position();
-				if($(this).next('.timeline-post').length>0){
-						var secondPos=$(this).next().position();
-						var gap=secondPos.top-firstPos.top;
-						 new_pos=secondPos.top+70;
-							if(gap<=35){
-						$(this).next().css({'top':new_pos+'px','margin-top':'0'});
-							}
-					}
-			var leftPos=$(this).position();
-				if(leftPos.left<=0){
-					$(this).addClass('ctl-left');
-				}else{
-					$(this).addClass('ctl-right');	
-				}
-			});
-			});})(jQuery);
-				");
-			}
+			// get all settings
+			 $ctl_title_text =isset($ctl_options_arr['title_text'])?$ctl_options_arr['title_text']:'';
+        	 $ctl_title_tag = $ctl_options_arr['title_tag'];
 
-		 $ctl_title_text =isset($ctl_options_arr['title_text'])?$ctl_options_arr['title_text']:'';
-         $ctl_title_tag = $ctl_options_arr['title_tag'];
-      
-			if(isset($ctl_options_arr['user_avatar']['id'])){
-				$user_avatar =wp_get_attachment_image_src($ctl_options_arr['user_avatar']['id'],'ctl_avatar');
+		 if(isset($ctl_options_arr['user_avatar']['id'])){
+				$user_avatar =wp_get_attachment_image_src($ctl_options_arr['user_avatar']['id'],'medium');
 				}
-		   $ctl_post_per_page = $ctl_options_arr['post_per_page'];
-			$story_desc_type = $ctl_options_arr['desc_type'];
+		    $ctl_post_per_page = $ctl_options_arr['post_per_page'];
 			$ctl_no_posts= isset($ctl_options_arr['no_posts'])?$ctl_options_arr['no_posts']:"No timeline post found";
-			$ctl_content_length = $ctl_options_arr['content_length'];
-			$ctl_posts_orders = $ctl_options_arr['posts_orders']?$ctl_options_arr['posts_orders']:"DESC";
+			$ctl_content_length =  isset($ctl_options_arr['content_length'])?$ctl_options_arr['content_length']:100;
+		
 			$disable_months =isset($ctl_options_arr['disable_months'])?$ctl_options_arr['disable_months']:"no";
 			$title_alignment = $ctl_options_arr['title_alignment']?$ctl_options_arr['title_alignment']:"center";
-		
+		    $display_readmore= isset($ctl_options_arr['display_readmore'])?$ctl_options_arr['display_readmore']:"yes";
             $ctl_post_per_page=$ctl_post_per_page ? $ctl_post_per_page : 10;
             $ctl_title_text = $ctl_title_text ? $ctl_title_text : 'Timeline';
             $ctl_title_tag = $ctl_title_tag ? $ctl_title_tag : 'H2';
-            //$ctl_title_pos = $ctl_title_pos ? $ctl_title_pos : 'left';
-            $ctl_content_length ? $ctl_content_length : 100;
-			
+			$ctl_posts_orders='';
+			$story_desc_type='';
+			if(isset($attribute['order'])&& !empty($attribute['order'])){
+				$ctl_posts_orders =$attribute['order'];
+			}else{
+				$ctl_posts_orders = isset($ctl_options_arr['posts_orders'])?$ctl_options_arr['posts_orders']:"DESC";
+			}
+			if(isset($attribute['story-content'])&& !empty($attribute['story-content'])){
+				$story_desc_type =$attribute['story-content'];
+			}else{
+				$story_desc_type = isset($ctl_options_arr['desc_type'])?$ctl_options_arr['desc_type']:"short";
+			}
+		
+			// create dynamic classes
 			$wrp_cls = 'white-timeline';
 			$post_skin_cls = 'light-grey-post';
 			$wrapper_cls = 'white-timeline-wrapper';$output='';$ctl_html='';$ctl_avtar_html='';
-			
+			// set default var for later use
 			$display_year = '';	$wrp_cls='';$ctl_format_html='';$ctl_html_no_cont='';$ctl_animation='';$st_cls=''; $post_content="";
+			 $horizontal_html="";
+			 // custom date format
 			$format =__('d/M/Y','cool-timeline');
 		    $year_position = 2;
 			$i = 0;
 
-			$layout=$attribute['layout'];
-		
+			/* checking timeline layout and creating classes */
+
 			if ($attribute['layout'] == "one-side") {
 		    $layout_cls = 'one-sided';
 		    $layout_wrp = 'one-sided-wrapper';
@@ -149,6 +140,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 			    $layout_wrp = 'both-sided-wrapper';
 			}
 	
+		// create classes according to the active layout
 		if($attribute['layout']){
 			$wrp_cls=$attribute['layout'];
 			}else{
@@ -170,64 +162,83 @@ if (!class_exists('CoolTimelineShortcode')) {
 			}else{
 				$st_cls='default-layout';
 			}
-      
-            $p_format=$this->ctl_date_formats($attribute['date-format'],$ctl_options_arr);     
-			
-           $args = array(
+      // date format for timeline stories
+        $date_format=$this->ctl_date_formats($attribute['date-format'],$ctl_options_arr);     
+		
+		// timeline stories custom loop
+			$args = array(
 		   'post_type' => 'cool_timeline', 
 		   'posts_per_page' => $ctl_post_per_page,
-		   'post_status' => array( 'publish', 'future' ),
-		   'orderby' => 'date',
+		   'post_status' => array( 'publish', 'future','Scheduled'),
+		   'orderby' => 'ctl_story_timestamp',
 		   'order' =>$ctl_posts_orders
 		   );
-		   
+		   $args['meta_query']= array(
+			array(
+				'key'=> 'ctl_story_timestamp',
+				'compare' => 'EXISTS',
+				'type'    => 'NUMERIC'
+			  ));
+
+		   	// paged for pagination 
+			$args['paged']= (get_query_var('paged')) ? get_query_var('paged') : 1;
+			$paged=$args['paged'];
+		
 		   if ($attribute['show-posts']) {
 			$args['posts_per_page'] = $attribute['show-posts'];
+			if($attribute['layout']=="horizontal"){
+				$args['posts_per_page'] =-1;
+			}
 			} else {
 				$args['posts_per_page'] = $ctl_post_per_page;
 			}
-			$args['paged']= (get_query_var('paged')) ? get_query_var('paged') : 1;
-			$paged=$args['paged'];
-			
-			$ctl_loop = new WP_Query(apply_filters( 'ctl_stories_query',$args));
 
-            if ($ctl_loop->have_posts()){
-				
+			// start Main query
+			$ctl_loop = new WP_Query(apply_filters( 'ctl_stories_query',$args));
+			$total_stories= $ctl_loop->found_posts;
+            if ($ctl_loop->have_posts()){		
                 while ($ctl_loop->have_posts()) : $ctl_loop->the_post();
 				$p_id=get_the_ID();
               	global $post;
-				  
 				  $img_cont_size = get_post_meta($post->ID, 'image_container_type', true);
 				  $container_cls=isset($img_cont_size)?$img_cont_size:"Full";	
 				  $container_cls=strtolower($container_cls);
-				 $posted_date=get_the_date(__($p_format,'cool-timeline'));
-				
+				// grabing stories posted date for later use
+				$posted_date=ctlfree_get_story_date($p_id,$date_format);
+				// grabing stories content according to the  dynamic settings 
 				 if($story_desc_type=='full'){
-						$post_content = get_the_content();
-					}else{
-						$post_content =get_the_excerpt();
+					$post_content =apply_filters( 'the_content', get_the_content() );
+					$post_content = apply_filters('cool_timeline_story_content',$post_content);
+				}else{
+					$post_content =apply_filters( 'cool_timeline_story_content',get_the_excerpt());
 					}
-
+				// adding clasess for alernate styles.
 				 if ($i % 2 == 0) {
 					$even_odd = "even";
 					} else {
 					$even_odd = "odd";
 					}
+				// Generating Stories Hightlighted Year only for default and one sided timeline layouts
+				$s_date_only=ctlfree_get_story_date($p_id,$format);
+				$post_date = explode('/', $s_date_only);
 
-                $post_date = explode('/', get_the_date($format));
-                 if(in_array($layout,array("simple","compact"),TRUE)!=true){
+				// add story Year circle only in defaut and one sided vertical layout
+        if(in_array($layout,array("simple","compact"),TRUE)!=true){
+				if(isset($post_date[$year_position])){
                     $post_year = $post_date[$year_position];
                     if ($post_year != $display_year) {
                      $display_year = $post_year;
+                     $year_cls=$this->ctl_story_cls($post_year);
 						$ctle_year_lbl = sprintf('<span class="ctl-timeline-date">%s</span>', $post_year);
-						$ctl_html .= '<div  class="timeline-year scrollable-section "
+						$ctl_html .= '<div  class="timeline-year scrollable-section"
 						data-section-title="' . $post_year . '" id="clt-' . $post_year . '">
 						<div class="icon-placeholder">' . $ctle_year_lbl . '</div>
 						<div class="timeline-bar"></div>
 						</div>';
 						}
-					}
-			
+				}
+			}	
+				// timeline stories all classes
 				$compt_cls=$layout=="compact"?"timeline-mansory":'';
 				$p_cls=array();
 		        $p_cls[]="timeline-post";
@@ -237,7 +248,8 @@ if (!class_exists('CoolTimelineShortcode')) {
 		        $p_cls[]=$layout=="compact"?"timeline-mansory":'';
 		        $p_cls[]= esc_attr($skin).'-skin';
 		        $p_cls=apply_filters('ctl_story_clasess',$p_cls);
-		        		
+					
+				// generate timeline story content html
 				$ctl_html .='<!-- .timeline-post-start-->';
 				$ctl_html .='<div class="'.implode(" ",$p_cls).'"  id="story-'.esc_attr($p_id).'">';
 				if($layout!="compact"){
@@ -247,7 +259,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 				} 
 				$ctl_html .= '</div>';
 				}
-				
+				// grabing stories icon
 				if(function_exists('get_fa')){
 		        $post_icon=get_fa(true);
 				}
@@ -257,6 +269,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 		           $icon = '<i class="fa fa-clock-o" aria-hidden="true"></i>';
 		         }
 		 
+				 // if icon settings is enable from shortcode
   			if (isset($attribute['icons']) && $attribute['icons'] == "YES") {
 			$ctl_html .='<div class="timeline-icon icon-larger iconbg-turqoise icon-color-white">
                     	<div class="icon-placeholder">'.$icon.'</div>
@@ -267,7 +280,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 			}
 
 	 $ctl_html .= '<div class="timeline-content clearfix">';
-
+// story date for compact layout
 	 if($layout =="compact"){
 	 if($disable_months=="no"){
 		$ctl_html .= '<h2 class="content-title">' . $posted_date . '</h2>';
@@ -286,8 +299,44 @@ if (!class_exists('CoolTimelineShortcode')) {
 	 $ctl_html .= '</div></div></div><!-- timeline content --></div><!-- .timeline-post-end -->';
 	
 	$ctl_format_html = '';
-    $post_content = '';
+	
+// creating Horizontal layout HTML
+if($layout =="horizontal"){
+	$h_story_content='';
 
+$horizontal_html.='<li class="year-'.$post_year.' '.$even_odd.' '.$year_cls.'">';
+	// grabing Highlighted Year
+	if($attribute['date-format']==""||$attribute['date-format']=="Y"){
+		$story_main_date=get_the_date(__('Y','cool-timeline'));
+	}else{
+		$story_main_date=$posted_date;
+	}
+			if( $display_readmore=="yes"){
+				$horizontal_html.='<a ref="prettyPhoto" href="#ctl-story-'.$p_id.'">';
+			}
+			$horizontal_html.='<div class="ctl-story-year"><span class="rm_year">'.$story_main_date.'</span></div>';
+			$horizontal_html.='<div class="ctl-story-title"><p class="story_title">';
+			$horizontal_html.=get_the_title();
+			$horizontal_html.='</p></div>';
+			if( $display_readmore=="yes"){
+				$horizontal_html.='</a>';
+			}
+			
+		$horizontal_html.='<div id="ctl-story-'.$p_id.'" class="ctl_hide"><div class="ctl-popup-content">
+			<h2>'.get_the_title().'</h2>';
+			$story_posted_date=ctlfree_get_story_date($p_id,__(apply_filters( 'cool_timeline_story_date','F j, Y'),'cool-timeline'));
+			$horizontal_html.='<div class="story-posted-date">'.$story_posted_date.'</div>';
+		
+			if ( has_post_thumbnail($p_id) ) {
+				$horizontal_html .= '<div class="full-width">';
+				$horizontal_html .=$this->clt_story_featured_img($p_id);
+				$horizontal_html .= '</div>';
+			}
+		$horizontal_html.='<div class="story-content">'.$post_content.'</div>';
+		$horizontal_html.='</div></div>';
+	   $horizontal_html.='</li>';
+	}
+	$post_content = '';
 	$i++;		
 	endwhile;
     wp_reset_postdata();
@@ -298,10 +347,17 @@ if (!class_exists('CoolTimelineShortcode')) {
 		$ctl_html_no_cont .= '</h4></div>';
 	}
 	
+	/*
+		Timeline Main Container Wrapper
+	*/
 	
 		$timeline_id="ctl-free-one";	
-		$output .='<! ========= Cool Timeline Free '. COOL_TIMELINE_VERSION_CURRENT .' =========>';
+		$output .='<! ========= Cool Timeline Free '. COOL_TIMELINE_CURRENT_VERSION.' =========>';
 	   $main_wrp_cls=array();
+
+// Generating Wrapper for Vertical timeline
+if($layout!="horizontal"){  
+		// creating classes
         $main_wrp_cls[]="cool_timeline";
         $main_wrp_cls[]="cool-timeline-wrapper";
         $main_wrp_cls[]=$layout_wrp;
@@ -311,7 +367,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 
 		$output .= '<div class="'.implode(" ",$main_wrp_cls).'">';
 		if (isset($user_avatar[0]) && !empty($user_avatar[0])) {
-					$ctl_avtar_html .= '<div class="avatar_container row"><span title="' . $ctl_title_text . '"><img  class=" center-block img-responsive img-circle" alt="' . $ctl_title_text . '" src="' . $user_avatar[0] . '"></span></div> ';
+					$ctl_avtar_html .= '<div class="avatar_container row"><span title="' . $ctl_title_text . '"><img  class="center-block img-responsive img-circle" alt="' . $ctl_title_text . '" src="' . $user_avatar[0] . '"></span></div> ';
 				}
 			  //  if ($title_visibilty == "yes") {
                 $output .= sprintf(__('<%s class="timeline-main-title center-block">%s</%s>', 'cool-timeline'), $ctl_title_tag, $ctl_title_text, $ctl_title_tag);
@@ -334,6 +390,21 @@ if (!class_exists('CoolTimelineShortcode')) {
 		//}
 		$output .=' </div><!-- end
  		================================================== -->';
+
+ 		}else{
+			$slidetoshow=3;
+			
+		if($attribute['show-posts']>$total_stories){
+			$slidetoshow=$total_stories;
+		}else{
+			$slidetoshow=$attribute['show-posts'];
+		}
+
+	// Horizontal timeline Wrapper		
+ 		   $output .= '<div class="cool_timeline_horizontal"><ul data-slide-to-show="'.$slidetoshow.'" class="ctl_road_map_wrp">';
+ 			$output .=$horizontal_html;
+ 			$output .='</ul></div>';
+ 		}
             return $output ;
 		}
 
@@ -375,14 +446,14 @@ if (!class_exists('CoolTimelineShortcode')) {
 		    if ( has_post_thumbnail($post_id) ) {
 		         $img_html .= '<div class="pull-left">';
 		        $img_html.=$story_img_link;
-		        $img_html.=get_the_post_thumbnail( $post_id, 'thumbnail', array( 'class' => 'story-img left_small','alt'=>$alt_text) );
+		        $img_html.=get_the_post_thumbnail( $post_id,apply_filters('cool_timeline_story_img_size','thumbnail'), array( 'class' => 'story-img left_small','alt'=>$alt_text) );
 		         $img_html.='</a></div>';
 		         }
 		      } else {
 		         if ( has_post_thumbnail($post_id) ) {
 		        $img_html .= '<div class="full-width">';
 		        $img_html.=$story_img_link;
-		        $img_html.=get_the_post_thumbnail( $post_id, 'large', array( 'class' => 'story-img','alt'=>$alt_text) );
+		        $img_html.=get_the_post_thumbnail( $post_id,apply_filters('cool_timeline_story_img_size','large'), array( 'class' => 'story-img','alt'=>$alt_text) );
 		         $img_html.='</a></div>';
 		         }
 		      
@@ -393,10 +464,8 @@ if (!class_exists('CoolTimelineShortcode')) {
 
 
 		/*
-		* Include this plugin's public JS & CSS files on posts.
+		* Registered All assets 
 		*/
-		
-     
         function ctl_load_scripts_styles() {
 			/*
 			 * google fonts
@@ -408,7 +477,7 @@ if (!class_exists('CoolTimelineShortcode')) {
 			$post_title=$ctl_options_arr['post_title_typo']['face'];
 			$main_title=$ctl_options_arr['main_title_typo']['face'];
 			$selected_fonts = array($post_content_face,$post_title,$main_title);
-			 /*
+		   /*
             * google fonts
             */
             // Remove any duplicates in the list
@@ -433,41 +502,73 @@ if (!class_exists('CoolTimelineShortcode')) {
 	       		  }
               }
            
-          }
-            wp_register_style("ctl-default-fonts", "https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800", false, null, 'all');
-		
-			/*
-			 * End
-			 * 
-			 */
-				
-		
-			wp_register_style('ctl_styles', COOL_TIMELINE_PLUGIN_URL . 'css/ctl_styles.css',null, null,'all' );
-			
-			wp_register_style('ctl_animate', COOL_TIMELINE_PLUGIN_URL . 'css/animate.min.css', null, null, 'all');
-
-			wp_register_style('clt-font-awesome', COOL_TIMELINE_PLUGIN_URL . 'fa-icons/css/font-awesome/css/font-awesome.min.css', null, null, 'all');
-			wp_register_script('ctl_viewportchecker', COOL_TIMELINE_PLUGIN_URL . 'js/jquery.viewportchecker.js', array('jquery'), null, true);
-		   
-		    wp_register_style('ctl_prettyPhoto', COOL_TIMELINE_PLUGIN_URL . 'css/prettyPhoto.css', null, null, 'all');
-            wp_register_script('ctl_prettyPhoto', COOL_TIMELINE_PLUGIN_URL . 'js/jquery.prettyPhoto.js', array('jquery'), null, true);
-        
-			wp_register_script('ctl_scripts', COOL_TIMELINE_PLUGIN_URL . 'js/ctl_scripts.js', array('jquery'), null, false);
-      	 	wp_register_script('c_masonry', COOL_TIMELINE_PLUGIN_URL . 'js/masonry.pkgd.min.js', array('jquery'), null, false);
-
- 			$this->ctl_load_assets();
-         	
-         	}
-
-	
-        function ctl_load_assets(){
-	 	 global $post;   
-		  if(isset($post->post_content) && has_shortcode( $post->post_content, 'cool-timeline')){ 	
-		  		wp_enqueue_style('ctl_styles');
 		  }
+		  	// includes google fonts
+            wp_register_style("ctl-default-fonts", "https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800", false, null, 'all');
+	
+			wp_register_style('ctl-styles', COOL_TIMELINE_PLUGIN_URL . 'css/ctl_styles.min.css',null, null,'all' );	
+			wp_register_style('ctl-animate', COOL_TIMELINE_PLUGIN_URL . 'css/animate.min.css', null, null, 'all');
+		
+			wp_register_script('ctl-viewportchecker', COOL_TIMELINE_PLUGIN_URL . 'js/jquery.viewportchecker.js', array('jquery'), null, true);   
+		  	// register popup assets
+			wp_register_style('ctl-prettyPhoto', COOL_TIMELINE_PLUGIN_URL . 'css/prettyPhoto.css', null, null, 'all');
+			wp_register_script('ctl-prettyPhoto', COOL_TIMELINE_PLUGIN_URL . 'js/jquery.prettyPhoto.js', array('jquery'), null, true);  
+			// includes slick slider for horizontal timeline
+			wp_register_script('ctl-slick-js','https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', array('jquery'), null, true);
+			wp_register_style("ctl-slick-css", "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+			
+			wp_register_script('ctl-scripts', COOL_TIMELINE_PLUGIN_URL . 'js/ctl_scripts.min.js', array('jquery'), null, false);
+			wp_register_script('ctl-horizontal-tm-js', COOL_TIMELINE_PLUGIN_URL . 'js/ctl_hori_scripts.min.js', array('jquery'), null, false);
+			// load settings for compacy layout
+			wp_register_script('ctl-masonry', COOL_TIMELINE_PLUGIN_URL . 'js/masonry.pkgd.min.js', array('jquery'), false, false);
+			wp_register_script('ctl-compact-js', COOL_TIMELINE_PLUGIN_URL . 'js/ctl_compact_scripts.min.js', array('jquery','ctl-masonry'), false, false);
+	
+			 }
+		// loading js and css according to the layout type in shortcode	 
+		function ctl_load_assets($layout){
+			// all common assets
+		
+			wp_enqueue_style('ctl-default-fonts');
+			wp_enqueue_style('ctl-gfonts');
+			wp_enqueue_style('ctl-prettyPhoto');
+			wp_enqueue_script('ctl-prettyPhoto');	
+			wp_enqueue_style('ctl-styles');
+			// vertical layout only assets.
+			if($layout!="horizontal"){
+				wp_enqueue_script('ctl-viewportchecker');
+				wp_enqueue_style('ctl-animate');
+				wp_enqueue_script('ctl-scripts');
+			}
+		// compact layout dynamic Js
+		if($layout == "compact"){
+			wp_enqueue_script('ctl-masonry');
+			wp_enqueue_script( 'ctl-compact-js');
+			
+			}else if($layout== "horizontal"){
+				 // Horizontal Timeline Assets.
+				wp_enqueue_style('ctl-slick-css');
+				wp_enqueue_script('ctl-slick-js');
+				wp_enqueue_script('ctl-horizontal-tm-js');
+			}	
+			// include fontawesome 5 version
+			wp_enqueue_style('ctl-font-awesome',CT_FA_URL.'css/font-awesome/css/all.min.css');
+			wp_enqueue_style('ctl-font-shims','https://use.fontawesome.com/releases/v5.7.2/css/v4-shims.css'); 
+		
+		}	 
+	
+		// dyamic class according to the year
+		function ctl_story_cls($year){
+			$now = new DateTime();
+			$yNow = $now->format('Y');
 
-  	}
-
+			if($year<$yNow){
+				return "past-year";
+			}else if($year>$yNow){
+				return "future-year";
+			}else{
+			return "current-year";	
+			}
+		}
 
     }
 

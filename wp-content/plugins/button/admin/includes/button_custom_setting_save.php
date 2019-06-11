@@ -6,7 +6,9 @@ if(isset($post) && isset($_POST['button_layout']))
 	$key_array=array(
 		'button_layout',
 		'button_text',
-		'button_link',		
+		'button_link',
+		'attribute_id',
+		'attribute_value',		
 		'button_target',
 		'padding_top',
 		'padding_right',
@@ -60,8 +62,14 @@ if(isset($post) && isset($_POST['button_layout']))
 		'custom_css',);
 	foreach ($key_array as $value) 
 	{
-		$wdbtn_array[$value] =sanitize_text_field($_POST[$value]);
+		if($value=='button_text'){
+
+			$_POST[$value] = sanitize_text_field(stripslashes($_POST[$value]));
+		}
+
+		$wdbtn_array[$value] = sanitize_text_field($_POST[$value]);
 	}
+
 	$wdbtn_array = serialize($wdbtn_array);			
 	update_post_meta($post,'button_custom_setting_'.$post,$wdbtn_array);
 }

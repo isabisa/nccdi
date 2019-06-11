@@ -117,6 +117,13 @@ class Disqus_Rest_Api {
             'permission_callback' => array( $this, 'rest_admin_only_permission_callback' ),
         ) );
 
+        // Alias route for `sync/webhook` to get around plugins/services disabling "abused" routes.
+        register_rest_route( Disqus_Rest_Api::REST_NAMESPACE, 'sync/comment', array(
+            'methods' => 'POST',
+            'callback' => array( $this, 'rest_sync_webhook' ),
+            'permission_callback' => array( $this, 'rest_admin_only_permission_callback' ),
+        ) );
+
         register_rest_route( Disqus_Rest_Api::REST_NAMESPACE, 'settings', array(
             array(
                 'methods' => array( 'GET', 'POST' ),
@@ -223,12 +230,16 @@ class Disqus_Rest_Api {
 
         try {
             switch ( $json_data['verb'] ) {
+                case 'force_sync':
+                    $comment_id = $this->create_or_update_comment_from_post( $json_data['transformed_data'] );
+                    $this->log_sync_message( 'Manually synced comment "' . $json_data['transformed_data']['id'] . '" from Disqus' );
+                    return new WP_REST_Response( (string) $comment_id, 200 );
                 case 'create':
-                    $new_comment_id = $this->create_comment_from_post( $json_data['transformed_data'] );
+                    $new_comment_id = $this->create_or_update_comment_from_post( $json_data['transformed_data'] );
                     $this->log_sync_message( 'Synced new comment "' . $json_data['transformed_data']['id'] . '" from Disqus' );
                     return new WP_REST_Response( (string) $new_comment_id, 201 );
                 case 'update':
-                    $updated_comment_id = $this->update_comment_from_post( $json_data['transformed_data'] );
+                    $updated_comment_id = $this->create_or_update_comment_from_post( $json_data['transformed_data'] );
                     $this->log_sync_message( 'Updated synced comment "' . $json_data['transformed_data']['id'] . '" from Disqus' );
                     return new WP_REST_Response( (string) $updated_comment_id, 200 );
                 default:
@@ -250,6 +261,14 @@ class Disqus_Rest_Api {
     public function rest_settings( WP_REST_Request $request ) {
         $should_update = 'POST' === $request->get_method();
         $new_settings = $should_update ? $this->get_request_data( $request ) : null;
+
+        // Validate sync token if set.
+        if ( $should_update && isset( $new_settings['disqus_sync_token'] ) ) {
+            if ( strlen( $new_settings['disqus_sync_token'] ) < 32 ) {
+                return $this->rest_get_error( 'The site secret key should be at least 32 characters.' );
+            }
+        }
+
         $updated_settings = $this->get_or_update_settings( $new_settings );
 
         return $this->rest_get_response( $updated_settings );
@@ -350,6 +369,70 @@ class Disqus_Rest_Api {
         }
 
         return $this->rest_get_response( $response_data );
+    }
+
+    /**
+     * Returns the schema for the Disqus admin settings REST endpoint.
+     *
+     * @since     3.0
+     * @return    array    The REST schema.
+     */
+    public function dsq_get_settings_schema() {
+        return array(
+            // This tells the spec of JSON Schema we are using which is draft 4.
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            // The title property marks the identity of the resource.
+            'title' => 'settings',
+            'type' => 'object',
+            // In JSON Schema you can specify object properties in the properties attribute.
+            'properties' => array(
+                'disqus_forum_url' => array(
+                    'description' => 'Your site\'s unique identifier',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_sso_enabled' => array(
+                    'description' => 'This will enable Single Sign-on for this site, if already enabled for your Disqus organization.',
+                    'type' => 'boolean',
+                    'readonly' => false,
+                ),
+                'disqus_public_key' => array(
+                    'description' => 'The public key of your application.',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_secret_key' => array(
+                    'description' => 'The secret key of your application.',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_admin_access_token' => array(
+                    'description' => 'The primary admin\'s access token for your application.',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_sso_button' => array(
+                    'description' => 'A link to a .png, .gif, or .jpg image to show as a button in Disqus.',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_sync_token' => array(
+                    'description' => 'The shared secret token for data sync between Disqus and the plugin.',
+                    'type' => 'string',
+                    'readonly' => false,
+                ),
+                'disqus_installed' => array(
+                    'description' => 'The shared secret token for data sync between Disqus and the plugin.',
+                    'type' => 'boolean',
+                    'readonly' => true,
+                ),
+                'disqus_render_js' => array(
+                    'description' => 'When true, the Disqus embed javascript is output directly into markup rather than being enqueued in a separate file.',
+                    'type' => 'boolean',
+                    'readonly' => false,
+                ),
+            ),
+        );
     }
 
     /**
@@ -548,6 +631,33 @@ class Disqus_Rest_Api {
     }
 
     /**
+     * Queries the WordPress database for existing comment by dsq_post_id. Creates or updates if comment found
+     * in the WordPress database given a Disqus post.
+     *
+     * @since    3.0.17
+     * @param    array $post    The Disqus post object.
+     * @return   int            The created or updated comment ID.
+     * @throws   Exception      An exception if comment can't be saved from post data.
+     */
+    private function create_or_update_comment_from_post( $post ) {
+        $this->validate_disqus_post_data( $post );
+
+        // Check for existing comment.
+        $comment_query = new WP_Comment_Query( array(
+            'meta_key' => 'dsq_post_id',
+            'meta_value' => $post['id'],
+            'number' => 1,
+        ) );
+
+        $comments = $comment_query->comments;
+        if ( ! empty( $comments ) ) {
+            return $this->update_comment_from_post( $post, $comments );
+        }
+
+        return $this->create_comment_from_post( $post );
+    }
+
+    /**
      * Creates a comment in the WordPress database given a Disqus post.
      *
      * @since    3.0
@@ -556,20 +666,6 @@ class Disqus_Rest_Api {
      * @throws   Exception      An exception if comment can't be saved from post data.
      */
     private function create_comment_from_post( $post ) {
-        $this->validate_disqus_post_data( $post );
-
-        // Check to make sure we haven't synced this comment yet.
-        $comment_query = new WP_Comment_Query( array(
-            'meta_key' => 'dsq_post_id',
-            'meta_value' => $post['id'],
-            'number' => 1,
-        ) );
-
-        if ( ! empty( $comment_query->comments ) ) {
-            $this->log_sync_message( 'Error syncing new comment "' . $post['id'] . '" from Disqus. Comment with this dsq_post_id already in the local database' );
-            return 0;
-        }
-
         $comment_data = $this->comment_data_from_post( $post );
 
         $new_comment_id = wp_insert_comment( $comment_data );
@@ -581,27 +677,12 @@ class Disqus_Rest_Api {
      * Updates a comment in the WordPress database given a Disqus post.
      *
      * @since    3.0
-     * @param    array $post    The Disqus post object.
-     * @return   int            The newly created comment ID.
-     * @throws   Exception      An exception if comment can't be saved from post data.
+     * @param    array $post        The Disqus post object.
+     * @param    array $comments    The comments found matching the dsq_post_id.
+     * @return   int                The newly created comment ID.
+     * @throws   Exception          An exception if comment can't be saved from post data.
      */
-    private function update_comment_from_post( $post ) {
-        $this->validate_disqus_post_data( $post );
-
-        // Check to make sure we have synced this comment already.
-        $comment_query = new WP_Comment_Query( array(
-            'meta_key' => 'dsq_post_id',
-            'meta_value' => $post['id'],
-            'number' => 1,
-        ) );
-
-        $comments = $comment_query->comments;
-
-        if ( empty( $comments ) ) {
-            $this->log_sync_message( 'Error updating synced comment "' . $post['id'] . '" from Disqus. Comment with this dsq_post_id was not in the local database' );
-            return 0;
-        }
-
+    private function update_comment_from_post( $post, $comments ) {
         foreach ( $comments as $comment ) {
             $updated_comment_id = $comment->comment_ID;
         }
@@ -644,7 +725,7 @@ class Disqus_Rest_Api {
      * @throws   Exception      An exception if comment can't be saved from post data.
      */
     private function comment_data_from_post( $post ) {
-        $thread = $post['threadData'];
+        $thread = array_key_exists( 'threadData', $post ) ? $post['threadData'] : $post['thread'];
         $author = $post['author'];
 
         $wp_post_id = null;
@@ -961,65 +1042,5 @@ class Disqus_Rest_Api {
         $wxr = $xml->saveXML();
 
         return $wxr;
-    }
-
-    /**
-     * Returns the schema for the Disqus admin settings REST endpoint.
-     *
-     * @since     3.0
-     * @access    private
-     * @return    array    The REST schema.
-     */
-    private function dsq_get_settings_schema() {
-        return array(
-            // This tells the spec of JSON Schema we are using which is draft 4.
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
-            // The title property marks the identity of the resource.
-            'title' => 'settings',
-            'type' => 'object',
-            // In JSON Schema you can specify object properties in the properties attribute.
-            'properties' => array(
-                'disqus_forum_url' => array(
-                    'description' => 'Your site\'s unique identifier',
-                    'type' => 'string',
-                    'readonly' => false,
-                ),
-                'disqus_sso_enabled' => array(
-                    'description' => 'This will enable Single Sign-on for this site, if already enabled for your Disqus organization.',
-                    'type' => 'boolean',
-                    'readonly' => false,
-                ),
-                'disqus_public_key' => array(
-                    'description' => 'The public key of your application.',
-                    'type' => 'string',
-                    'readonly' => false,
-                ),
-                'disqus_secret_key' => array(
-                    'description' => 'The secret key of your application.',
-                    'type' => 'string',
-                    'readonly' => false,
-                ),
-                'disqus_admin_access_token' => array(
-                    'description' => 'The primary admin\'s access token for your application.',
-                    'type' => 'string',
-                    'readonly' => false,
-                ),
-                'disqus_sso_button' => array(
-                    'description' => 'A link to a .png, .gif, or .jpg image to show as a button in Disqus.',
-                    'type' => 'string',
-                    'readonly' => false,
-                ),
-                'disqus_sync_token' => array(
-                    'description' => 'The shared secret token for data sync between Disqus and the plugin.',
-                    'type' => 'string',
-                    'readonly' => true,
-                ),
-                'disqus_installed' => array(
-                    'description' => 'The shared secret token for data sync between Disqus and the plugin.',
-                    'type' => 'boolean',
-                    'readonly' => true,
-                ),
-            ),
-        );
     }
 }

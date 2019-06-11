@@ -6,7 +6,7 @@ class Advanced_Excerpt {
 	 * Some of the following options below are linked to checkboxes on the plugin's option page.
 	 * If any checkbox options are added/removed/modified in the future please ensure you also update
 	 * the $checkbox_options variable in the update_options() method.
-	 */
+	 */ 
 	public $default_options = array(
 		'length' => 40,
 		'length_type' => 'words',
@@ -16,6 +16,9 @@ class Advanced_Excerpt {
 		'ellipsis' => '&hellip;',
 		'read_more' => 'Read the rest',
 		'add_link' => 0,
+		'link_new_tab' => 0,
+		'link_screen_reader' => 0,
+		'link_exclude_length' => 0,
 		'allowed_tags' => array(),
 		'the_excerpt' => 1,
 		'the_content' => 1,
@@ -74,7 +77,7 @@ class Advanced_Excerpt {
 	function hook_content_filters() {
 		/*
 		 * Allow developers to skip running the advanced excerpt filters on certain page types.
-		 * They can do so by using the "Disable On" checkboxes on the options page or
+		 * They can do so by using the "Disable On" checkboxes on the options page or 
 		 * by passing in an array of page types they'd like to skip
 		 * e.g. array( 'search', 'author' );
 		 * The filter, when implemented, takes precedence over the options page selection.
@@ -85,7 +88,7 @@ class Advanced_Excerpt {
 		 */
 		$page_types = $this->get_current_page_types();
 		$skip_page_types = array_unique( array_merge( array( 'singular' ), $this->options['exclude_pages'] ) );
-		$skip_page_types = apply_filters( 'advanced_excerpt_skip_page_types', $skip_page_types );
+		$skip_page_types = apply_filters( 'advanced_excerpt_skip_page_types', $skip_page_types ); 
 		$page_type_matches = array_intersect( $page_types, $skip_page_types );
 		if ( !empty( $page_types ) && !empty( $page_type_matches ) ) return;
 
@@ -106,7 +109,7 @@ class Advanced_Excerpt {
 	}
 
 	function load_options() {
-		/*
+		/* 
 		 * An older version of this plugin used to individually store each of it's options as a row in wp_options (1 row per option).
 		 * The code below checks if their installations once used an older version of this plugin and attempts to update
 		 * the option storage to the new method (all options stored in a single row in the DB as an array)
@@ -234,22 +237,22 @@ class Advanced_Excerpt {
 
 		// prevent recursion on 'the_content' hook
 		$content_has_filter = false;
-		if ( has_filter( 'the_content', array( $this, 'filter_content' ) ) ) {
-			remove_filter( 'the_content', array( $this, 'filter_content' ) );
+		if ( has_filter( 'the_content', array( $this, 'filter_content' ) ) ) { 
+			remove_filter( 'the_content', array( $this, 'filter_content' ) ); 
 			$content_has_filter = true;
 		}
 
 		$text = get_the_content( '' );
 
-		// Strip shortcodes if $no_shortcode is set to 1
-		if ( 1 === $no_shortcode ) {
+		// remove shortcodes
+		if ( $no_shortcode ) {
 			$text = strip_shortcodes( $text );
 		}
-		
+
 		$text = apply_filters( 'the_content', $text );
 
 		// add our filter back in
-		if ( $content_has_filter ) {
+		if ( $content_has_filter ) { 
 			add_filter( 'the_content', array( $this, 'filter_content' ) );
 		}
 
@@ -282,9 +285,15 @@ class Advanced_Excerpt {
 		// Create the excerpt
 		$text = $this->text_excerpt( $text, $length, $length_type, $finish );
 
+		// lengths
+		$text_length_before = strlen( trim( $text_before_trimming ) );
+		$text_length_after = strlen( trim( $text ) );
+
 		// Add the ellipsis or link
-		if ( !apply_filters( 'advanced_excerpt_disable_add_more', false, $text_before_trimming, $this->options ) ) {
-			$text = $this->text_add_more( $text, $ellipsis, ( $add_link ) ? $read_more : false );
+		if ( ! apply_filters( 'advanced_excerpt_disable_add_more', false, $text_before_trimming, $this->options ) ) {
+			if ( ! $link_exclude_length || $text_length_after < $text_length_before ) {
+				$text = $this->text_add_more( $text, $ellipsis, ( $add_link ) ? $read_more : false, ( $link_new_tab ) ? true : false, ( $link_screen_reader ) ? true : false );
+			}
 		}
 
 		return apply_filters( 'advanced_excerpt_content', $text );
@@ -310,8 +319,12 @@ class Advanced_Excerpt {
 				if ( 'words' == $length_type ) { // Count words
 					$w++;
 				} else { // Count/trim characters
-					$chars = trim( $t ); // Remove surrounding space
-					$c = strlen( $chars );
+					if ( $finish == 'exact_w_spaces' ) {
+						$chars = $t;
+					} else {
+						$chars = trim( $t );
+					}
+					$c = mb_strlen( $chars );
 					if ( $c + $w > $length && 'sentence' != $finish ) { // Token is too long
 						$c = ( 'word' == $finish ) ? $c : $length - $w; // Keep token to finish word
 						$t = substr( $t, 0, $c );
@@ -326,13 +339,30 @@ class Advanced_Excerpt {
 		return trim( force_balance_tags( $out ) );
 	}
 
-	public function text_add_more( $text, $ellipsis, $read_more ) {
+	public function text_add_more( $text, $ellipsis, $read_more, $link_new_tab, $link_screen_reader ) {
+
 		if ( $read_more ) {
-			$link_template = apply_filters( 'advanced_excerpt_read_more_link_template', ' <a href="%1$s" class="read-more">%2$s</a>', get_permalink(), $read_more );
-			$ellipsis .= sprintf( $link_template, get_permalink(), $read_more );
+
+			$screen_reader_html = '';
+			if ( $link_screen_reader ) {
+				$screen_reader_html = '<span class="screen-reader-text"> &#8220;' . get_the_title() . '&#8221;</span>';
+			}
+
+			if ( $link_new_tab ) {
+				$link_template = apply_filters( 'advanced_excerpt_read_more_link_template', ' <a href="%1$s" class="read-more" target="_blank">%2$s %3$s</a>', get_permalink(), $read_more );
+			} else {
+				$link_template = apply_filters( 'advanced_excerpt_read_more_link_template', ' <a href="%1$s" class="read-more">%2$s %3$s</a>', get_permalink(), $read_more );
+			}
+			
+			$read_more = str_replace( '{title}', get_the_title(), $read_more );
+			$read_more = do_shortcode( $read_more );
+			$read_more = apply_filters( 'advanced_excerpt_read_more_text', $read_more );
+
+			$ellipsis .= sprintf( $link_template, get_permalink(), $read_more, $screen_reader_html );
+
 		}
 
-		$pos = strrpos( $text, '</' );
+		$pos = strrpos( $text, '</' );	
 
 		if ( $pos !== false ) {
 			// get the "clean" name of the last closing tag in the text, e.g. p, a, strong, div
@@ -363,7 +393,7 @@ class Advanced_Excerpt {
 		$_POST = stripslashes_deep( $_POST );
 		$this->options['length'] = (int) $_POST['length'];
 
-		$checkbox_options = array( 'no_custom', 'no_shortcode', 'add_link', 'the_excerpt', 'the_content', 'the_content_no_break' );
+		$checkbox_options = array( 'no_custom', 'no_shortcode', 'add_link', 'link_new_tab', 'link_screen_reader', 'link_exclude_length', 'the_excerpt', 'the_content', 'the_content_no_break' );
 
 		foreach ( $checkbox_options as $checkbox_option ) {
 			$this->options[$checkbox_option] = ( isset( $_POST[$checkbox_option] ) ) ? 1 : 0;
@@ -380,7 +410,7 @@ class Advanced_Excerpt {
 		update_option( 'advanced_excerpt', $this->options );
 
 		wp_redirect( admin_url( $this->plugin_base ) . '&settings-updated=1' );
-		exit;
+		exit;		
 	}
 
 	function page_options() {

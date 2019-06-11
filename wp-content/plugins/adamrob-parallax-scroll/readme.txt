@@ -1,13 +1,14 @@
-=== Parallax Scroll ===
+=== Plugin Name ===
 Contributors: adamrob
+Donate link: https://www.adamrob.co.uk
 Tags: parallax, scroll, image, header, adamrob, animation
 Requires at least: 4.0
-Tested up to: 4.4.2
-Stable tag: 2.0
-License: GPL2
+Tested up to: 5.1.0
+Stable tag: 3.0
+License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create a header, or even a custom post/page with a scrolling parallax background. All with a simple shortcode.
+Create a header, or custom post/page with a scrolling parallax background. All with a simple shortcode.
 
 == Description ==
 
@@ -26,7 +27,6 @@ Parallax Scroll; the easiest way to get a parallax scrolling background image fo
 * The Parallax Scroll admin page will display the shortcode required for all Parallax Scroll post types defined. Copy this shortcode, and paste it into any page or post.
 * Alternatively you can use the plugin directly in your php code. Implement it straight into your theme!
 * Thats it!
-
 
 == Installation ==
 
@@ -73,17 +73,11 @@ Why is this an issue on some themes? Well some themes, even though they claim ar
 Please visit the support forums to check if the subject is already covered.
 Alternatively visit [adamrob.co.uk](http://adamrob.co.uk/parallax-scroll "my website") for support and/or suggestions.
 
-
-
-
-
-
 == Screenshots ==
 
 1. The options availble on the Parallax Scroll post page.
 2. An example of parallax scroll being used for header text.
 3. An example of parallax scroll being used as part of the page, in this instance it contains text and a google maps element.
-
 
 == Changelog ==
 
@@ -128,8 +122,22 @@ Alternatively visit [adamrob.co.uk](http://adamrob.co.uk/parallax-scroll "my web
 * Added - Added an option to use parallax.js as the parallax engine rather than CSS. (See http://pixelcog.github.io/parallax.js/ for information on parallax.js)
 * Added - Added ability to target the CSS class of the Post content/title. Also added the ability to target specific parallax styles through the ID
 * Updated - Updated the help files to be more in depth for customising and setting up. Also added more obvious message on admin page.
-* Updated - Bug fixes. 
+* Updated - Bug fixes.
 
+= 2.0.1 =
+* Tested with latest version of WordPress. 
+
+= 2.1 =
+* Fixed - Removed the ability to add HTML markup to the title field. The title field is now escaped when rendering at the front end regardless of user permissions. - [Issue 01 from bitbucket repo](https://bitbucket.org/adamrob/parallax-scroll/issues/1/xss-vulnerability)
+* Tested with latest version of wordpress, using the latest wordpress theme on all major browsers.
+
+= 3.0.0 =
+* Plugin has had a complete re-write in the backend; although this version doesn't bring many new features, it provides the ground work to provide some major planned upgrades to both the CSS and java script parallaxs.
+* Posts meta options have been split out into tabs for better navigation.
+
+= 3.0.1 =
+* Fixed - Mobile image size bug.
+* Fixed - Incorrect div markup for full width mode.
 
 == Upgrade Notice ==
 
@@ -161,3 +169,19 @@ Added an option to use parallax.js as the parallax engine rather than CSS. (See 
 Added ability to target the CSS class of the Post content/title. Also added the ability to target specific parallax styles through the ID
 Updated the help files to be more in depth for customising and setting up. Also added more obvious message on admin page.
 Updated - Bug fixes. 
+
+= 2.0.1 =
+* Tested with latest version of WordPress.
+
+= 2.1 =
+Removed the ability to add HTML markup to the title field. The title field is now escaped when rendering at the front end regardless of user permissions. - [Issue 01 from bitbucket repo](https://bitbucket.org/adamrob/parallax-scroll/issues/1/xss-vulnerability)
+Tested with latest version of wordpress, using the latest wordpress theme on all major browsers.
+
+= 3.0.0 =
+* Plugin has had a complete re-write in the backend; although this version doesn't bring many new features, it provides the ground work to provide some major planned upgrades to both the CSS and java script parallaxs.
+* Posts meta options have been split out into tabs for better navigation.
+* Please note, due to various changes in the backend, you may get an error when upgrading. This is nothing to wory about. Simply de-activate and/or re-activate the plugin. No data will be lost in the upgrade.
+
+= 3.0.1 =
+* Fixed - Mobile image size bug.
+* Fixed - Incorrect div markup for full width mode.

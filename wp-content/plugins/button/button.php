@@ -3,7 +3,7 @@
 Plugin Name: Button
 Plugin URI: http://webdzier.com
 Description: WordPress button generator plugin.You can create any type of button. <a href="http://webdzier.com">Get Pro version</a>. Button is a powerful plugin.
-Version: 1.1.0
+Version: 1.1.6
 Author: webdzier
 Author URI: http://webdzier.com
 Text Domain: button 
@@ -43,7 +43,8 @@ function WDbutton_current_user(){
 			require_once(WDButton_PATH.'admin/classes/WDButton_CPT_class.class.php');	
 			require_once(WDButton_PATH.'admin/classes/WDButton_admin_style_script.class.php');	
 			require_once(WDButton_PATH.'admin/classes/WDButton_metaboxes_class.class.php');
-
+			require_once(WDButton_PATH.'admin/classes/WDButton_duplicate_class.php');		
+			
 			new WDButton_CPT_class();
 			new WDButton_admin_style_script();	
 			new WDButton_metaboxes_class();	

@@ -1,3 +1,15 @@
+#searchicon {
+ 
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+
 .fa-field-modal {
   position: fixed;
   top: 20%;
@@ -36,15 +48,20 @@
 .fa-field-modal .fa-field-modal-icons {
   overflow-x: hidden;
   position: absolute;
-  top: 72px;
+  top:120px;
   bottom: 24px;
   left: 24px;
   right: 24px;
 }
+.icon_search_container{
+position:absolute;
+top:60px;
+
+}
 .fa-field-modal .fa-field-modal-icons .fa-field-modal-icon-holder {
   text-align: center;
-  width: 80px;
-  height: 90px;
+  width:35px;
+  height:35px;
   float: left;
   cursor: pointer;
   border: 1px solid gray;
@@ -52,7 +69,7 @@
   margin: 5px;
 }
 .fa-field-modal .fa-field-modal-icons .fa-field-modal-icon-holder .icon {
-  font-size: 40px;
+  font-size:20px;
   color: gray;
 }
 .fa-field-modal .fa-field-modal-icons .fa-field-modal-icon-holder .label {
