@@ -192,20 +192,3 @@ use Roots\Sage\Assets;
     </div>
   </div>
 </section>
-
-<section class="data-tracker">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="striped-line"></div>
-
-        <div class="data-banner has-notch">
-          <div class="title-top">Community Development</div>
-          <div class="title-bottom">Data Tracker</div>
-          <img class="data-bars" src="<?php echo Assets\asset_path('images/data-bars.png'); ?>" />
-          <a class="mega-link" href="/data/"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
