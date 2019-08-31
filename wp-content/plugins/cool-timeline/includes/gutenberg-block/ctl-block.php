@@ -11,7 +11,8 @@ function ctl_gutenberg_scripts() {
 	wp_enqueue_script(
 		'ctl-block-js',
 		plugins_url( $blockPath, __FILE__ ),
-		array('wp-i18n', 'wp-blocks', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api'),
+			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor','wp-data','wp-api' ),
+		//array('wp-i18n', 'wp-blocks', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api'),
 		filemtime( plugin_dir_path(__FILE__) . $blockPath )
 	);
 	// Enqueue frontend and editor block styles

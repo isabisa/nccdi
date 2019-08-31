@@ -44,7 +44,7 @@ export default registerBlockType( 'cool-timleine/shortcode-block', {
 		// Block Description
 		description: __( 'Cool Timeline Shortcode Generator Block.' ),
 		// Block Category
-		category: 'common',
+		category: 'layout',
 		// Block Icon
 		icon:CtlIcon,
 		// Block Keywords
@@ -115,7 +115,7 @@ export default registerBlockType( 'cool-timleine/shortcode-block', {
 		];
 		const animationOptions = [
             { value: 'none', label: __( 'None' ) },
-            { value: 'fadeInUp', label: __( 'fadeInUp' ) }
+            { value: 'fade-up', label: __( 'fadeInUp' ) }
 		];
 		const contentSettings=[{label:"Summary",value:"short"},
 			{label:"Full Text",value:"full"}

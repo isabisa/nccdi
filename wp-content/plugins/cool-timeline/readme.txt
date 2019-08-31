@@ -3,7 +3,7 @@ Contributors: narinder-singh,satindersingh,coolplugins
 Tags: timeline, events, history, roadmap, event timeline, horizontal timeline, vertical timeline, story timeline, event, calendar, events manager, timeline block
 Donate link: https://cooltimeline.com
 Requires at least: 3.5
-Tested up to: 5.2.1
+Tested up to: 5.2.2
 Stable tag: trunk
 Requires PHP: 5.6
 License: GPLv2 or later
@@ -13,7 +13,9 @@ Cool Timeline WordPress plugin creates vertical and horizontal history timeline 
 
 == Description ==
 
-= Cool Timeline is a responsive WordPress pure HTML & CSS timeline plugin that allows you to create beautiful horizontal and vertical history timeline. You simply create posts, set images and date then Cool Timeline will automatically populate these posts in chronological order(ASC or DESC), based on the year and date of stories. You can easily show timeline on any page of your website using shortcode - [cool-timeline] =
+### Cool Timeline - WordPress #1 Timeline Plugin
+
+**Cool Timeline** is a responsive WordPress pure HTML & CSS timeline plugin that allows you to create beautiful horizontal and vertical history timeline. You simply create posts, set images and date then Cool Timeline will automatically populate these posts in chronological order(ASC or DESC), based on the year and date of stories. You can easily show timeline on any page of your website using shortcode - [cool-timeline]
 
 ### Check Cool Timeline Demos
 
@@ -23,12 +25,17 @@ You can show your stories, events, appointments, concerts, future & history happ
 
 = Cool Timeline Shortcode =
 
-> [cool-timeline layout="default" skin="default" show-posts="10" date-formats="F j" icons="YES" animation="FadeInOut"]
+> [cool-timeline layout="default" skin="default" date-format="F j" icons="YES" show-posts="20" order="DESC" story-content="full"]
+
+### Gutenberg Friendly - Instant Timeline Builder
+
+Cool Timeline (version 1.8+) now also provides instant timeline builder for Gutenberg lovers. You can easily create timeline in a real time using Gutenberg blocks and settings.
 
 [Learn More About Shortcode](https://wordpress.org/plugins/cool-timeline/#faq) | [Check Timeline Installation Guide](https://wordpress.org/plugins/cool-timeline/#installation)
 
 ### Features Of Cool Timeline
 
+* **Gutenberg block Timeline**:- Since version 1.8 users can create instant timeline with the help of Gutenberg instant timeline builder block.  [Check Demo Here >>](https://free.cooltimeline.com/cool-timeline-instant-builder/)
 * **Compact Timeline**:- Now our free users can also create a compact timeline, means a timeline without a lot of space between stories. [Check Demo Here >>](https://free.cooltimeline.com/compact-timeline/)
 * **Clean Layout**:- If you love clean and clear look without a lot of colors then you can showcase your story via our clean layout. [Check Demo Here >>](https://free.cooltimeline.com)
 * **Horizontal Roadmap Timeline**:- With help of Roadmap desgin, you can represent your Project/Company Plans and Phases. [Check Demo Here >>](https://free.cooltimeline.com/12193-2/)
@@ -168,15 +175,17 @@ Year starts from 1970 in free version but in [pro version](https://1.envato.mark
 = What is plugin shortcode & how can we use it? =
 Here is full short-code of Cool Timeline plugin:-
 
-> [cool-timeline layout="default" skin="default" show-posts="10" date-formats="F j" icons="YES" animation="FadeInOut"]
+> [cool-timeline layout="default" skin="default" date-format="F j" icons="YES" show-posts="20" animation="FadeInOut" order="DESC" story-content="full"]
 
 * **[cool-timeline]** = It is our default short-code syntax.
 * **layout** = We have five layout options (**default, horizontal, one-side, simple, compact**). In simple timeline you can create a timeline without bigger year circle in between the stories.
 * **skin** = 2 skins available (**default, clean**)
-* **animation** = We have only 1 animation effect (**FadeInOut**) in Cool Timeline free version. You can purchase pro for more effects.
 * **date-format** = You can choose any date-format to show with the stories according to your language and requirements.
 * **icons** = You can show(**YES/NO**) cool icons along with timeline stories.
 * **show-posts** = If you have a large timeline with a lot of stories then you can use this option to show pagination option after a number of stories.
+* **animation** = We have only 1 animation effect (**FadeInOut**) in Cool Timeline free version. You can purchase pro for more effects.
+* **order** = Now easily manage timeline stories order(ASC/DESC) from shortcode.
+* **story-content** = (short/full) Now show full HTML content or short description with read-more inside timeline stories.
 
 = Can I see online demo? =
 Yes, Check free version demo at - https://free.cooltimeline.com
@@ -248,6 +257,18 @@ function ctl_stories_readmore($read_more_text) {
 7. Create any type of timeline using Cool timeline PRO .
 
 == Changelog ==
+= Version 1.9 | Aug 21, 2019 =
+* Added: Integrated new AOS animation effects
+* Added: feedback on plugin deactivation
+* Improved: Plugin folder structure
+* Improved: overall code optimization 
+* Fixed: Story image settings bug
+* Fixed: Horizontal timeline story wrong year
+* Imporved: JS and CSS improvements.
+* Removed: animate.css and viewport.js
+= Version 1.8 | June 27, 2019 =
+* Added: Integrated new Gutenberg based instant timeline builder
+
 = Version 1.7 | April 27, 2019 =
 * Added: Integrated standalone story date picker.
 * Added: Integrated fontawesome 5 font and added search icon feature

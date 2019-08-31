@@ -1,10 +1,12 @@
 <?php
 
 
- // getting story date 
+  // getting story date 
  function ctlfree_get_story_date($post_id,$date_formats) {
     $ctl_story_date = get_post_meta($post_id, 'ctl_story_date', true);
     if ($ctl_story_date) {
+		$posted_date='';
+		$ctl_story_date = str_ireplace(array('am','pm'),'',$ctl_story_date);
           if (strtotime($ctl_story_date)!==false) {
               $posted_date = date_i18n(__("$date_formats", 'cool-timeline'), strtotime("$ctl_story_date"));
           }
@@ -40,7 +42,7 @@ function ctl_run_migration(){
     {
        foreach ( $posts as $post )
               {
-               $published_date= get_the_date('m/d/Y h:i a', $post->ID );
+               $published_date= get_the_date('m/d/Y H:i', $post->ID );
                   if($published_date){
                      update_post_meta($post->ID, 'ctl_story_date', $published_date);
                      $story_timestamp= ctlfree_generate_custom_timestamp($published_date);
@@ -49,6 +51,7 @@ function ctl_run_migration(){
                }
      }
 }
+
 
 
 // get post type from url
