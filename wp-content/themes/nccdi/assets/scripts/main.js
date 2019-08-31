@@ -101,6 +101,59 @@
         // Media query
         var smDown = window.matchMedia( '(max-width: 768px)' );
 
+        // Show mobile topbar nav
+        function showMobileTopbarNav() {
+          $('body').addClass('topbarnav-active');
+          $('#topbar-menu-trigger + label i').attr('aria-label', 'Hide navigation menu');
+
+          // Enable focus of nav items using tabindex
+          $('.topbar-menu').each(function() {
+            var el = $(this);
+            $('a', el).attr('tabindex', '0');
+          });
+        }
+
+        // Hide mobile topbar nav
+        function hideMobileTopbarNav() {
+          $('body').removeClass('topbarnav-active');
+          $('#topbar-menu-trigger + label i').attr('aria-label', 'Show navigation menu');
+
+          // Disable focus of nav items using tabindex
+          $('.topbar-menu').each(function() {
+            var el = $(this);
+            $('a', el).attr('tabindex', '-1');
+          });
+        }
+
+        // Toggle mobile topbar nav
+        $('#topbar-menu-trigger').on('change focusout', function() {
+          if ($(this).prop('checked')) {
+            showMobileTopbarNav();
+          } else {
+            hideMobileTopbarNav();
+          }
+        });
+
+        // Only show mobile nav if an element inside is receiving focus
+        $('.topbar-menu').each(function () {
+          var el = $(this);
+
+          $('a', el).on('focus', function() {
+            $(this).parents('li').addClass('hover');
+          }).on('focusout', function() {
+            $(this).parents('li').removeClass('hover');
+
+            if (smDown.matches) {
+              setTimeout(function () {
+                if ($(':focus').closest('#menu-top-nav').length === 0) {
+                  $('#topbar-menu-trigger').prop('checked', false);
+                  hideMobileTopbarNav();
+                }
+              }, 200);
+            }
+          });
+        });
+
         // Show mobile nav
         function showMobileNav() {
           $('body').addClass('mobilenav-active');

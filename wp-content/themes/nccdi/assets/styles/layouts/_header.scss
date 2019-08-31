@@ -13,6 +13,10 @@
     }
 
     @media (max-width: $screen-md-max) {
+      max-width: 220px;
+    }
+
+    @media (max-width: $screen-sm-max) {
       padding-left: 0;
       min-height: 120px;
       display: flex;
@@ -43,7 +47,7 @@
       height: 50px;
       width: 50px;
       text-align: center;
-      color: $black;
+      color: $gray-dark;
       cursor: pointer;
       padding: 0;
       float: right;
@@ -57,16 +61,30 @@
         line-height: 1.5em;
       }
     }
+
+    @media (min-width: $screen-md-min) {
+      display: none;
+    }
   }
 }
 
 .topbar-wrapper {
   background: $teal-lighter;
 
+  .menu-trigger-wrapper {
+    @media (min-width: $screen-sm-min) {
+      display: none;
+    }
+
+    label {
+      color: $white;
+    }
+  }
+
   .topbar-menu {
     margin: 0;
 
-    @media (max-width: $screen-md-max) {
+    @media (max-width: $screen-xs-max) {
       flex-direction: column;
       flex-wrap: nowrap;
       margin: 0;
@@ -190,17 +208,20 @@ nav {
       a {
         cursor: default;
 
-        @media (max-width: $screen-md-max) {
+        @media (max-width: $screen-sm-max) {
           cursor: pointer;
+          display: block;
         }
       }
 
       .sub-menu {
-        margin-top: 10px;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
         background: $teal-lightest;
+        flex-direction: column;
+        height: 0;
+        overflow: hidden;
 
         li {
           float: none;
@@ -227,16 +248,13 @@ nav {
 
         }
 
-        @media (min-width: $screen-lg-min) {
-          max-height: 300em;
-          flex-direction: column;
+        @media (min-width: $screen-md-min) {
           position: absolute;
           z-index: 10;
-          transition: max-height 0.3s ease;
-          height: 0;
-          overflow: hidden;
           min-width: 200px;
           box-shadow: 0 5px 35px rgba(0, 0, 0, 0.2);
+          margin-top: 10px;
+          max-height: 300em;
         }
       }
 
@@ -254,6 +272,30 @@ nav {
 
     a {
       background: none;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin: 0 0 2em;
+    width: 100%;
+    transition: max-height 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+
+    li {
+      width: 100%;
+
+      &.hover {
+        .sub-menu {
+          max-height: 100em;
+        }
+      }
+    }
+
+    .mobilenav-active & {
+      max-height: 100em;
     }
   }
 }

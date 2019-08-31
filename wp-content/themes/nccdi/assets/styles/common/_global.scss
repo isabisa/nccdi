@@ -74,7 +74,7 @@
     flex-wrap: wrap;
   }
 
-  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  @media (max-width: $screen-sm-max) {
     flex-wrap: wrap;
   }
 }
@@ -330,11 +330,5 @@
     margin: 0;
     padding: 0 30px;
     font-size: $font-size-h3;
-  }
-}
-
-.hide-on-large-only {
-  @media (min-width: $screen-lg-min) {
-    display: none !important;
   }
 }
