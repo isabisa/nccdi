@@ -1,4 +1,4 @@
-.btn.btn, a.fl-button.fl-button {
+.btn.btn, a.fl-button.fl-button, .juicer-button {
   background: $teal-light;
   font-family: $font-family-sans-serif;
   border-radius: 0;
@@ -34,12 +34,13 @@
   }
 }
 
-.fl-builder-content a.fl-button {
+.fl-builder-content a.fl-button, .juicer-button {
   background: none !important;
   border: none !important;
+  color: $white !important;
 }
 
-.btn.btn-skew, a.fl-button.fl-button {
+.btn.btn-skew, a.fl-button.fl-button, .juicer-button {
   @extend .skew;
   background: none;
   font-size: 18px;
