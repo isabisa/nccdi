@@ -85,7 +85,7 @@ function assets() {
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 
 function google_fonts() {
-  echo '<link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700|Montserrat:300,400,800|Material+Icons" rel="stylesheet" type="text/css">';
+  echo '<link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700|Montserrat:300,400,600|Material+Icons" rel="stylesheet" type="text/css">';
 }
 add_action('wp_head', __NAMESPACE__ . '\\google_fonts');
 add_action('embed_head', __NAMESPACE__ . '\\google_fonts');

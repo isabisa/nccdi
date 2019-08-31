@@ -581,9 +581,36 @@
   }
 }
 
-.sponsors {
+.uabb-number-circle-container {
+  .uabb-number-text span {
+    color: $white;
+  }
+
+  .svg-container svg circle {
+    fill: $teal;
+  }
+}
+
+.sponsors .fl-module-content .gallery {
+  padding: 0;
+  text-align: center;
+  margin: 0 !important;
+  max-width: 100% !important;
+
+  br {
+    display: none;
+  }
+
+  .gallery-item {
+    display: inline-block;
+    float: none;
+    padding: 0;
+  }
+
   img {
     display: inline-block;
     margin: 0 30px 15px;
+    max-height: 46px;
+    width: auto;
   }
 }

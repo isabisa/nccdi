@@ -29,8 +29,10 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 
 h1, .h1 {
-  font-family: $font-family-serif;
+  font-family: $font-family-sans-serif;
   font-size: 48px;
+  text-transform: uppercase;
+  font-weight: 600;
 
   + h2, .h2 {
     margin-top: 0;
@@ -39,6 +41,8 @@ h1, .h1 {
 
 h2, .h2 {
   white-space: normal;
+  font-weight: 600;
+  color: $teal;
 
   @include respondto(sm) {
     font-size: 34px;
@@ -271,4 +275,8 @@ pre {
   > :first-child {
     margin-top: 0;
   }
+}
+
+.uabb-flip-box-wrap .uabb-back .uabb-back-flip-box-section-content h3 {
+  margin: 0.5em 0 1em;
 }

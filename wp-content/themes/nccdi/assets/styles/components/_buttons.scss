@@ -1,4 +1,4 @@
-.btn.btn {
+.btn.btn, a.fl-button.fl-button {
   background: $teal-light;
   font-family: $font-family-sans-serif;
   border-radius: 0;
@@ -34,7 +34,12 @@
   }
 }
 
-.btn.btn-skew {
+.fl-builder-content a.fl-button {
+  background: none !important;
+  border: none !important;
+}
+
+.btn.btn-skew, a.fl-button.fl-button {
   @extend .skew;
   background: none;
   font-size: 18px;

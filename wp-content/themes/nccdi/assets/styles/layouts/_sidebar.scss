@@ -27,17 +27,21 @@
         }
       }
 
-      &.active > a {
+      &.current-page-ancestor > a, &.current-menu-item > a, &.active > a {
         color: $teal;
       }
     }
 
-    & > .menu-item:not(.active) {
+    & > .menu-item {
       display: none;
+
+      &.current-menu-ancestor, &.current-menu-item {
+        display: list-item;
+      }
     }
   }
 
-  h4, .h4, .nav > .active.active > a {
+  h4, .h4, .nav > .active.active > a, .nav > .current-page-ancestor.current-page-ancestor > a, .nav > .current-menu-item.current-menu-item > a {
     background: $teal;
     color: $white;
     font-size: $font-size-h4;

@@ -73,6 +73,10 @@
   &.grid {
     flex-wrap: wrap;
   }
+
+  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    flex-wrap: wrap;
+  }
 }
 
 @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
@@ -85,6 +89,50 @@
   .flex-md-up {
     display: flex;
   }
+}
+
+.flex-center {
+  align-items: center;
+}
+
+.flex-right {
+  align-items: flex-end;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-grow {
+  flex: 1;
+}
+
+.flex-bottom {
+  align-items: flex-end;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.space-evenly {
+  justify-content: space-evenly;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
 }
 
 @media (min-width: $screen-sm-min) {
@@ -282,5 +330,11 @@
     margin: 0;
     padding: 0 30px;
     font-size: $font-size-h3;
+  }
+}
+
+.hide-on-large-only {
+  @media (min-width: $screen-lg-min) {
+    display: none !important;
   }
 }
