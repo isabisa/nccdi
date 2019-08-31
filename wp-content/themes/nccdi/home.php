@@ -187,7 +187,29 @@ use Roots\Sage\Assets;
       <div class="col-md-12">
         <script src="//assets.juicer.io/embed.js" type="text/javascript"></script>
         <link href="//assets.juicer.io/embed.css" media="all" rel="stylesheet" type="text/css" />
-        <ul class="juicer-feed" data-feed-id="ncinitiative"><h1 class="referral"><a href="https://www.juicer.io">Powered by Juicer</a></h1></ul>
+        <ul class="juicer-feed" data-feed-id="ncinitiative" data-per="10" data-columns="5" data-gutter="15"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <div class="striped-line extra-bottom-margin">
+          <h2>Many thanks to our sponsors</h2>
+        </div>
+        <img src="<?php echo Assets\asset_path('images/bbt-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/bbt-logo@2x.png'); ?> 2x" alt="BB&amp;T" />
+        <img src="<?php echo Assets\asset_path('images/oak-foundation-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/oak-foundation-logo@2x.png'); ?> 2x" alt="Oak Foundation" />
+        <img src="<?php echo Assets\asset_path('images/zsr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/zsr-logo@2x.png'); ?> 2x" alt="Z Smith Reynolds Foundation" />
+        <img src="<?php echo Assets\asset_path('images/wells-fargo-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/wells-fargo-logo@2x.png'); ?> 2x" alt="Wells Fargo" />
+        <img src="<?php echo Assets\asset_path('images/pnc-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/pnc-logo@2x.png'); ?> 2x" alt="PNC" />
+        <img src="<?php echo Assets\asset_path('images/suntrust-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/suntrust-logo@2x.png'); ?> 2x" alt="Suntrust" />
+        <img src="<?php echo Assets\asset_path('images/kbr-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/kbr-logo@2x.png'); ?> 2x" alt="Kate B Reynolds Charitable Trust" />
+        <img src="<?php echo Assets\asset_path('images/first-bank-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/first-bank-logo@2x.png'); ?> 2x" alt="Local First Bank" />
+        <img src="<?php echo Assets\asset_path('images/fifth-third-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/fifth-third-logo@2x.png'); ?> 2x" alt="Fifth Third Bank" />
+        <img src="<?php echo Assets\asset_path('images/first-tenn-logo.png'); ?>" srcset="<?php echo Assets\asset_path('images/first-tenn-logo@2x.png'); ?> 2x" alt="First Tennessee Bank" />
       </div>
     </div>
   </div>
