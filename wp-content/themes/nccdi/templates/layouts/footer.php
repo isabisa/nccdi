@@ -47,7 +47,6 @@ use Roots\Sage\Nav;
           <span class="uppercase">Follow Us</span>
           <a class="icon-facebook" href="http://www.facebook.com/ncinitiative5800" target="_blank" rel="nofollow"></a>
           <a class="icon-twitter" href="http://twitter.com/ncinitiative" target="_blank" rel="nofollow"></a>
-          <a class="icon-flickr" href="http://www.flickr.com/photos/ncinitiative/" target="_blank" rel="nofollow"></a>
         </div>
       </div>
     </div>
