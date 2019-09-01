@@ -82,12 +82,16 @@
   }
 
   .topbar-menu {
+    height: 100%;
     margin: 0;
+    padding: 0;
 
     @media (max-width: $screen-xs-max) {
       flex-direction: column;
       flex-wrap: nowrap;
+      align-items: center;
       margin: 0;
+      padding: 0;
       width: 100%;
       transition: max-height 0.3s ease;
       max-height: 0;
@@ -96,12 +100,6 @@
       .topbarnav-active & {
         max-height: 100em;
       }
-    }
-
-    ul {
-      height: 100%;
-      margin: 0;
-      padding: 0;
     }
 
     li {
@@ -153,6 +151,10 @@
           left: -1px;
           bottom: -1px;
           right: -2px;
+        }
+        @media (max-width: $screen-xs-max) {
+          margin-left: 0;
+          width: 250px;
         }
       }
     }
@@ -279,7 +281,8 @@ nav {
   @media (max-width: $screen-sm-max) {
     flex-direction: column;
     flex-wrap: nowrap;
-    margin: 0 0 2em;
+    margin: 0;
+    padding: 0 15px 2em;
     width: 100%;
     transition: max-height 0.3s ease;
     max-height: 0;

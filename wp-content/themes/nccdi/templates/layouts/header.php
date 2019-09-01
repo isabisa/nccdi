@@ -12,13 +12,11 @@ use Roots\Sage\Nav;
           <input type="checkbox" name="topbar-menu-trigger" id="topbar-menu-trigger" value="true" />
           <label for="topbar-menu-trigger"><i class="material-icons topbar-icon" aria-label="Show navigation menu">add</i></label>
         </div>
-        <div class="topbar-menu">
           <?php
           if (has_nav_menu('top_bar')) :
-            wp_nav_menu(['theme_location' => 'top_bar', 'container' => FALSE, 'menu_class' => 'flex flex-center flex-right space-around', 'depth' => 1]);
+            wp_nav_menu(['theme_location' => 'top_bar', 'container' => FALSE, 'menu_class' => 'topbar-menu flex flex-center flex-right space-around', 'depth' => 1]);
           endif;
           ?>
-        </div>
       </div>
     </div>
   </section>
