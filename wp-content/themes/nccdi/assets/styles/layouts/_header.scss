@@ -180,6 +180,7 @@ nav {
       text-transform: uppercase;
       font-weight: 300;
       font-size: 1.7rem;
+      display: block;
     }
   }
 }
@@ -282,7 +283,6 @@ nav {
     flex-direction: column;
     flex-wrap: nowrap;
     margin: 0;
-    padding: 0 15px 2em;
     width: 100%;
     transition: max-height 0.3s ease;
     max-height: 0;
@@ -290,11 +290,16 @@ nav {
 
     li {
       width: 100%;
+      padding: 0;
 
       &.hover {
         .sub-menu {
           max-height: 100em;
         }
+      }
+
+      &:last-of-type {
+        margin-bottom: 20px;
       }
     }
 
