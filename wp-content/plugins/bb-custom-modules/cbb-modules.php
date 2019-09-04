@@ -50,7 +50,7 @@ add_action( 'admin_init', 'cbb_check_required_plugins' );
 function cbb_disable_modules( $enabled, $instance ) {
   $disable = array(
     'photo',
-    'content-slider',
+    // 'content-slider',
     'cbb-editorial-cards',
     'gallery',
     'icon',
