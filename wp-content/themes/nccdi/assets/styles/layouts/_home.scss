@@ -581,6 +581,16 @@
   }
 }
 
+.fl-slide {
+  .fl-slide-foreground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 10;
+  }
+}
+
 .uabb-number-circle-container {
   .uabb-number-text span {
     color: $white;

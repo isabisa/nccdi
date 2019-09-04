@@ -38,6 +38,10 @@
   background: none !important;
   border: none !important;
   color: $white !important;
+
+  span {
+    color: $white !important;
+  }
 }
 
 .btn.btn-skew, a.fl-button.fl-button, .juicer-button {

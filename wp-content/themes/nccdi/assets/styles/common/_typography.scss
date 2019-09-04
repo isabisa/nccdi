@@ -280,3 +280,9 @@ pre {
 .uabb-flip-box-wrap .uabb-back .uabb-back-flip-box-section-content h3 {
   margin: 0.5em 0 1em;
 }
+
+.fl-slide-title.fl-slide-title {
+  line-height: 1.1;
+
+  @extend h1;
+}
