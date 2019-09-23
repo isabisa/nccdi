@@ -5,23 +5,5 @@
       data-donately-amount="25"
       data-donately-presets="5,10,25,50"
       data-donately-iframe-height="900"
-      data-donately-custom-fields=
-  '{"fields":
-  [
-  {
-       "type":"select_campaign",
-       "id":"campaign",
-       "value":"0",
-       "label":"Please Choose a Program to Support",
-       "after":"amount",
-       "options":
-                                     [
-
-  {"value":"cmp_7bce500b999e","label":"NC Community Development Initiative"},
-  {"value":"cmp_63b0ac4e5fb1","label":"The Hive House Community Center"}
-  ],
-  "before": "amount"}
-  ]
-  }'
   >
   </script>
