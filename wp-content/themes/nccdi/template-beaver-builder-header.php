@@ -1,8 +1,9 @@
 <?php
-/* Template Name: Beaver Builder - No Header */
+/* Template Name: Beaver Builder - With Header */
 
 use Roots\Sage\Setup;
 
+get_template_part('templates/components/header', get_post_type());
 ?>
 
 <div class="container-full">

@@ -115,11 +115,54 @@
   }
 }
 
-.page-template-template-full-width, .page-template-template-impact, .page-template-template-beaver-builder {
+.page-template-template-full-width, .page-template-template-impact, .page-template-template-beaver-builder, .page-template-template-beaver-builder-header {
   .main {
     margin: 0 auto;
     float: none;
     left: 0;
     width: 100%;
+  }
+}
+
+.fl-widget .menu-main-menu-container {
+  @extend .well;
+
+  ul {
+    line-height: 1;
+    margin-bottom: 0;
+  }
+
+  .menu {
+    font-family: $font-family-sans-serif;
+    list-style: none;
+    padding-left: 0;
+
+    & > .menu-item {
+      display: none;
+
+      &.current-menu-item, &.current-menu-ancestor {
+        display: list-item;
+      }
+    }
+
+    li {
+      a {
+        color: $gray-dark;
+        text-decoration: none;
+        display: block;
+        white-space: normal;
+        font-size: 16px;
+        padding: 7px 0;
+      }
+
+      .current-menu-item > a {
+        color: $teal;
+      }
+    }
+
+    .sub-menu {
+      list-style-type: square;
+      padding-left: 27px;
+    }
   }
 }
