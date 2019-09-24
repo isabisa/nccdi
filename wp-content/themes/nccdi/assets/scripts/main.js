@@ -103,7 +103,6 @@
 
         window.addEventListener('resize', function(){
           smDown = window.matchMedia( '(max-width: 768px)' );
-          console.log(smDown);
         }, true);
 
         // Show mobile topbar nav
@@ -213,8 +212,8 @@
         });
 
         // Collapsible sections on mobile
-        if (smDown.matches) {
-          $('.fl-module-info-box.mobile-collapse .uabb-infobox-title-wrap').on(clickortap, function() {
+        $('.fl-module-info-box.mobile-collapse .uabb-infobox-title-wrap').on(clickortap, function() {
+          if (smDown.matches) {
             var $container = $(this).closest('.mobile-collapse');
 
             if ($container.hasClass('open')) {
@@ -222,8 +221,8 @@
             } else {
               $container.addClass('open');
             }
-          });
-        }
+          }
+        });
       }
     },
     // Home page
