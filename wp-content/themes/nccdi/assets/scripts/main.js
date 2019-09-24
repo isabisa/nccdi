@@ -101,6 +101,11 @@
         // Media query
         var smDown = window.matchMedia( '(max-width: 768px)' );
 
+        window.addEventListener('resize', function(){
+          smDown = window.matchMedia( '(max-width: 768px)' );
+          console.log(smDown);
+        }, true);
+
         // Show mobile topbar nav
         function showMobileTopbarNav() {
           $('body').addClass('topbarnav-active');
@@ -206,6 +211,19 @@
             }
           });
         });
+
+        // Collapsible sections on mobile
+        if (smDown.matches) {
+          $('.fl-module-info-box.mobile-collapse .uabb-infobox-title-wrap').on(clickortap, function() {
+            var $container = $(this).closest('.mobile-collapse');
+
+            if ($container.hasClass('open')) {
+              $container.removeClass('open');
+            } else {
+              $container.addClass('open');
+            }
+          });
+        }
       }
     },
     // Home page

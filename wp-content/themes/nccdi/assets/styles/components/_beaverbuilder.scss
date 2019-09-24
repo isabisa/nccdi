@@ -32,6 +32,12 @@
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .fl-col-small {
+      max-width: 80%;
+    }
+  }
 }
 
 .fl-module.border-top {
@@ -54,5 +60,40 @@
 
   .uabb-infobox-title {
     margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fl-module-info-box.mobile-collapse {
+    .uabb-infobox-title-wrap {
+      position: relative;
+      cursor: pointer;
+
+      &::after {
+        content: '+';
+        position: absolute;
+        right: 10px;
+        top: 0;
+        font-size: 2em;
+      }
+    }
+
+    .uabb-infobox-text-wrap {
+      overflow: hidden;
+      transition: height 0.3s ease;
+      height: 0;
+    }
+
+    &.open {
+      .uabb-infobox-title-wrap {
+        &::after {
+          content: '-';
+        }
+      }
+
+      .uabb-infobox-text-wrap {
+        height: auto;
+      }
+    }
   }
 }
